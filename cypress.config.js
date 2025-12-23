@@ -2,6 +2,12 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
+    // Luôn đưa phần tử đang tương tác vào giữa màn hình
+    scrollBehavior: 'center', 
+    
+    // Tăng thời gian chờ để Robot ổn định khung hình trước khi chụp ảnh
+    defaultCommandTimeout: 10000, 
+    // ...
 
     chromeWebSecurity: false,
 
@@ -29,6 +35,7 @@ module.exports = defineConfig({
         return launchOptions;
       });
     },
+    
 // đọc các file trong thư mục cypress/test/ và kết thúc bằngcy.js
 
     specPattern: "cypress/test/**/*.cy.js",

@@ -14,6 +14,24 @@ describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
     cy.visit("/login");
   });
 
+  describe('Kiểm thử Đăng nhập StrongBody', () => {
+  it('Tập trung vào Form đăng nhập', () => {
+    cy.visit('/login');
+
+    // 1. Tìm Form đăng nhập và cuộn nó vào giữa màn hình
+    cy.get('form.login-form') // Thay bằng Selector thực tế của bạn
+      .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+      .should('be.visible');
+
+    // 2. Nhắm mục tiêu chính xác vào ô Email
+    cy.get('input[name="email"]')
+      .focus() // Đưa con trỏ chuột vào ô này
+      .type('test@example.com');
+      
+    // 3. Chụp ảnh chỉ riêng phần Form đăng nhập (Không chụp cả trang)
+    cy.get('form.login-form').screenshot('focus-login-area');
+  });
+});
  
   describe("GUI COMPONENT CHECK", () => {
     
