@@ -1,0 +1,19 @@
+name: StrongBody Daily Test
+on:
+  push:
+    branches: [main] # Chạy mỗi khi bạn cập nhật code mới lên GitHub
+  schedule:
+    - cron: '0 8 * * *' # Tự động chạy vào 8h sáng hàng ngày
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          
