@@ -387,7 +387,7 @@ it("TC_15- Nhập letters vào years", () => {
 });
 
 });
-it("TC_18- OK button enabled when all fields valid (multi specialties)", () => {
+it("TC_18-Dữ liệu hợp lệ-> step 3", () => {
 
   cy.get(shopNameInput).type("Linh Store");
 
@@ -407,7 +407,6 @@ it("TC_18- OK button enabled when all fields valid (multi specialties)", () => {
   cy.contains("General Practitioner (GP)").click({ force: true });
 
   cy.contains("General Practitioner (GP)").should("be.visible");
-
  
   cy.contains("Choose your specialties")
     .parent()
@@ -430,8 +429,8 @@ it("TC_18- OK button enabled when all fields valid (multi specialties)", () => {
     .then((color) => {
       expect(color).to.not.eq("rgb(209, 213, 219)");
     cy.contains("button", /^OK$/).click();
-    cy.url().should("include", "become-seller-steps?step=profession");
-     cy.url().should("include", "become-seller-steps?step=category");
+    //cy.url().should("include", "become-seller-steps?step=profession");
+     cy.url().should("include", "become-seller-steps?step=introduce");
     });
 });
 //************************************************************************************************/

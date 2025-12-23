@@ -103,7 +103,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-cy.get('body').click(0, 0);
+  cy.get('body').click(0, 0);
 
 
       cy.get('textarea, div[data-field="description"] textarea') // Selector dự đoán cho textarea
@@ -434,7 +434,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
     });
 
 
-    it("TC_10- Upload ít hơn 3 ảnh → báo lỗi", () => {
+    it("TC_10- Upload ít hơn 4 ảnh → báo lỗi", () => {
 
        const file1 = "cypress/fixtures/review1.png";
 
