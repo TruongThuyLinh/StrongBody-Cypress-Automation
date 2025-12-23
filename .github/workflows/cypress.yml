@@ -1,19 +1,41 @@
 name: StrongBody Daily Test
+
 on:
   push:
-    branches: [main] # Chạy mỗi khi bạn cập nhật code mới lên GitHub
+    branches: [main] # Chạy mỗi khi có code mới
   schedule:
-    - cron: '0 8 * * *' # Tự động chạy vào 8h sáng hàng ngày
+    # 8h sáng VN (GMT+7) tương đương 1h sáng UTC
+    - cron: '0 1 * * *' 
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout mã nguồn
         uses: actions/checkout@v4
 
-      - name: Cypress run
+      - name: Chạy Cypress Test
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          
+          # Nếu bạn có lệnh khởi động server thì thêm vào đây, ví dụ:
+          # start: npm start 
+          # wait-on: 'http://localhost:3000'
+
+      # --- PHẦN QUAN TRỌNG: LƯU LẠI ẢNH VÀ VIDEO KHI LỖI ---
+      
+      - name: Tải lên ảnh chụp màn hình (Chỉ khi lỗi)
+        uses: actions/upload-artifact@v4
+        if: failure() # Chỉ chạy bước này nếu có test bị fail
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 7 # Lưu trữ trong 7 ngày
+
+      - name: Tải lên video quá trình chạy (Luôn luôn lưu)
+        uses: actions/upload-artifact@v4
+        if: always() # Luôn lưu video để đối chiếu dù thành công hay thất bại
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          retention-days: 7
