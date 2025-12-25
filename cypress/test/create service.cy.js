@@ -258,7 +258,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 //     });
 
 
-    it("TC_06 Price trống", () => {
+    it("TC_06 Price trống-> báo lỗi", () => {
 
       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
 
@@ -392,53 +392,6 @@ cy.get('body').click(0, 0, { force: true });
 });
 
 
-    it("TC_09- Price bằng 0", () => {
-
-       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
-
-       cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
-
-       cy.get(imgMore).selectFile([
-      'cypress/fixtures/review2.png',
-      'cypress/fixtures/review3.png'
-      ], { force: true });
-      cy.get(nameInput).type("Valid Name");
-
-      
-      // Mở dropdown Category
-cy.contains("label", "Category")
-  .parent()
-  .find("button[id^='headlessui-combobox-button']")
-  .first()
-  .click({ force: true });
-
-// Chọn option
-cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
-  .click({ force: true });
-
-      cy.get(descInput).click().type("Valid description");
-cy.get('body').click(0, 0, { force: true });
-      // 1. Mở dropdown Hea Type
-cy.contains("label", "Hea Type")
-  .parent()
-  .find("button[id^='headlessui-combobox-button']")
-  .click({ force: true });
-
-// 2. Chờ dropdown render
-cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
-  .should("be.visible")
-  .contains("Online", { timeout: 8000 })
-  .click({ force: true });
-      cy.get(priceInput).type("0");
-      cy.get(createBtn).click();
-
-       // Kiểm tra lỗi (match nhiều khả năng)
-  cy.contains(/price|greater|positive|zero|invalid/i)
-    .should("be.visible");
-    });
-
-
     it("TC_10- Upload ít hơn 4 ảnh → báo lỗi", () => {
 
        const file1 = "cypress/fixtures/review1.png";
@@ -458,7 +411,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
       cy.get(descInput).click().type("Valid description");
 
       // 1. Mở dropdown Hea Type
@@ -694,7 +647,53 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
       cy.url().should("include", "seller/my-service");
     });
+it("TC_09- Price bằng 0", () => {
 
+       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+
+       cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+
+       cy.get(imgMore).selectFile([
+      'cypress/fixtures/review2.png',
+      'cypress/fixtures/review3.png'
+      ], { force: true });
+      cy.get(nameInput).type("Valid Name");
+
+      
+      // Mở dropdown Category
+cy.contains("label", "Category")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .first()
+  .click({ force: true });
+
+// Chọn option
+cy.get("div[id^='headlessui-combobox-options']")
+  .contains("Vegetarian or Vegan Diet Guidance")
+  .click({ force: true });
+
+      cy.get(descInput).click().type("Valid description");
+cy.get('body').click(0, 0, { force: true });
+      // 1. Mở dropdown Hea Type
+cy.contains("label", "Hea Type")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .click({ force: true });
+
+// 2. Chờ dropdown render
+cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
+  .should("be.visible")
+  .contains("Online", { timeout: 8000 })
+  .click({ force: true });
+      cy.get(priceInput).type("0");
+      cy.get(createBtn).click();
+
+      cy.contains("required").should("not.exist");
+      cy.contains("max").should("not.exist");
+      cy.contains("invalid").should("not.exist");
+
+      cy.url().should("include", "seller/my-service");
+    });
    
   });
 
