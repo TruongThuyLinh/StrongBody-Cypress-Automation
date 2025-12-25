@@ -287,45 +287,8 @@ it("TC_06- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", 
    
     cy.contains(/description is required/i).should("be.visible");
 });
-it("TC_07- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", () => {
-    
-    // Upload ảnh đầy đủ
-    cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
-    cy.get(imgSlot2).selectFile('cypress/fixtures/review2.png', { force: true });
-    cy.get(imgSlot3).selectFile('cypress/fixtures/review3.png', { force: true });
 
-    // Nhập Tên hợp lệ
-    cy.get(nameInput)
-      .should('be.visible')
-      .clear()
-      .type("Sản phẩm Test Space Description");
-
-    // Chọn Category hợp lệ
-    cy.contains("label", "Category")
-      .parent()
-      .find("button[id^='headlessui-combobox-button']")
-      .click({ force: true });
-
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness")
-      .click({ force: true });
-
-    // Chọn Country hợp lệ (Sử dụng cách tìm theo Label đã fix)
-    cy.contains('label', /Country/i).parent().as('countryField');
-    cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
-    
-    cy.get(descInput)
-      .should('be.visible')
-      .clear()        // Xóa sạch dữ liệu cũ (nếu có)
-      .type('     '); // Nhập 5 dấu cách liên tiếp
-  
-    cy.get(createBtn).click();
-    
-    cy.contains(/description is required/i).should("be.visible");
-});
-it("TC_08- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
+it("TC_07- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
 
     // Upload ảnh
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
