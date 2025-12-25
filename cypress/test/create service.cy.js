@@ -108,7 +108,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-  cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
 
       cy.get('textarea, div[data-field="description"] textarea') // Selector dự đoán cho textarea
@@ -139,7 +139,7 @@ it("TC_04: Nhập chỉ khoảng trắng (Space) vào Name → báo lỗi", () =
     // Chọn Category
     cy.contains("label", "Category").parent().find("button[id^='headlessui-combobox-button']").first().click({ force: true });
     cy.get("div[id^='headlessui-combobox-options']").contains("Vegetarian or Vegan Diet Guidance").click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
     // Nhập Description
     cy.get('textarea, div[data-field="description"] textarea')
       .should('be.visible')
@@ -184,7 +184,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 cy.get(descInput) 
       .should('be.visible')
       .click()
@@ -278,7 +278,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
 //       cy.get(descInput).click().type("Valid description");
 // cy.get('body').click(0, 0);
@@ -323,7 +323,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
   cy.get("div[id^='headlessui-combobox-options']")
     .contains("Vegetarian or Vegan Diet Guidance")
     .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
   cy.get(descInput).click().type("Valid description");
 
   cy.contains("label", "Hea Type")
@@ -366,7 +366,7 @@ cy.get('body').click(0, 0);
   cy.get("div[id^='headlessui-combobox-options']")
     .contains("Vegetarian or Vegan Diet Guidance")
     .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
   // Description
   cy.get(descInput).click().type("Valid description");
 
@@ -418,7 +418,7 @@ cy.get("div[id^='headlessui-combobox-options']")
   .click({ force: true });
 
       cy.get(descInput).click().type("Valid description");
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
       // 1. Mở dropdown Hea Type
 cy.contains("label", "Hea Type")
   .parent()
@@ -505,7 +505,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-  cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
       cy.get(priceInput).type("100");
 
@@ -539,7 +539,7 @@ cy.get("div[id^='headlessui-combobox-options']")
     cy.get("div[id^='headlessui-combobox-options']")
       .contains("Vegetarian or Vegan Diet Guidance")
       .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
     // Nhập giá
     cy.get(priceInput).type("100");
 
@@ -612,7 +612,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
       cy.get(descInput).click().type(maxDesc, { delay: 0 });
       cy.get(priceInput).type("100");
@@ -667,7 +667,7 @@ cy.contains("label", "Category")
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Vegetarian or Vegan Diet Guidance")
   .click({ force: true });
-cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
       cy.get('textarea, div[data-field="description"] textarea') // Selector dự đoán cho textarea
       .should('be.visible')

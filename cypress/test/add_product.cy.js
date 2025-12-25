@@ -108,7 +108,7 @@ cy.get("div[id^='headlessui-combobox-options']")
       // Do not enter name
       cy.get(createBtn).click();
 
-      cy.contains(/name is required/i).should("be.visible");
+      cy.contains(/Product name is required/i).should("be.visible");
     });
 it("TC_02-Nhập space vào tên → báo lỗi", () => {
     // 1. Upload ảnh
@@ -147,10 +147,44 @@ it("TC_02-Nhập space vào tên → báo lỗi", () => {
     // 5. Bấm Create
     cy.get(createBtn).click();
 
-    cy.contains(/name is required/i).should("be.visible");
-});
+    cy.contains(/Product name is required/i).should("be.visible");
+});   
    
-it("TC_03-Bỏ trống Category → Báo lỗi", () => {
+it("TC_03-Nhập tên rồi xóa sạch → Báo lỗi name is required", () => {
+    // 1. Setup: Điền các thông tin bắt buộc khác để tránh nhiễu (Prerequisites)
+    cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+    
+    // Chọn Category
+    cy.contains("label", "Category")
+        .parent()
+        .find("button[id^='headlessui-combobox-button']")
+        .first()
+        .click({ force: true });
+    cy.get("div[id^='headlessui-combobox-options']").contains("Health & Wellness").click({ force: true });
+
+    // Nhập Description
+    cy.get(descInput).type("Mô tả hợp lệ cho dịch vụ để kiểm tra validation.");
+
+    // Chọn Country
+    cy.contains('label', /Country/i).parent().as('countryField');
+    cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
+    cy.contains('[role="option"]', 'Vietnam').click();
+
+    // 2. HÀNH ĐỘNG CHÍNH: Nhập rồi xóa tên
+    cy.get(nameInput)
+        .should('be.visible')
+        .type("Tên tạm thời")     // Nhập tên hợp lệ trước
+        .should('have.value', "Tên tạm thời");
+
+    cy.get(nameInput)
+        .clear()                 // Xóa sạch nội dung
+        .blur();                 // Click ra ngoài để trigger validation (nếu có)
+
+    // Cách 2: Bấm Create để kiểm tra validation khi submit (Giống TC_02 của bạn)
+    cy.get(createBtn).click();
+    cy.contains(/Product name is required/i).should("be.visible");
+});
+it("TC_04-Bỏ trống Category → Báo lỗi", () => {
    
     // Upload ảnh
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
@@ -183,7 +217,7 @@ it("TC_03-Bỏ trống Category → Báo lỗi", () => {
 
     cy.contains(/category is required/i).should("be.visible");
 });
-it("TC_04 -Nhập toàn khoảng trắng (Space) vào Category → Báo lỗi", () => {
+it("TC_05-Nhập toàn khoảng trắng (Space) vào Category → Báo lỗi", () => {
 
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
     cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
@@ -215,7 +249,46 @@ it("TC_04 -Nhập toàn khoảng trắng (Space) vào Category → Báo lỗi", 
    
     cy.contains(/category is required/i).should("be.visible");
 });
-it("TC_05 - Bỏ trống Mô tả (Description) → Báo lỗi", () => {
+it("TC_06 - Chọn Category rồi bỏ chọn → Báo lỗi Category is required", () => {
+    // --- BƯỚC 1: SETUP DỮ LIỆU HỢP LỆ ---
+    // Upload ảnh
+    cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+
+    // Nhập Tên hợp lệ
+    cy.get(nameInput).type("Sản phẩm Test Deselect Category");
+
+    // Nhập Mô tả hợp lệ
+    cy.get(descInput).type("Mô tả hợp lệ có độ dài đầy đủ để test hệ thống.");
+
+    // Chọn Country hợp lệ
+    cy.contains('label', /Country/i).parent().as('countryField');
+    cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
+    cy.contains('[role="option"]', 'Vietnam').click();
+
+    // --- BƯỚC 2: CHỌN CATEGORY ---
+    cy.contains("label", "Category").parent().as('categoryField');
+    
+    // Mở dropdown và chọn "Health & Wellness"
+    cy.get('@categoryField').find("button[id^='headlessui-combobox-button']").click({ force: true });
+    cy.get("div[id^='headlessui-combobox-options']")
+      .contains("Health & Wellness")
+      .click({ force: true });
+
+    // Kiểm tra xem giá trị đã được nhận chưa (Optional)
+    cy.get('@categoryField').find('input').should('have.value', 'Health & Wellness');
+
+    // --- BƯỚC 3: BỎ CHỌN (DESELECT) ---
+    // Xóa trắng input để giả lập hành động bỏ chọn
+    cy.get('@categoryField').find('input').clear().blur();
+
+    // --- BƯỚC 4: KIỂM TRA VALIDATION ---
+    // Bấm Create để kích hoạt kiểm tra lỗi
+    cy.get(createBtn).click();
+
+    // Kỳ vọng: Thông báo lỗi xuất hiện
+    cy.contains(/category is required/i).should("be.visible");
+});
+it("TC_07- Bỏ trống Mô tả (Description) → Báo lỗi", () => {
     
     // Upload ảnh
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
@@ -252,7 +325,7 @@ it("TC_05 - Bỏ trống Mô tả (Description) → Báo lỗi", () => {
    
     cy.contains(/description is required/i).should("be.visible");
 });
-it("TC_06- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", () => {
+it("TC_08- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", () => {
     // ---------------------------------------------------------------
     // 1. ĐIỀN DỮ LIỆU HỢP LỆ CHO CÁC TRƯỜNG KHÁC
     // ---------------------------------------------------------------
@@ -290,7 +363,7 @@ it("TC_06- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", 
     cy.contains(/description is required/i).should("be.visible");
 });
 
-it("TC_07- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
+it("TC_09- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
 
     // Upload ảnh
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
@@ -327,7 +400,7 @@ it("TC_07- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
 
     cy.contains(/Description must be at least 30 characters/i).should("be.visible");
 });
-it("TC_08 - Kiểm tra chặn ký tự khi nhập quá Max Length (Hard Limit)", () => {
+it("TC_10- Kiểm tra chặn ký tự khi nhập quá Max Length (Hard Limit)", () => {
     // ---------------------------------------------------------------
     // 1. CHUẨN BỊ DATA VÀ ĐIỀN CÁC TRƯỜNG KHÁC
     // ---------------------------------------------------------------
@@ -370,7 +443,7 @@ it("TC_08 - Kiểm tra chặn ký tự khi nhập quá Max Length (Hard Limit)",
           expect(val.length).to.equal(maxLimit); 
       });
 });
-it("TC_09 - Nhập Tên quá Max Length (121 ký tự) → Báo lỗi", () => {
+it("TC_11- Nhập Tên quá Max Length (121 ký tự) → Báo lỗi", () => {
  
     // Upload ảnh
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
@@ -406,7 +479,7 @@ it("TC_09 - Nhập Tên quá Max Length (121 ký tự) → Báo lỗi", () => {
     // Kiểm tra thông báo lỗi hiển thị chính xác dòng text bạn yêu cầu
     cy.contains("Product name must be at most 120 characters").should("be.visible");
 });
-it("TC_10 - Bỏ trống Country (Select country) → Báo lỗi", () => {
+it("TC_12- Bỏ trống Country (Select country) → Báo lỗi", () => {
     
     // Upload ảnh
     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
@@ -441,7 +514,7 @@ it("TC_10 - Bỏ trống Country (Select country) → Báo lỗi", () => {
 
     cy.contains(/(country|origin).*required/i).should("be.visible");
 });
-it("TC_11 - Tạo sản phẩm thành công (Happy Path)", () => {
+it("TC_13- Tạo sản phẩm thành công (Happy Path)", () => {
     // ---------------------------------------------------------------
     // 1. UPLOAD ẢNH
     // ---------------------------------------------------------------
@@ -487,7 +560,7 @@ it("TC_11 - Tạo sản phẩm thành công (Happy Path)", () => {
      cy.url({ timeout: 20000 })
       .should('include', '/seller/my-product');
 });
-it("TC_12 - Tất cả các trường (Name, Desc) nhập đúng bằng Max Length → Thành công", () => {
+it("TC_14- Tất cả các trường (Name, Desc) nhập đúng bằng Max Length → Thành công", () => {
    
     const nameMax = 120;
     const descMax = 2000;
