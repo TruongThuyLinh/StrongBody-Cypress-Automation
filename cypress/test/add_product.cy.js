@@ -2,6 +2,7 @@ Cypress.on("uncaught:exception", () => false);
 
 describe("ADD PRODUCT", () => {
 
+
   
   const thumbInput = "input#product-cover-upload";//id
 
@@ -21,19 +22,20 @@ const imgSlot3 = "#product-images-upload-2";         // Upload nhiều ảnh
 const countryInput='input[placeholder="Select country"]';
  
 
- const login = () => {
-    cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-  };
+ 
     const categoryInput = 'input[placeholder="Select category"]';
  const titleInput = 'input[name="title"]';
     const submitBtn = 'button[type="submit"]';
     const editor = 'div[contenteditable="true"][role="textbox"]';
     const publishBtn = 'button';
  
+    const login = () => {
+    cy.visit("https://strongbody-web.vercel.app/login");
+    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
+    cy.get("input[name='password']").type("1234567l");
+    cy.get("button[type='submit']").click();
+    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  };
 beforeEach(() => {
     cy.session("login", login);
 
@@ -47,7 +49,7 @@ beforeEach(() => {
         }
     });
 
-    cy.get("body", { timeout: 15000 }).should("contain", "Write a blog");
+    cy.get("body", { timeout: 15000 }).should("contain", "Share a local products");
     cy.wait(500); 
 
     cy.contains("span", "Share a local products")

@@ -829,6 +829,7 @@ cy.get(aboutYourselfInput)
     // Nhập chỉ khoảng trắng
     cy.get(countryInput).type('   ');
 
+cy.get('body').click(0, 0, { force: true });  
     // Kiểm tra value thực tế (chưa trim) chứa spaces
     cy.get(countryInput).invoke('val').then(val => {
       expect(val).to.match(/^\s+$/);

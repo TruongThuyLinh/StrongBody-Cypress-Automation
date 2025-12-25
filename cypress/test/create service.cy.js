@@ -2,7 +2,13 @@ Cypress.on("uncaught:exception", () => false);
 
 describe("CREATE HEA SERVICE — FULL TESTING", () => {
 
-  
+  const login = () => {
+    cy.visit("https://strongbody-web.vercel.app/login");
+    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
+    cy.get("input[name='password']").type("1234567l");
+    cy.get("button[type='submit']").click();
+    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  };
   const thumbInput = "input#cover-upload";//id
   const moreImageInput = "input#service-images-upload-more";  //id
 
@@ -29,35 +35,34 @@ const imgSlot1 = "#service-images-upload-0";          // Ảnh review đầu ti�
 const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
 
 
-  before(() => {
-  cy.session("login", () => {
-    cy.visit("https://strongbody-web.vercel.app/login");
+  beforeEach(() => {
+    cy.session("login", login);
 
-    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
 
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+    cy.url().then((url) => {
+        if (!url.includes("seller/read-me")) {
+            cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
+            //cy.visit("https://strongbody-web.vercel.app/become-seller");
+            cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
+          cy.wait(1000);
+            cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
+        }
+    });
+
+    cy.get("body", { timeout: 15000 }).should("contain", "Create a service");
+    cy.wait(500); 
+
+    cy.contains("span", "Create a service")
+      .should("be.visible")
+      .parent() // Click vào thẻ cha
+      .click({ force: true });
+
+    // 5. Chốt chặn: Đảm bảo vào đúng trang
+    cy.url({ timeout: 20000 }).should("include", "seller/create-service");
+    
+    cy.wait(1000);
   });
-});
 
-beforeEach(() => {
-  cy.session("login", () => {
-    cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
-
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-  });
-
-cy.visit("https://strongbody-web.vercel.app/become-seller");
-//cy.get("span.flex.items-center.gap-1") .filter(":visible") .contains("Marketplace") .click({ force: true });  cy.contains("Open Shop").click();
- cy.contains("Set Up Your Care Provider Shop").click();
-  cy.contains("Create a service").click();
-
-  cy.url().should("include", "/seller/create-service");
-});
 
   
 it("TC_01- Nhấn mũi tên tăng → Price tăng +1", () => {
@@ -123,7 +128,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
   .click({ force: true });
       cy.get(createBtn).click();
 
-      cy.contains(/name is required/i).should("be.visible");
+      cy.contains(/Hea name is required/i).should("be.visible");
     });
 it("TC_04: Nhập chỉ khoảng trắng (Space) vào Name → báo lỗi", () => {
    
@@ -157,7 +162,7 @@ cy.get('body').click(0, 0);
       .type('     '); 
     cy.get(nameInput).blur();
     cy.get(createBtn).click();
-    cy.contains(/name is required/i).should("be.visible");
+    cy.contains(/Hea name is required/i).should("be.visible");
 });
     it("TC_05- Tên > 200 ký tự nhưng các trường khác hợp lệ → Báo lỗi Name", () => {
 

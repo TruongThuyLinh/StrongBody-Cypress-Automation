@@ -4,8 +4,8 @@ on:
   push:
     branches: [main] # Chạy mỗi khi có code mới
   schedule:
-    # 8h sáng VN (GMT+7) tương đương 1h sáng UTC
-    - cron: '0 1 * * *' 
+    # 6h sáng VN (GMT+7) tương đương 23h đêm UTC ngày hôm trước
+    - cron: '0 23 * * *' 
 
 # --- THÊM PHẦN NÀY ĐỂ CHẠY RIÊNG TỪNG FILE ---
   workflow_dispatch:
@@ -14,7 +14,7 @@ on:
         description: 'Đường dẫn file test muốn chạy (Ví dụ: cypress/test/login.cy.js)'
         required: false
         default: '' # Nếu để trống sẽ chạy tất cả
-        
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
