@@ -8,6 +8,7 @@ const specialtiesInput = 'input[placeholder*="specialties"]';
 const aboutYourselfInput = "textarea[placeholder='Share something about your strengths or the value you will bring to your customers...']";
 const countryInput="input[placeholder='Select your country']";
 const fullAddressInput='input[placeholder="Full Address"]';
+ const specialtiesInputSelector = 'input[placeholder^="Choose or type"]';
 
  
   before(() => {
@@ -42,14 +43,13 @@ cy.contains("Create Your Dream Shop")
     cy.get(shopNameInput).should("be.visible");
   });
 
-  //************************************************************************************************/
-                  
+  //************************************************************************************************/              
                                    // STEP 4
 //************************************************************************************************/ 
 // ------------------------------------------------------
   // UNHAPPY CASE
   // ------------------------------------------------------
-  it("TC_25-Bỏ trống Introduce about yourself", () => {
+  it("TC_20-Bỏ trống Introduce about yourself->Báo lỗi", () => {
 
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
@@ -65,12 +65,11 @@ cy.contains("Create Your Dream Shop")
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -78,25 +77,25 @@ cy.contains("Create Your Dream Shop")
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
- // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//  // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
- // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
   
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
 
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
   // step 4
   // Không nhập gì
   cy.get(aboutYourselfInput).should("be.visible");
@@ -104,7 +103,7 @@ cy.contains("MedSupport", { timeout: 5000 })
   cy.contains("button", /^OK$/).should("be.disabled");
 
 });  
-it("TC_26-Chỉ nhập space Introduce about yourself", () => {
+it("TC_21-Chỉ nhập space Introduce about yourself->Báo lỗi", () => {
 
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
@@ -120,12 +119,11 @@ it("TC_26-Chỉ nhập space Introduce about yourself", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -133,35 +131,33 @@ it("TC_26-Chỉ nhập space Introduce about yourself", () => {
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
- // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
 
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
   // step 4
-
-  // Không nhập gì
+  // Chỉ nhập space
   cy.get(aboutYourselfInput).type("   ").should("have.value", "   ");
       
-
      cy.contains("button", /^OK$/).should("be.disabled");
 
 }); 
 
-it("TC_27 - Introduce about yourself nhỏ hơn minlengh ", () => {
+it("TC_22 - Introduce about yourself nhỏ hơn minlengh-> báo lỗi ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -176,12 +172,11 @@ it("TC_27 - Introduce about yourself nhỏ hơn minlengh ", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -189,24 +184,24 @@ it("TC_27 - Introduce about yourself nhỏ hơn minlengh ", () => {
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-   // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
-// 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//    // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
+// // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
 
 
   // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+  //cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   const text99 = "a".repeat(99); // tạo mô tả 99 ký tự
 
@@ -221,7 +216,29 @@ cy.contains("MedSupport", { timeout: 5000 })
   // ❌ Button OK vẫn phải disabled
   cy.contains("button", /^OK$/).should("be.disabled");
 });
-it("TC_28 - Introduce about yourself quá maxlengh ", () => {
+it("TC_23 - Nhập Introduce about yourself rồi xóa -> Nút OK phải bị disabled", () => {
+  cy.get(shopNameInput).type("Linh Store");
+  cy.contains("button", /^OK$/).click();
+  cy.url({ timeout: 10000 }).should("include", "step=profession");
+  cy.contains("Formally Trained & Certified Expert").click();
+   cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible"); 
+  cy.get(yearsInput).type("3");
+  cy.contains("button", /^OK$/).click();
+  const validIntro = "This is a professional introduction that contains more than one hundred characters to ensure the validation passes successfully for this specific test case scenario.";
+  cy.get(aboutYourselfInput).clear().type(validIntro);
+  cy.contains("button", /^OK$/).should("not.be.disabled");
+  cy.get(aboutYourselfInput).clear().blur(); 
+  cy.contains("button", /^OK$/).should("be.disabled");
+
+  // Kiểm tra thông báo lỗi (thường là "Introduction is required" hoặc báo đỏ)
+  // Tùy vào message hệ thống của bạn, ví dụ:
+  cy.contains(/required|at least 100 characters/i).should("be.visible");
+});
+it("TC_24- Introduce about yourself quá maxlengh ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -236,12 +253,11 @@ it("TC_28 - Introduce about yourself quá maxlengh ", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -249,24 +265,24 @@ it("TC_28 - Introduce about yourself quá maxlengh ", () => {
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
- // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 const overMax = "a".repeat(2100);   // cố tình vượt 2000 ký tự
 
   cy.get(aboutYourselfInput)
@@ -291,7 +307,7 @@ const overMax = "a".repeat(2100);   // cố tình vượt 2000 ký tự
  });
 });
 
-it("TC_29-nhập số điện thoại vào Introduce about yourself ", () => {
+it("TC_25-nhập số điện thoại vào Introduce about yourself->báo lỗi ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -306,38 +322,37 @@ it("TC_29-nhập số điện thoại vào Introduce about yourself ", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
+   cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
   cy.contains("General Practitioner (GP)").click();
-
   cy.get(yearsInput).type("3");
 
   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-   // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//    // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
- // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
 
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -346,7 +361,7 @@ cy.get(aboutYourselfInput)
   cy.contains("button", /^OK$/).should("be.disabled");
 });
 
-it("TC_30-nhập email vào Introduce about yourself ", () => {
+it("TC_26-nhập email vào Introduce about yourself ", () => {
 // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -361,11 +376,11 @@ it("TC_30-nhập email vào Introduce about yourself ", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
   cy.contains("General Practitioner (GP)").click();
 
   cy.get(yearsInput).type("3");
@@ -374,27 +389,27 @@ it("TC_30-nhập email vào Introduce about yourself ", () => {
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-// 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
 
-  // Validate selected value
-  cy.get("input[placeholder='Select a category to sell your service']")
-    .should("have.value", "MedSupport");
+//   // Validate selected value
+//   cy.get("input[placeholder='Select a category to sell your service']")
+//     .should("have.value", "MedSupport");
 
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 cy.get(aboutYourselfInput)
   .clear()
   .type("If you need more information, you can contact me through the appropriate communication channels. I am always ready to support you and provide everything you are looking for.Contact me at truongthuylinh2004tb@gmail.com for more info.");
@@ -422,12 +437,11 @@ cy.get(aboutYourselfInput)
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+ cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -435,24 +449,24 @@ cy.get(aboutYourselfInput)
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-// 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+// // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -476,13 +490,9 @@ cy.url().should("include", "become-seller-steps?step=certification");
    });
 });
 
-
-
   //*********************************************************************************************************************************** */
                                         //STEP 5
 //*********************************************************************************************************************************** */
-
-
 
  // ------------------------------------------------------
   // UNHAPPY CASE
@@ -502,12 +512,11 @@ it("TC_28: Step 5 dũ liệu hợp lệ", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -515,24 +524,24 @@ it("TC_28: Step 5 dũ liệu hợp lệ", () => {
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -572,12 +581,11 @@ cy.get(aboutYourselfInput)
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -585,24 +593,24 @@ cy.get(aboutYourselfInput)
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -632,67 +640,56 @@ cy.get(aboutYourselfInput)
     cy.get(shopNameInput).type("Linh Store");
     cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
-    // --- STEP 2: PROFESSION ---
     cy.url({ timeout: 10000 }).should("include", "step=profession");
-    cy.contains("Formally Trained & Certified Expert").click();
+    //cy.contains("Formally Trained & Certified Expert").click();
     
-    // Chọn Specialties
-    cy.contains("Choose your specialties").parent().find("svg").eq(0).click();
-    cy.contains("General Practitioner (GP)").click();
-    
+   cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
+
     // Nhập năm kinh nghiệm
     cy.get(yearsInput).type("3");
     cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
-     // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//      // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
-    // Click OK Step 3
-    cy.contains("button", /^OK$/).should("not.be.disabled").click();
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
+//     // Click OK Step 3
+//     cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
     // --- STEP 4: ABOUT YOURSELF ---
     cy.get(aboutYourselfInput)
       .clear()
       .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
     
-    // Click OK Step 4
     cy.contains("button", /^OK$/).should("not.be.disabled").click();
-    // Click OK Step 4
     cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
-    // --- STEP 5: LOCATION (TEST LOGIC CHÍNH Ở ĐÂY) ---
     cy.get(countryInput).should("be.visible");
-
-    // 1. Nhập đầy đủ thông tin HỢP LỆ trước (Để đảm bảo nút OK sáng lên)
     cy.get(fullAddressInput).clear().type('123 Le Loi, Hoan Kiem, Hanoi');
     
-    // Nhập Country (Giả sử là ô nhập text hoặc autocomplete)
     cy.get(countryInput).type("Vietnam");
-    // Nếu là dropdown autocomplete, đôi khi cần nhấn Enter để chọn
-    // cy.get(countryInput).type("{enter}"); 
-
-    // Verify: Nút OK phải SÁNG (Enabled) vì đã đủ thông tin
+   
     cy.contains("button", /^OK$/).should("not.be.disabled");
 
-    // 2. THỰC HIỆN XÓA COUNTRY (CLEAR)
     cy.get(countryInput).clear();
     
-    // Click ra ngoài (blur) để trigger validation (nếu cần thiết)
     cy.get(countryInput).blur(); 
 
-    // 3. VERIFY: Nút OK phải bị DISABLE (vì thiếu Country)
     cy.contains("button", /^OK$/).should("be.disabled");
 
     // (Tùy chọn) Kiểm tra thông báo lỗi đỏ nếu có
@@ -708,28 +705,31 @@ it("TC_31: Nhập Country sai rồi click ra ngoài (Invalid Input & Click Body)
 
     // Step 2: Profession
     cy.contains("Formally Trained & Certified Expert").click();
-    cy.contains("Choose your specialties").parent().find("svg").eq(0).click();
-    cy.contains("General Practitioner (GP)").click();
+    cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
     cy.get(yearsInput).type("3");
     cy.contains("button", /^OK$/).click();
 
    
-     // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//      // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
-cy.contains("button", /^OK$/).click();
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
+// cy.contains("button", /^OK$/).click();
     // Step 4: About Yourself
     cy.get(aboutYourselfInput).clear() 
     .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
@@ -765,7 +765,7 @@ cy.contains("button", /^OK$/).click();
     // Hoặc hiển thị thông báo lỗi
     // cy.contains("No options").should("be.visible");
 });
- it("TC_30: Chỉ nhập space country", () => {
+ it("TC_32: Chỉ nhập space country", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -780,12 +780,11 @@ cy.contains("button", /^OK$/).click();
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -793,24 +792,24 @@ cy.contains("button", /^OK$/).click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   // --- Step 3: Category ---
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
- // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-// Chờ menu option mount và visible
-cy.contains("MedSupport", { timeout: 5000 })
-  .should('be.visible')  // đảm bảo menu hiển thị
-  .click({ force: true });
+// // Chờ menu option mount và visible
+// cy.contains("MedSupport", { timeout: 5000 })
+//   .should('be.visible')  // đảm bảo menu hiển thị
+//   .click({ force: true });
   
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -848,7 +847,7 @@ cy.get(aboutYourselfInput)
  // ------------------------------------------------------
   // HAPPY CASE Name Shop
   // ------------------------------------------------------
-it("TC_31:Dữ liệu hợp lê-> step 7", () => {
+it("TC_33:Dữ liệu hợp lê-> step 7", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -863,12 +862,11 @@ it("TC_31:Dữ liệu hợp lê-> step 7", () => {
 
   cy.contains("Formally Trained & Certified Expert").click();
 
-  cy.contains("Choose your specialties")
-    .parent()
-    .find("svg").eq(0)
-    .click();
-
-  cy.contains("General Practitioner (GP)").click();
+  cy.get(specialtiesInputSelector).click();
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
 
   cy.get(yearsInput).type("3");
 
@@ -877,25 +875,25 @@ it("TC_31:Dữ liệu hợp lê-> step 7", () => {
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
   // --- Step 3: Category ---
-  cy.url({ timeout: 10000 }).should("include", "step=category");
+//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
- // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-cy.get("input[placeholder='Select a category to sell your service']")
-  .parent()           // Leo lên thẻ chứa (Wrapper)
-  .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-  .should('exist')
-  .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-  .click({ force: true }); // Click mạnh
+//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
+// cy.get("input[placeholder='Select a category to sell your service']")
+//   .parent()           // Leo lên thẻ chứa (Wrapper)
+//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
+//   .should('exist')
+//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
+//   .click({ force: true }); // Click mạnh
 
-  // Select category đúng theo ảnh
-cy.contains("MedSupport", { timeout: 5000 }).should("be.visible").click({ force: true });
+//   // Select category đúng theo ảnh
+// cy.contains("MedSupport", { timeout: 5000 }).should("be.visible").click({ force: true });
 
-  // Validate selected value
-  cy.get("input[placeholder='Select a category to sell your service']")
-    .should("have.value", "MedSupport");
+//   // Validate selected value
+//   cy.get("input[placeholder='Select a category to sell your service']")
+//     .should("have.value", "MedSupport");
 
-  // OK should be enabled
-  cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//   // OK should be enabled
+//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()

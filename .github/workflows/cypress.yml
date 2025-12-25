@@ -7,6 +7,14 @@ on:
     # 8h sáng VN (GMT+7) tương đương 1h sáng UTC
     - cron: '0 1 * * *' 
 
+# --- THÊM PHẦN NÀY ĐỂ CHẠY RIÊNG TỪNG FILE ---
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: 'Đường dẫn file test muốn chạy (Ví dụ: cypress/test/login.cy.js)'
+        required: false
+        default: '' # Nếu để trống sẽ chạy tất cả
+        
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
