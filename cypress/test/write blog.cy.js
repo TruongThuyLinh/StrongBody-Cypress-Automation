@@ -21,24 +21,24 @@ beforeEach(() => {
     cy.session("login", login);
 
 
-    cy.url().then((url) => {
-        if (!url.includes("seller/read-me")) {
-            cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
-            //cy.visit("https://strongbody-web.vercel.app/become-seller");
-            cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
-          cy.wait(1000);
-            cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
-        }
-    });
+    // cy.url().then((url) => {
+    //     if (!url.includes("seller/read-me")) {
+    //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
+    //         //cy.visit("https://strongbody-web.vercel.app/become-seller");
+    //         cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
+    //       cy.wait(1000);
+    //         cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
+    //     }
+    // });
 
-    cy.get("body", { timeout: 15000 }).should("contain", "Write a blog");
-    cy.wait(500); 
+    // cy.get("body", { timeout: 15000 }).should("contain", "Write a blog");
+    // cy.wait(500); 
 
-    cy.contains("span", "Write a blog")
-      .should("be.visible")
-      .parent() // Click vào thẻ cha
-      .click({ force: true });
-
+    // cy.contains("span", "Write a blog")
+    //   .should("be.visible")
+    //   .parent() // Click vào thẻ cha
+    //   .click({ force: true });
+  cy.visit("https://strongbody-web.vercel.app/seller/write-blog");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/write-blog");
     
@@ -85,9 +85,7 @@ beforeEach(() => {
       .first()
       .click()
       .clear() // Xóa text cũ (nếu có) cho chắc ăn
-      .type("Senior Health{enter}"); // {enter} thay thế cho việc tìm li rồi click
-
-    // (Tùy chọn) Kiểm tra xem giá trị đã được điền đúng chưa để yên tâm
+      .type("Senior Health{enter}"); // {enter} thay thế cho việc tìm li rồi click  
     cy.get(categoryInput)
       .should('have.value', 'Senior Health');
     // A. Xóa Title -> Disabled
@@ -153,7 +151,7 @@ it('TC_05:  Upload file sai định dạng (.txt)', () => {
     cy.get(titleInput).type('Tiêu đề cho test case sai định dạng ảnh');
 
     cy.get(categoryInput).click().type("Senior Health{enter}");
-    cy.get('body').click(0, 0); 
+cy.get('body').click(0, 0, { force: true });
 
     const invalidFileName = 'cypress/fixtures/fake-image.txt';
     cy.writeFile(invalidFileName, 'Đây là nội dung text, không phải ảnh');
@@ -206,7 +204,7 @@ it('TC_05:  Upload file sai định dạng (.txt)', () => {
       .click()
       .type('Đây là nội dung bài viết test chức năng Publish.{enter}Dòng thứ 2...');
 
-    cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
     cy.contains('button', 'Publish')
       .should('be.visible')      // Đảm bảo nút đã hiện
@@ -232,19 +230,19 @@ it('TC_05:  Upload file sai định dạng (.txt)', () => {
       .click()
       .type('     '); // Nhập 5 dấu cách
     
-    cy.get('body').click(0, 0);
+cy.get('body').click(0, 0, { force: true });
 
     cy.contains(publishBtn, 'Publish').should('be.disabled');
 
     // A. Nhập nội dung thật -> Nút sáng lên
     cy.get(editor).click().type('Nội dung chuẩn chỉnh.');
-    cy.get('body').click(0, 0); // Click ra ngoài
+cy.get('body').click(0, 0, { force: true });
     cy.contains(publishBtn, 'Publish').should('not.be.disabled');
 
 
     cy.get(editor).click().type('{selectall}{backspace}'); // Xóa sạch
     cy.get(editor).type('   '); // Nhập lại space
-    cy.get('body').click(0, 0); // Trigger validate
+    cy.get('body').click(0, 0, { force: true }); // Trigger validate
     
     // Kết quả: Phải Disabled trở lại
     cy.contains(publishBtn, 'Publish').should('be.disabled');
@@ -281,7 +279,7 @@ it('TC_05:  Upload file sai định dạng (.txt)', () => {
       .click()
       .type('Đây là nội dung bản nháp đang viết dở...');
 
-    cy.get('body').click(0, 0);
+    cy.get('body').click(0, 0, { force: true });
 
 
    

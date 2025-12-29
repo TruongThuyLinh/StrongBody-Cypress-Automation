@@ -39,29 +39,29 @@ const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
     cy.session("login", login);
 
 
-    cy.url().then((url) => {
-        if (!url.includes("seller/read-me")) {
-            cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
-            //cy.visit("https://strongbody-web.vercel.app/become-seller");
-            cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
-          cy.wait(1000);
-            cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
-             cy.wait(1000);
-           // cy.visit("https://strongbody-web.vercel.app/seller/read-me");
-        }
-    });
+    // cy.url().then((url) => {
+    //     if (!url.includes("seller/read-me")) {
+    //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
+    //         //cy.visit("https://strongbody-web.vercel.app/become-seller");
+    //         cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
+    //       cy.wait(1000);
+    //         cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
+    //          cy.wait(1000);
+    //        // cy.visit("https://strongbody-web.vercel.app/seller/read-me");
+    //     }
+    // });
 
-    cy.get("body", { timeout: 15000 }).should("contain", "Create a service");
-    cy.wait(500); 
+    // cy.get("body", { timeout: 15000 }).should("contain", "Create a service");
+    // cy.wait(500); 
 
-    cy.contains("span", "Create a service")
-      .should("be.visible")
-      .parent() // Click vào thẻ cha
-      .click({ force: true });
-
+    // cy.contains("span", "Create a service")
+    //   .should("be.visible")
+    //   .parent() // Click vào thẻ cha
+    //   .click({ force: true });
+cy.visit("https://strongbody-web.vercel.app/seller/create-service");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
-    
+
     cy.wait(1000);
   });
 

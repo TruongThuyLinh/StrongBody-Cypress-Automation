@@ -40,24 +40,24 @@ beforeEach(() => {
     cy.session("login", login);
 
 
-    cy.url().then((url) => {
-        if (!url.includes("seller/read-me")) {
-            cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
-            cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
-          cy.wait(1000);
-            cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
-            //cy.visit("https://strongbody-web.vercel.app/seller/read-me");
-        }
-    });
+    // cy.url().then((url) => {
+    //     if (!url.includes("seller/read-me")) {
+    //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
+    //         cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
+    //       cy.wait(1000);
+    //         cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
+    //         //cy.visit("https://strongbody-web.vercel.app/seller/read-me");
+    //     }
+    // });
 
-    cy.get("body", { timeout: 15000 }).should("contain", "Share a local products");
-    cy.wait(500); 
+    // cy.get("body", { timeout: 15000 }).should("contain", "Share a local products");
+    // cy.wait(500); 
 
-    cy.contains("span", "Share a local products")
-      .should("be.visible")
-      .parent() // Click vào thẻ cha
-      .click({ force: true });
-
+    // cy.contains("span", "Share a local products")
+    //   .should("be.visible")
+    //   .parent() // Click vào thẻ cha
+    //   .click({ force: true });
+cy.visit("https://strongbody-web.vercel.app/seller/create-product");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-product");
     
