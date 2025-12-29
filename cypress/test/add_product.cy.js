@@ -31,7 +31,7 @@ const countryInput='input[placeholder="Select country"]';
  
     const login = () => {
     cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
+    cy.get("input[name='email']").type("liveb58966@m3player.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
@@ -46,6 +46,7 @@ beforeEach(() => {
             cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
           cy.wait(1000);
             cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
+            //cy.visit("https://strongbody-web.vercel.app/seller/read-me");
         }
     });
 

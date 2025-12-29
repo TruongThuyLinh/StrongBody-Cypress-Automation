@@ -341,7 +341,7 @@ cy.contains("Family Physician").should("be.visible");
 });
 it("TC_17- Nhập năm hợp lệ rồi xóa -> Nút OK phải bị disabled", () => {
   // --- BƯỚC 1: QUA STEP 1 ---
-  cy.get(shopNameInput).type("Linh Store");
+  cy.get(shopNameInput).type("Strongly Fit");
   cy.contains("button", /^OK$/).click();
   cy.url().should("include", "step=profession");
   //cy.contains("Formally Trained & Certified Expert").click();

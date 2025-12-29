@@ -4,7 +4,7 @@ describe("CREATE HEA SERVICE — FULL TESTING", () => {
 
   const login = () => {
     cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
+    cy.get("input[name='email']").type("liveb58966@m3player.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
@@ -46,6 +46,8 @@ const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
             cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
           cy.wait(1000);
             cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
+             cy.wait(1000);
+           // cy.visit("https://strongbody-web.vercel.app/seller/read-me");
         }
     });
 
@@ -366,6 +368,7 @@ cy.get('body').click(0, 0, { force: true });
   cy.get("div[id^='headlessui-combobox-options']")
     .contains("Vegetarian or Vegan Diet Guidance")
     .click({ force: true });
+
 cy.get('body').click(0, 0, { force: true });
   // Description
   cy.get(descInput).click().type("Valid description");
@@ -660,17 +663,16 @@ it("TC_09- Price bằng 0", () => {
       cy.get(nameInput).type("Valid Name");
 
       
-      // Mở dropdown Category
-cy.contains("label", "Category")
-  .parent()
-  .find("button[id^='headlessui-combobox-button']")
-  .first()
-  .click({ force: true });
+   cy.contains("label", "Category")
+    .parent()
+    .find("button[id^='headlessui-combobox-button']")
+    .first()
+    .click({ force: true });
 
-// Chọn option
-cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
-  .click({ force: true });
+  cy.get("div[id^='headlessui-combobox-options']")
+    .contains("Vegetarian or Vegan Diet Guidance")
+    .click({ force: true });
+cy.get('body').click(0, 0, { force: true });
 
       cy.get(descInput).click().type("Valid description");
 cy.get('body').click(0, 0, { force: true });

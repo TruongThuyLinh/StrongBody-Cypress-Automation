@@ -7,13 +7,13 @@ const CategoryDropdown = '#categoryId';
   const fileInput = 'input#file-upload';
   const agreeInput = 'input[name="agree"]';
 
-  const login = () => {
-    cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("truongthuylinh2004tb@gmail.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-  };
+  // const login = () => {
+  //   cy.visit("https://strongbody-web.vercel.app/login");
+  //   cy.get("input[name='email']").type("thuylinh1020tb@gmail.com");
+  //   cy.get("input[name='password']").type("1234567l");
+  //   cy.get("button[type='submit']").click();
+  //   cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  // };
 
   // ---------------------------
   // BEFORE EACH TEST
