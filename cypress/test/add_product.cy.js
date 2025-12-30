@@ -21,16 +21,24 @@ const imgSlot2 = "#product-images-upload-1";
 const imgSlot3 = "#product-images-upload-2";         // Upload nhiều ảnh
 const countryInput='input[placeholder="Select country"]';
  const handleLanguageModal = () => {
-    cy.get('body').then(($body) => {
-      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
-      if ($body.find('h2:contains("Select Your Language")').length > 0) {
-        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
-        cy.contains('United States').click();
-        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
-        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
-      }
-    });
-  };
+  // Kiểm tra trực tiếp trên body để không gây lỗi "Element not found"
+  cy.get('body').then(($body) => {
+    // Tìm tiêu đề modal dựa trên text trong ảnh của bạn
+    if ($body.find('h2:contains("Select Your Language")').length > 0) {
+      cy.log('⚠️ Phát hiện modal ngôn ngữ, đang xử lý...');
+      
+      // Chọn United States (Tìm button có chứa text United)
+      cy.contains('button', 'United States')
+        .scrollIntoView()
+        .click({ force: true });
+
+      // Đợi modal đóng hẳn để không che các nút khác
+      cy.get('h2:contains("Select Your Language")', { timeout: 8000 }).should('not.exist');
+      cy.log('✅ Đã đóng modal ngôn ngữ.');
+    }
+  });
+};
+ 
 
  
 //     const categoryInput = 'input[placeholder="Select category"]';
@@ -48,7 +56,8 @@ const countryInput='input[placeholder="Select country"]';
   };
 beforeEach(() => {
     cy.session("login", login);
-
+    handleLanguageModal();
+cy.wait(1500);
     // cy.url().then((url) => {
     //     if (!url.includes("seller/read-me")) {
     //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
@@ -68,6 +77,8 @@ beforeEach(() => {
     //   .click({ force: true });
 cy.visit("https://strongbody-web.vercel.app/seller/create-product");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
+    cy.wait(1500);
+    handleLanguageModal();
     cy.url({ timeout: 20000 }).should("include", "seller/create-product");
     
     cy.wait(1000);

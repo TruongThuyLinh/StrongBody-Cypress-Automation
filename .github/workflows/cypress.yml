@@ -13,7 +13,7 @@ on:
       spec:
         description: 'Đường dẫn file test muốn chạy (Ví dụ: cypress/test/login.cy.js)'
         required: false
-        default: 'cypress/test/add_product.cy.js' # Nếu để trống sẽ chạy tất cả
+        default: '' # Nếu để trống sẽ chạy tất cả
 
 jobs:
   cypress-run:

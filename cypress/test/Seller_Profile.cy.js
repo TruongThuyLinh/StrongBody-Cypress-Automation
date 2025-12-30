@@ -262,4 +262,152 @@ cy.contains('button', 'Edit').should('be.visible').click();
       .should('be.visible')
       .and('have.css', 'color', 'rgb(239, 68, 68)'); 
   });
+  it("TC_08: Chỉ nhập khoảng trắng vào Profession - Các trường khác hợp lệ", () => {
+
+    cy.contains('button', 'Edit').should('be.visible').click();
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+    cy.get(selectors.profession).clear().type('     ');
+        cy.get('body').click(0, 0, { force: true });
+    cy.get(selectors.country).clear().type('Vietnam');
+    cy.contains('Vietnam', { timeout: 5000 }).click(); 
+
+    cy.get(selectors.yearsExperience).clear().type('5');
+    cy.get(selectors.customersServed).clear().type('150');
+    cy.get(selectors.about).clear().type('Testing Profession validation with only spaces.');
+
+    cy.get(selectors.saveBtn).click();
+
+    
+    cy.contains('Profession is required')
+      .should('be.visible')
+      .and('have.css', 'color', 'rgb(239, 68, 68)'); 
+  });
+  it("TC_09: Nhập chữ vào Years of Experience", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+    
+    cy.get(selectors.yearsExperience).clear().type('abc');
+    
+    cy.get('body').click(0, 0, { force: true });
+
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    cy.get(selectors.customersServed).clear().type('150');
+    cy.get(selectors.saveBtn).click();
+    cy.contains('Please enter a valid number').should('be.visible')
+    .and('have.css', 'color', 'rgb(239, 68, 68)');
+  });
+   it("TC_10: Nhập số âm vào Years of Experience", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+   // Nhập số âm
+    cy.get(selectors.yearsExperience).clear().type('-5');
+    cy.get(selectors.customersServed).clear().type('150');
+    cy.get('body').click(0, 0, { force: true });
+
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    cy.get(selectors.saveBtn).click();
+   cy.contains('Years of experience must be a positive number').should('be.visible')
+    .and('have.css', 'color', 'rgb(239, 68, 68)');
+  });
+   it("TC_11: Nhập số quá lớn vào Years of Experience", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+
+    cy.get(selectors.yearsExperience).clear().type('1000');
+    
+    cy.get('body').click(0, 0, { force: true });
+
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+    cy.get(selectors.customersServed).clear().type('150');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    cy.get(selectors.saveBtn).click();
+   cy.contains('Years of experience must be a positive number').should('be.visible')
+    .and('have.css', 'color', 'rgb(239, 68, 68)');
+  });
+  it("TC_12: Để trống Years of Experience - Các trường khác hợp lệ", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+    cy.get(selectors.customersServed).clear().type('150');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    cy.get(selectors.saveBtn).click();
+    cy.contains('Years of experience is required')
+      .should('be.visible')
+      .and('have.css', 'color', 'rgb(239, 68, 68)'); 
+  });
+  it("TC_13: Để trống Customers Served - Các trường khác hợp lệ", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+
+    cy.get(selectors.customersServed).clear();
+    
+    cy.get(selectors.customersServed).blur();
+    cy.get(selectors.saveBtn).click();
+ cy.get(selectors.yearsExperience).clear().type('10');
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+     cy.get(selectors.saveBtn).click();
+    cy.contains('Customers served is required')
+      .should('be.visible')
+      .and('have.css', 'color', 'rgb(239, 68, 68)');
+  });
+  it("TC_14: Nhập số âm vào Customers Served", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+  
+ cy.get(selectors.customersServed).clear().type('-10');
+ cy.get(selectors.yearsExperience).clear().type('10');
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    cy.get(selectors.saveBtn).click();
+
+    
+    cy.contains('Customers served must be at least 0').should('be.visible');
+  });
+  it("TC_15: Nhập chữ và ký tự đặc biệt vào Customers Served", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+    cy.get(selectors.customersServed).clear().type('N/A @#$%');
+    cy.get(selectors.yearsExperience).clear().type('10');
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    
+    cy.get(selectors.saveBtn).click();
+
+    cy.contains('Please enter a valid number').should('be.visible');
+  });
+  it("TC_16: Chỉ nhập khoảng trắng vào Customers Served", () => {
+    cy.contains('button', 'Edit').should('be.visible').click();
+    
+    cy.get(selectors.customersServed).clear().type('   ');
+     cy.get(selectors.yearsExperience).clear().type('10');
+    cy.get(selectors.shopName).clear().type('StrongBody Seller');
+    cy.get(selectors.firstName).clear().type('John');
+    cy.get(selectors.lastName).clear().type('Doe');
+      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
+    cy.get('body').click(0, 0, { force: true });
+    
+    cy.get(selectors.saveBtn).click();
+
+   
+    cy.contains('Customers served is required').should('be.visible');
+  });
 });
