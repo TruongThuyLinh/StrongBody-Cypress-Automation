@@ -39,7 +39,6 @@ const countryInput='input[placeholder="Select country"]';
 beforeEach(() => {
     cy.session("login", login);
 
-
     // cy.url().then((url) => {
     //     if (!url.includes("seller/read-me")) {
     //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
@@ -66,6 +65,7 @@ cy.visit("https://strongbody-web.vercel.app/seller/create-product");
 
     // --- Name required ---
     it("TC_01- Bỏ trống tên → báo lỗi", () => {
+     
 
      cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
 

@@ -39,8 +39,8 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.get(descriptionInput).clear();
     cy.get(descriptionInput).should('have.value', '');
 
-    cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click();
+     cy.get(CategoryDropdown).click();
+    cy.contains('Career Mentoring & Guidance').click(); 
     cy.get('body').click(0, 0, { force: true });  
 
     cy.get('input#file-upload').selectFile('cypress/fixtures/photo1.png', { force: true });
@@ -62,7 +62,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
       .should('have.value', '       '); 
 
     cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click(); 
+    cy.contains('Career Mentoring & Guidance').click(); 
     cy.get('body').click(0, 0, { force: true });  
     
     cy.get('input[type="checkbox"]').check({ force: true });
@@ -86,7 +86,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
 
    
     cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click(); 
+    cy.contains('Career Mentoring & Guidance').click(); 
 
        cy.get('body').click(0, 0, { force: true });  
 
@@ -107,8 +107,8 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.get(descriptionInput).clear();
         cy.get(descriptionInput)
       .type(overLimitText, { delay: 0, parseSpecialCharSequences: false }); 
-    cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click();
+      cy.get(CategoryDropdown).click();
+      cy.contains('Career Mentoring & Guidance').click();
 
         cy.get('body').click(0, 0, { force: true });  
 
@@ -166,8 +166,8 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.get(descriptionInput).clear();
     cy.get(descriptionInput).type('Tôi cần tìm chuyên gia dinh dưỡng.', { delay: 20 });
 
-    cy.get(CategoryDropdown ).click();
-    cy.contains('MedSupport').click(); 
+     cy.get(CategoryDropdown).click();
+    cy.contains('Career Mentoring & Guidance').click(); 
 
         cy.get('body').click(0, 0, { force: true });  
 
@@ -193,7 +193,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
       .type(validMaxText, { delay: 0, parseSpecialCharSequences: false });
 
     cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click(); 
+    cy.contains('Career Mentoring & Guidance').click(); 
         
        cy.get('body').click(0, 0, { force: true });  
 
@@ -220,7 +220,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
 
     
     cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click(); 
+    cy.contains('Career Mentoring & Guidance').click(); 
    
        cy.get('body').click(0, 0, { force: true });  
 
@@ -255,7 +255,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
 
     
     cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click(); 
+    cy.contains('Career Mentoring & Guidance').click(); 
        cy.get('body').click(0, 0, { force: true });  
     cy.get('input#file-upload').selectFile('cypress/fixtures/photo1.png', { force: true });
 
@@ -281,7 +281,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
 
    
     cy.get(CategoryDropdown).click();
-    cy.contains('MedSupport').click(); 
+    cy.contains('Career Mentoring & Guidance').click(); 
        cy.get('body').click(0, 0, { force: true });  
 
     cy.get('input#file-upload').selectFile('cypress/fixtures/photo1.png', { force: true });

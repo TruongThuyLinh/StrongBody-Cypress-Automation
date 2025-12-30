@@ -12,7 +12,7 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
 
     // --- 1. DÒNG QUAN TRỌNG NHẤT (Chống sập trình duyệt) ---
-    //numTestsKeptInMemory: 0, 
+    numTestsKeptInMemory: 0, 
 
     // --- 2. Tăng kích thước màn hình & Thời gian chờ ---
     viewportWidth: 1280,

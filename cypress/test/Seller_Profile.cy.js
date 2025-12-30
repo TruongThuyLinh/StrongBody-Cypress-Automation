@@ -27,7 +27,22 @@ describe("Seller Profile", () => {
   beforeEach(() => {
   
  cy.session("login", login);
-    
+
+    it("Tìm kiếm và chọn ngôn ngữ United States", () => {
+    // 1. Nhập "United States" vào ô search
+    cy.get('input[placeholder="Search language..."]')
+      .clear()
+      .type('United States');
+
+    // 2. Click vào kết quả hiện ra (dựa vào alt của ảnh)
+    cy.get('img[alt="United States of America"]')
+      .closest('button')
+      .should('be.visible')
+      .click();
+      
+    // 3. Xác nhận modal đã đóng
+    cy.contains('Select Your Language').should('not.exist');
+});
     
     //cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
     //cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
