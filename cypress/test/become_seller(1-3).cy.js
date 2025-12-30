@@ -48,6 +48,9 @@ cy.contains("Create Your Dream Shop")
   .should("be.visible")
   .click({ force: true });
     cy.url().should("include", "become-seller-steps");
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
 
     cy.get(shopNameInput).should("be.visible");
   });

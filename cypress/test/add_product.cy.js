@@ -38,7 +38,6 @@ const countryInput='input[placeholder="Select country"]';
     cy.get("input[name='email']").type("liveb58966@m3player.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
-      
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
   };
 beforeEach(() => {
@@ -50,6 +49,9 @@ cy.visit("https://strongbody-web.vercel.app/seller/create-product");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
    
     cy.url({ timeout: 20000 }).should("include", "seller/create-product");
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
     
     cy.wait(1000);
   });

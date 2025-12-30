@@ -14,14 +14,15 @@ describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
   beforeEach(() => {
     cy.viewport(1920, 1080);
     cy.visit("https://strongbody-web.vercel.app/signup");
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
   });
 
   const tickTerms = () => cy.get(acceptTerms).check({ force: true });
 
   it("TC_01 - Hiển thị đầy đủ UI", () => {
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+    
     cy.get(emailInput).should("be.visible");
     cy.get(passInput).should("be.visible");
     cy.get(acceptTerms).should("be.visible");

@@ -247,10 +247,9 @@ it('TC_11: Nhập space đầu và cuối cho dữ liệu hợp lệ', () => {
 
     cy.get('input[type="checkbox"]').check({ force: true });
 
-    // --- BƯỚC 3: CLICK SUBMIT ---
     cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
 
-    // --- BƯỚC 4: KIỂM TRA MÀN HÌNH SUCCESS ---
+  
     cy.url({ timeout: 15000 }).should('include', '/create-request/success');
 
     // Kiểm tra các thông báo thành công

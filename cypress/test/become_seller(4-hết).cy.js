@@ -49,6 +49,9 @@ cy.contains("Create Your Dream Shop")
   .should("be.visible")
   .click({ force: true });
     cy.url().should("include", "become-seller-steps");
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
 
     cy.get(shopNameInput).should("be.visible");
   });
@@ -60,9 +63,7 @@ cy.contains("Create Your Dream Shop")
   // UNHAPPY CASE
   // ------------------------------------------------------
   it("TC_20-Bỏ trống Introduce about yourself->Báo lỗi", () => {
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+    
 
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");

@@ -243,7 +243,7 @@ cy.contains('button', 'United States of America').click();
 });
   it('TC_10: Gửi yêu cầu thành công khi nhập đúng 10 ký tự (Min Length)', () => {
     
-    cy.get(descriptionInput).clear(); // Sử dụng ID chuẩn #description
+    cy.get(descriptionInput).clear(); 
     
   
     cy.get(descriptionInput)
