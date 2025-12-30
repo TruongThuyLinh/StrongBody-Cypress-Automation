@@ -20,24 +20,24 @@ const imgSlot1 = "#product-images-upload-0";          // Ảnh review đầu ti�
 const imgSlot2 = "#product-images-upload-1"; 
 const imgSlot3 = "#product-images-upload-2";         // Upload nhiều ảnh
 const countryInput='input[placeholder="Select country"]';
- const handleLanguageModal = () => {
-  // Kiểm tra trực tiếp trên body để không gây lỗi "Element not found"
-  cy.get('body').then(($body) => {
-    // Tìm tiêu đề modal dựa trên text trong ảnh của bạn
-    if ($body.find('h2:contains("Select Your Language")').length > 0) {
-      cy.log('⚠️ Phát hiện modal ngôn ngữ, đang xử lý...');
+//  const handleLanguageModal = () => {
+//   // Kiểm tra trực tiếp trên body để không gây lỗi "Element not found"
+//   cy.get('body').then(($body) => {
+//     // Tìm tiêu đề modal dựa trên text trong ảnh của bạn
+//     if ($body.find('h2:contains("Select Your Language")').length > 0) {
+//       cy.log('⚠️ Phát hiện modal ngôn ngữ, đang xử lý...');
       
-      // Chọn United States (Tìm button có chứa text United)
-      cy.contains('button', 'United States')
-        .scrollIntoView()
-        .click({ force: true });
+//       // Chọn United States (Tìm button có chứa text United)
+//       cy.contains('button', 'United States')
+//         .scrollIntoView()
+//         .click({ force: true });
 
-      // Đợi modal đóng hẳn để không che các nút khác
-      cy.get('h2:contains("Select Your Language")', { timeout: 8000 }).should('not.exist');
-      cy.log('✅ Đã đóng modal ngôn ngữ.');
-    }
-  });
-};
+//       // Đợi modal đóng hẳn để không che các nút khác
+//       cy.get('h2:contains("Select Your Language")', { timeout: 8000 }).should('not.exist');
+//       cy.log('✅ Đã đóng modal ngôn ngữ.');
+//     }
+//   });
+// };
  
 
  
@@ -51,39 +51,46 @@ const countryInput='input[placeholder="Select country"]';
       
     cy.visit("https://strongbody-web.vercel.app/login");
     cy.wait(1000); 
-  handleLanguageModal();
+  //handleLanguageModal();
     cy.get("input[name='email']").type("liveb58966@m3player.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
-      cy.wait(1000); 
-  handleLanguageModal();
+      
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
   };
 beforeEach(() => {
     cy.session("login", login);
-    handleLanguageModal();
+   
 cy.wait(1500);
-    // cy.url().then((url) => {
-    //     if (!url.includes("seller/read-me")) {
-    //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
-    //         cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
-    //       cy.wait(1000);
-    //         cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
-    //         //cy.visit("https://strongbody-web.vercel.app/seller/read-me");
-    //     }
-    // });
+   const handleLanguageModal = () => {
+  cy.get('body').then(($body) => {
+    // 1. Tìm và click vào nút chuyển đổi ngôn ngữ (dựa trên class bạn cung cấp)
+    const translateBtn = $body.find('button.google-translate-btn');
+    
+    if (translateBtn.length > 0) {
+      cy.log('Cố gắng mở modal ngôn ngữ...');
+      cy.wrap(translateBtn).click({ force: true });
 
-    // cy.get("body", { timeout: 15000 }).should("contain", "Share a local products");
-    // cy.wait(500); 
+      // 2. Chờ modal xuất hiện và thực hiện chọn ngôn ngữ
+      // Sử dụng tiêu đề "Select Your Language" từ ảnh trước đó của bạn
+      cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('be.visible');
+      
+      cy.log('Đang chọn ngôn ngữ United States...');
+      cy.contains('button', 'United States')
+        .scrollIntoView()
+        .click({ force: true });
 
-    // cy.contains("span", "Share a local products")
-    //   .should("be.visible")
-    //   .parent() // Click vào thẻ cha
-    //   .click({ force: true });
+      // 3. Đảm bảo modal đã đóng
+      cy.get('h2:contains("Select Your Language")').should('not.exist');
+      cy.log('✅ Đã chuyển đổi ngôn ngữ thành công.');
+    } else {
+      cy.log('Không tìm thấy nút chuyển đổi ngôn ngữ, bỏ qua bước này.');
+    }
+  });
+};
 cy.visit("https://strongbody-web.vercel.app/seller/create-product");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
-    cy.wait(1500);
-    handleLanguageModal();
+   
     cy.url({ timeout: 20000 }).should("include", "seller/create-product");
     
     cy.wait(1000);
@@ -91,8 +98,33 @@ cy.visit("https://strongbody-web.vercel.app/seller/create-product");
 
     // --- Name required ---
     it("TC_01- Bỏ trống tên → báo lỗi", () => {
-     
+    
+const handleLanguageModal = () => {
+  cy.get('body').then(($body) => {
+    // 1. Tìm và click vào nút chuyển đổi ngôn ngữ (dựa trên class bạn cung cấp)
+    const translateBtn = $body.find('button.google-translate-btn');
+    
+    if (translateBtn.length > 0) {
+      cy.log('Cố gắng mở modal ngôn ngữ...');
+      cy.wrap(translateBtn).click({ force: true });
 
+      // 2. Chờ modal xuất hiện và thực hiện chọn ngôn ngữ
+      // Sử dụng tiêu đề "Select Your Language" từ ảnh trước đó của bạn
+      cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('be.visible');
+      
+      cy.log('Đang chọn ngôn ngữ United States...');
+      cy.contains('button', 'United States')
+        .scrollIntoView()
+        .click({ force: true });
+
+      // 3. Đảm bảo modal đã đóng
+      cy.get('h2:contains("Select Your Language")').should('not.exist');
+      cy.log('✅ Đã chuyển đổi ngôn ngữ thành công.');
+    } else {
+      cy.log('Không tìm thấy nút chuyển đổi ngôn ngữ, bỏ qua bước này.');
+    }
+  });
+};
      cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
 
     cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
