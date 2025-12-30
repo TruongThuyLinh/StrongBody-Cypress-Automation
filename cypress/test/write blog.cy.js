@@ -46,6 +46,9 @@ beforeEach(() => {
   });
 
   it('TC_01: Không cho phép nhập quá 120 ký tự vào ô Title', () => {
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
     
     const string120Chars = 'a'.repeat(120); // Chuỗi đúng 120 ký tự
     const stringOverLimit = 'a'.repeat(121); // Chuỗi 121 ký tự

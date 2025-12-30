@@ -6,18 +6,7 @@ describe("Post Request", () => {
   const fileInput = 'input#file-upload';
   const agreeInput = 'input[name="agree"]';
 
-  // Hàm bổ trợ để xử lý modal ngôn ngữ nếu nó xuất hiện
-  const handleLanguageModal = () => {
-    cy.get('body').then(($body) => {
-      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
-      if ($body.find('h2:contains("Select Your Language")').length > 0) {
-        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
-        cy.contains('United States').click();
-        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
-        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
-      }
-    });
-  };
+  
 
 
  
@@ -31,16 +20,18 @@ describe("Post Request", () => {
 
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
   });
-    handleLanguageModal();
+   
     cy.visit("https://strongbody-web.vercel.app/products");
-    handleLanguageModal();
+  
     cy.wait(1000);
 
   });
 
 it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ', () => {
     
-    
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
     cy.get(descriptionInput).clear();
     cy.get(descriptionInput).should('have.value', '');
 

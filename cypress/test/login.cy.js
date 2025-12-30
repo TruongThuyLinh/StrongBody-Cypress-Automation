@@ -8,17 +8,7 @@ describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
    const googleBtn    = 'button[aria-label="Continue with Google"]';
   const facebookBtn  = 'button[aria-label="Continue with Facebook"]';
     const toggleBtn = "button:has(svg.lucide-eye, svg.lucide-eye-off)";
-const handleLanguageModal = () => {
-    cy.get('body').then(($body) => {
-      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
-      if ($body.find('h2:contains("Select Your Language")').length > 0) {
-        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
-        cy.contains('United States').click();
-        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
-        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
-      }
-    });
-  };
+
 
   beforeEach(() => {
     cy.visit("/login");
@@ -26,8 +16,12 @@ const handleLanguageModal = () => {
 
  
   describe("GUI COMPONENT CHECK", () => {
+
     
     it("TC_01 - Kiểm tra giao diện Login đầy đủ", () => {
+      cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
       cy.contains("Email").should("exist"); 
       cy.contains("Password").should("exist");
       cy.contains("Sign in").should("exist");

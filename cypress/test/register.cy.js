@@ -10,17 +10,6 @@ describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
   const googleBtn    = 'button[aria-label="Continue with Google"]';
   const facebookBtn  = 'button[aria-label="Continue with Facebook"]';
   const signInLink   = 'a[href="/login"]';
-const handleLanguageModal = () => {
-    cy.get('body').then(($body) => {
-      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
-      if ($body.find('h2:contains("Select Your Language")').length > 0) {
-        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
-        cy.contains('United States').click();
-        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
-        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
-      }
-    });
-  };
 
   beforeEach(() => {
     cy.viewport(1920, 1080);
@@ -30,6 +19,9 @@ const handleLanguageModal = () => {
   const tickTerms = () => cy.get(acceptTerms).check({ force: true });
 
   it("TC_01 - Hiển thị đầy đủ UI", () => {
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
     cy.get(emailInput).should("be.visible");
     cy.get(passInput).should("be.visible");
     cy.get(acceptTerms).should("be.visible");

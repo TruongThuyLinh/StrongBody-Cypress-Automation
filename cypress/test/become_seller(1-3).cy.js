@@ -61,6 +61,9 @@ cy.contains("Create Your Dream Shop")
   // UNHAPPY CASE Name Shop
   // ------------------------------------------------------
   it("TC_01 - Shop name quá  maxlength (70 chars)->Báo lỗi", () => {
+    cy.get('button[aria-label="Translate page"]').click();
+// Tìm nút có chứa chữ "United States of America" và click
+cy.contains('button', 'United States of America').click();
   const longText = "A".repeat(120); // cố tình nhập 120 ký tự
 
   cy.get(shopNameInput).type(longText);
