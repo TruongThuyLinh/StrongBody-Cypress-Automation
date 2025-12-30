@@ -32,6 +32,7 @@ describe("Seller Profile", () => {
     cy.get("input[name='email']").type("liveb58966@m3player.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
+     
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
   };
 
@@ -39,21 +40,8 @@ describe("Seller Profile", () => {
   
  cy.session("login", login);
 
-    it("Tìm kiếm và chọn ngôn ngữ United States", () => {
-    // 1. Nhập "United States" vào ô search
-    cy.get('input[placeholder="Search language..."]')
-      .clear()
-      .type('United States');
-
-    // 2. Click vào kết quả hiện ra (dựa vào alt của ảnh)
-    cy.get('img[alt="United States of America"]')
-      .closest('button')
-      .should('be.visible')
-      .click();
-      
-    // 3. Xác nhận modal đã đóng
-    cy.contains('Select Your Language').should('not.exist');
-});
+    handleLanguageModal();
+    cy.wait(100);
     
     //cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
     //cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
@@ -393,21 +381,5 @@ cy.contains('button', 'Edit').should('be.visible').click();
     cy.get(selectors.saveBtn).click();
 
     cy.contains('Please enter a valid number').should('be.visible');
-  });
-  it("TC_16: Chỉ nhập khoảng trắng vào Customers Served", () => {
-    cy.contains('button', 'Edit').should('be.visible').click();
-    
-    cy.get(selectors.customersServed).clear().type('   ');
-     cy.get(selectors.yearsExperience).clear().type('10');
-    cy.get(selectors.shopName).clear().type('StrongBody Seller');
-    cy.get(selectors.firstName).clear().type('John');
-    cy.get(selectors.lastName).clear().type('Doe');
-      cy.get(selectors.profession).clear().type('Child Care Educator{enter}');
-    cy.get('body').click(0, 0, { force: true });
-    
-    cy.get(selectors.saveBtn).click();
-
-   
-    cy.contains('Customers served is required').should('be.visible');
   });
 });

@@ -31,8 +31,10 @@ describe("Post Request", () => {
 
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
   });
-
+    handleLanguageModal();
     cy.visit("https://strongbody-web.vercel.app/products");
+    handleLanguageModal();
+    cy.wait(1000);
 
   });
 
