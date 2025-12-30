@@ -1,20 +1,23 @@
 Cypress.on("uncaught:exception", () => false);
 
 describe("Post Request", () => {
-
   const descriptionInput = 'textarea[name="description"]';
-    const CategoryDropdown = 'input[placeholder="Select categories"]';
-
+  const CategoryDropdown = 'input[placeholder="Select categories"]';
   const fileInput = 'input#file-upload';
   const agreeInput = 'input[name="agree"]';
- 
-//  const login = () => {
-//     cy.visit("https://strongbody-web.vercel.app/login");
-//     cy.get("input[name='email']").type("thuylinh1020tb@gmail.com");
-//     cy.get("input[name='password']").type("1234567l");
-//     cy.get("button[type='submit']").click();
-//     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-//   };
+
+  // Hàm bổ trợ để xử lý modal ngôn ngữ nếu nó xuất hiện
+  const handleLanguageModal = () => {
+    cy.get('body').then(($body) => {
+      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
+      if ($body.find('h2:contains("Select Your Language")').length > 0) {
+        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
+        cy.contains('United States').click();
+        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
+        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
+      }
+    });
+  };
 
 
  

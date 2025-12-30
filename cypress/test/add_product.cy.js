@@ -20,14 +20,24 @@ const imgSlot1 = "#product-images-upload-0";          // Ảnh review đầu ti�
 const imgSlot2 = "#product-images-upload-1"; 
 const imgSlot3 = "#product-images-upload-2";         // Upload nhiều ảnh
 const countryInput='input[placeholder="Select country"]';
- 
+ const handleLanguageModal = () => {
+    cy.get('body').then(($body) => {
+      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
+      if ($body.find('h2:contains("Select Your Language")').length > 0) {
+        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
+        cy.contains('United States').click();
+        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
+        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
+      }
+    });
+  };
 
  
-    const categoryInput = 'input[placeholder="Select category"]';
- const titleInput = 'input[name="title"]';
-    const submitBtn = 'button[type="submit"]';
-    const editor = 'div[contenteditable="true"][role="textbox"]';
-    const publishBtn = 'button';
+//     const categoryInput = 'input[placeholder="Select category"]';
+//  const titleInput = 'input[name="title"]';
+//     const submitBtn = 'button[type="submit"]';
+//     const editor = 'div[contenteditable="true"][role="textbox"]';
+//     const publishBtn = 'button';
  
     const login = () => {
     cy.visit("https://strongbody-web.vercel.app/login");

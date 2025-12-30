@@ -6,6 +6,17 @@ describe("Post Request", () => {
 const CategoryDropdown = '#categoryId';
   const fileInput = 'input#file-upload';
   const agreeInput = 'input[name="agree"]';
+  const handleLanguageModal = () => {
+    cy.get('body').then(($body) => {
+      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
+      if ($body.find('h2:contains("Select Your Language")').length > 0) {
+        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
+        cy.contains('United States').click();
+        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
+        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
+      }
+    });
+  };
 
   // const login = () => {
   //   cy.visit("https://strongbody-web.vercel.app/login");
