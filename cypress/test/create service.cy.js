@@ -8,6 +8,8 @@ describe("CREATE HEA SERVICE — FULL TESTING", () => {
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+     cy.get('button[aria-label="Translate page"]').click();
+  cy.contains('button', 'United States of America').click();
   };
   const thumbInput = "input#cover-upload";//id
   const moreImageInput = "input#service-images-upload-more";  //id
@@ -62,19 +64,14 @@ cy.visit("https://strongbody-web.vercel.app/seller/create-service");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
 
-
     cy.wait(1000);
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+   
   });
 
 
   
 it("TC_01- Nhấn mũi tên tăng → Price tăng +1", () => {
-  cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+  
   cy.get(priceInput)
     .clear()
     .type("10");        // giá ban đầu = 10
@@ -115,7 +112,7 @@ cy.contains("label", "Category")
 
 // Chọn option
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 
@@ -147,7 +144,7 @@ it("TC_04: Nhập chỉ khoảng trắng (Space) vào Name → báo lỗi", () =
 
     // Chọn Category
     cy.contains("label", "Category").parent().find("button[id^='headlessui-combobox-button']").first().click({ force: true });
-    cy.get("div[id^='headlessui-combobox-options']").contains("Vegetarian or Vegan Diet Guidance").click({ force: true });
+    cy.get("div[id^='headlessui-combobox-options']").contains("Sustainable Habits & Lifestyle Design").click({ force: true });
 cy.get('body').click(0, 0, { force: true });
     // Nhập Description
     cy.get('textarea, div[data-field="description"] textarea')
@@ -191,7 +188,7 @@ cy.contains("label", "Category")
   .click({ force: true });
 
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 cy.get(descInput) 
@@ -285,7 +282,7 @@ cy.contains("label", "Category")
   .click({ force: true });
 
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 
@@ -330,7 +327,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
     .click({ force: true });
 
   cy.get("div[id^='headlessui-combobox-options']")
-    .contains("Vegetarian or Vegan Diet Guidance")
+    .contains("Sustainable Habits & Lifestyle Design")
     .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
   cy.get(descInput).click().type("Valid description");
@@ -373,7 +370,7 @@ cy.get('body').click(0, 0, { force: true });
     .click({ force: true });
 
   cy.get("div[id^='headlessui-combobox-options']")
-    .contains("Vegetarian or Vegan Diet Guidance")
+    .contains("Sustainable Habits & Lifestyle Design")
     .click({ force: true });
 
 cy.get('body').click(0, 0, { force: true });
@@ -419,7 +416,7 @@ cy.contains("label", "Category")
 
 // Chọn option
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
       cy.get(descInput).click().type("Valid description");
@@ -466,7 +463,7 @@ cy.contains("label", "Category")
 
 // Chọn option
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 
@@ -500,7 +497,7 @@ cy.get('body').click(0, 0, { force: true });
       .click({ force: true });
 
     cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Vegetarian or Vegan Diet Guidance")
+      .contains("Sustainable Habits & Lifestyle Design")
       .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
     // Nhập giá
@@ -573,7 +570,7 @@ cy.contains("label", "Category")
 
 // Chọn option
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 
@@ -628,7 +625,7 @@ cy.contains("label", "Category")
 
 // Chọn option
 cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Vegetarian or Vegan Diet Guidance")
+  .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 
