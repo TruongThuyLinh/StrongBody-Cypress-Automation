@@ -22,9 +22,7 @@ cy.contains('button', 'United States of America').click();
 
     
     it("TC_01 - Kiểm tra giao diện Login đầy đủ", () => {
-      cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+   
       cy.contains("Email").should("exist"); 
       cy.contains("Password").should("exist");
       cy.contains("Sign in").should("exist");

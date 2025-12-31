@@ -40,6 +40,8 @@ const handleLanguageModal = () => {
     cy.get("button[type='submit']").click();
 
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+    cy.get('button[aria-label="Translate page"]').click();
+  cy.contains('button', 'United States of America').click();
   });
 
     cy.visit("https://strongbody-web.vercel.app/become-seller");

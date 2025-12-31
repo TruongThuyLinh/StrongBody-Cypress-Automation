@@ -8,6 +8,8 @@ const login = () => {
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+    cy.get('button[aria-label="Translate page"]').click();
+  cy.contains('button', 'United States of America').click();
   };
     const categoryInput = 'input[placeholder="Select category"]';
  const titleInput = 'input[name="title"]';

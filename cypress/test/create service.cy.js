@@ -61,7 +61,7 @@ const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
 cy.visit("https://strongbody-web.vercel.app/seller/create-service");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
-    
+
 
     cy.wait(1000);
     cy.get('button[aria-label="Translate page"]').click();

@@ -24,6 +24,12 @@ describe("Seller Profile", () => {
     cy.get("button[type='submit']").click();
      
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+    
+  cy.get('button[aria-label="Translate page"]').click();
+  cy.contains('button', 'United States of America').click();
+  
+  
+  cy.wait(1000);
   };
 
   beforeEach(() => {
@@ -39,10 +45,7 @@ describe("Seller Profile", () => {
    // cy.visit("https://strongbody-web.vercel.app/seller/read-me");
     //cy.contains("button", "Update your profile").should("be.visible").click({ force: true });   
     cy.visit("https://strongbody-web.vercel.app/seller/profile");  
-    //cy.url().should("include", "seller/profile");
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+    
   });
 
   it("TC_01: Để trống Shop Name - Các trường khác hợp lệ (English)", () => {
