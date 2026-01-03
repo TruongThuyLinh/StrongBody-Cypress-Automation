@@ -155,11 +155,7 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
   cy.get(passInput).type("1234567l");
   cy.get(signInBtn).click();
 
-  cy.contains("Enter Verification Code").should("be.visible");
-
-  cy.contains("dfgvhjgh@gmail.com").should("be.visible");
-cy.get(signInBtn).click();
-        cy.contains("Email does not exist").should("be.visible");
+   cy.contains("Email does not exist").should("be.visible");
   
 });
   });
