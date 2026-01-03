@@ -8,21 +8,31 @@ describe("Post Request", () => {
 
   
 
-
- 
-  beforeEach(() => {
-   
-  cy.session("login", () => {
+ const login = () => {
+      
     cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("thuylinh1020tb@gmail.com");
+    cy.wait(3000); 
+   //cy.get('button[aria-label*="Translate page"]').click();
+   cy.contains('button', 'English', { timeout: 10000 })
+    .should('be.visible')
+    .click();  
+    cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("input[name='email']").clear().type("liveb58966@m3player.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
-
+    cy.url().should('not.include', '/login');
+    // kiểm tra xem đã nhân dc cookies Chưa
+    cy.getCookies().should('have.length.greaterThan', 0);
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-    cy.get('button[aria-label="Translate page"]').click();
-  cy.contains('button', 'United States of America').click();
+  
+  };
+ 
+  beforeEach(() => {
+    cy.session("login", login, {
+    validate() {
+   // kiểm tra cooken còn hạn không
+cy.getCookie('__Secure-next-auth.session-token').should('exist');    },
   });
-   
     cy.visit("https://strongbody-web.vercel.app/products");
   
     cy.wait(1000);
@@ -31,9 +41,7 @@ describe("Post Request", () => {
 
 it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ', () => {
     
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+    
     cy.get(descriptionInput).clear();
     cy.get(descriptionInput).should('have.value', '');
 

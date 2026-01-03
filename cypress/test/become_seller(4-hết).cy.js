@@ -9,54 +9,41 @@ const aboutYourselfInput = "textarea[placeholder='Share something about your str
 const countryInput="input[placeholder='Select your country']";
 const fullAddressInput='input[placeholder="Full Address"]';
  const specialtiesInputSelector = 'input[placeholder^="Choose or type"]';
-const handleLanguageModal = () => {
-    cy.get('body').then(($body) => {
-      // Kiểm tra nếu tiêu đề "Select Your Language" tồn tại
-      if ($body.find('h2:contains("Select Your Language")').length > 0) {
-        cy.log('Phát hiện modal ngôn ngữ, đang chọn tiếng Anh...');
-        cy.contains('United States').click();
-        // Đợi modal biến mất hoàn toàn trước khi làm việc khác
-        cy.get('h2:contains("Select Your Language")', { timeout: 5000 }).should('not.exist');
-      }
-    });
-  };
- 
-  before(() => {
-    cy.session("login", () => {
-      cy.visit("https://strongbody.ai/login");
-      cy.get("input[name='email']").type("thuylinh1020tb@gmail.com");
-      cy.get("input[name='password']").type("1234567l");
-      cy.get("button[type='submit']").click();
-      cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-    });
-  });
 
-
-  beforeEach(() => {
-   
-  cy.session("login", () => {
-    cy.visit("https://strongbody.ai/login");
-    cy.get("input[name='email']").type("thuylinh1020tb@gmail.com");
+  const login = () => {
+      
+    cy.visit("https://strongbody-web.vercel.app/login");
+    cy.wait(3000); 
+   //cy.get('button[aria-label*="Translate page"]').click();
+   cy.contains('button', 'English', { timeout: 10000 })
+    .should('be.visible')
+    .click();   
+  cy.get("input[name='email']", { timeout: 20000 }).should('be.visible');
+  cy.get("input[name='email']").clear().type("thuylinh1020tb@gmail.com");
     cy.get("input[name='password']").type("1234567l");
     cy.get("button[type='submit']").click();
-
+    cy.url().should('not.include', '/login');
+    // kiểm tra xem đã nhân dc cookies Chưa
+    cy.getCookies().should('have.length.greaterThan', 0);
     cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-    cy.get('button[aria-label="Translate page"]').click();
-  cy.contains('button', 'United States of America').click();
+  
+  };
+  
+  beforeEach(() => {
+    cy.session("login", login, {
+    validate() {
+   // kiểm tra cooken còn hạn không
+cy.getCookie('__Secure-next-auth.session-token').should('exist');    },
   });
-
-    cy.visit("https://strongbody.ai/become-seller");
-//cy.wait(2000);
+    cy.visit("https://strongbody-web.vercel.app/become-seller");
 cy.contains("Create Your Dream Shop")
   .should("be.visible")
   .click({ force: true });
     cy.url().should("include", "become-seller-steps");
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
-
+   
     cy.get(shopNameInput).should("be.visible");
   });
+
 
   //************************************************************************************************/              
                                    // STEP 4

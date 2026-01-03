@@ -12,9 +12,8 @@ describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
 
   beforeEach(() => {
     cy.visit("/login");
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+       cy.contains('button', 'English').click();
+
   });
 
  
@@ -22,7 +21,7 @@ cy.contains('button', 'United States of America').click();
 
     
     it("TC_01 - Kiểm tra giao diện Login đầy đủ", () => {
-   
+      
       cy.contains("Email").should("exist"); 
       cy.contains("Password").should("exist");
       cy.contains("Sign in").should("exist");
@@ -150,7 +149,7 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
     });
 
 
-    it("TC_15 - Email không tồn tại → mở popup OTP", () => {
+    it("TC_15 - Email không tồn tại ", () => {
 
   cy.get(emailInput).type("dfgvhjgh@gmail.com");
   cy.get(passInput).type("1234567l");
@@ -159,14 +158,9 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
   cy.contains("Enter Verification Code").should("be.visible");
 
   cy.contains("dfgvhjgh@gmail.com").should("be.visible");
-
-  cy.get("input[inputmode='numeric']")
-    .should("have.length", 4)
-    .and("be.visible");
-
-  cy.contains("Send").should("be.disabled");
-
-  cy.contains("Resend").should("be.visible");
+cy.get(signInBtn).click();
+        cy.contains("Email does not exist").should("be.visible");
+  
 });
   });
 

@@ -2,15 +2,7 @@ Cypress.on("uncaught:exception", () => false);
 
 describe("CREATE HEA SERVICE — FULL TESTING", () => {
 
-  const login = () => {
-    cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("liveb58966@m3player.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-     cy.get('button[aria-label="Translate page"]').click();
-  cy.contains('button', 'United States of America').click();
-  };
+
   const thumbInput = "input#cover-upload";//id
   const moreImageInput = "input#service-images-upload-more";  //id
 
@@ -35,31 +27,31 @@ const galleryEmptyUploads = "input[type='file'][accept^='image']";
   const cancelBtn = "button:contains('Cancel')";
 const imgSlot1 = "#service-images-upload-0";          // Ảnh review đầu tiên
 const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
-
+ const login = () => {
+      
+    cy.visit("https://strongbody-web.vercel.app/login");
+    cy.wait(3000); 
+   //cy.get('button[aria-label*="Translate page"]').click();
+   cy.contains('button', 'English', { timeout: 10000 })
+    .should('be.visible')
+    .click();  
+    cy.get("input[name='email']", { timeout: 20000 }).should('be.visible');
+  cy.get("input[name='email']").clear().type("liveb58966@m3player.com");
+    cy.get("input[name='password']").type("1234567l");
+    cy.get("button[type='submit']").click();
+    cy.url().should('not.include', '/login');
+    // kiểm tra xem đã nhân dc cookies Chưa
+    cy.getCookies().should('have.length.greaterThan', 0);
+    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  
+  };
 
   beforeEach(() => {
-    cy.session("login", login);
-
-
-    // cy.url().then((url) => {
-    //     if (!url.includes("seller/read-me")) {
-    //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
-    //         //cy.visit("https://strongbody-web.vercel.app/become-seller");
-    //         cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
-    //       cy.wait(1000);
-    //         cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
-    //          cy.wait(1000);
-    //        // cy.visit("https://strongbody-web.vercel.app/seller/read-me");
-    //     }
-    // });
-
-    // cy.get("body", { timeout: 15000 }).should("contain", "Create a service");
-    // cy.wait(500); 
-
-    // cy.contains("span", "Create a service")
-    //   .should("be.visible")
-    //   .parent() // Click vào thẻ cha
-    //   .click({ force: true });
+    cy.session("login", login, {
+    validate() {
+   // kiểm tra cooken còn hạn không
+cy.getCookie('__Secure-next-auth.session-token').should('exist');    },
+  });
 cy.visit("https://strongbody-web.vercel.app/seller/create-service");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
@@ -95,13 +87,13 @@ it("TC_02- Không cho giá < 0 khi nhấn ▼", () => {
 
     it("TC_03- Bỏ trống tên → báo lỗi", () => {
 
-     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+     cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
 
     cy.get(imgMore).selectFile([
-  'cypress/fixtures/review2.png',
-  'cypress/fixtures/review3.png'
+  'cypress/fixtures/2.jpg',
+  'cypress/fixtures/3.jpg'
    ], { force: true });
 
 cy.contains("label", "Category")
@@ -138,9 +130,9 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
     });
 it("TC_04: Nhập chỉ khoảng trắng (Space) vào Name → báo lỗi", () => {
    
-    cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
-    cy.get(imgMore).selectFile(['cypress/fixtures/review2.png', 'cypress/fixtures/review3.png'], { force: true });
+    cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+    cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg'], { force: true });
 
     // Chọn Category
     cy.contains("label", "Category").parent().find("button[id^='headlessui-combobox-button']").first().click({ force: true });
@@ -173,13 +165,13 @@ cy.get('body').click(0, 0, { force: true });
     it("TC_05- Tên > 200 ký tự nhưng các trường khác hợp lệ → Báo lỗi Name", () => {
 
      
-     cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+     cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
 
     cy.get(imgMore).selectFile([
-  'cypress/fixtures/review2.png',
-  'cypress/fixtures/review3.png'
+  'cypress/fixtures/2.jpg',
+  'cypress/fixtures/3.jpg'
 ], { force: true });
 cy.contains("label", "Category")
   .parent()
@@ -266,13 +258,13 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
     it("TC_06 Price trống-> báo lỗi", () => {
 
-      cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+      cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1,jpg', { force: true });
 
      cy.get(imgMore).selectFile([
-  'cypress/fixtures/review2.png',
-  'cypress/fixtures/review3.png'
+  'cypress/fixtures/2.jpg',
+  'cypress/fixtures/3.jpg'
    ], { force: true });
       cy.get(nameInput).type("Valid Name");
 cy.contains("label", "Category")
@@ -310,13 +302,13 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
     it("TC_07 - Price nhập chữ → không cho nhập", () => {
 
-   cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+   cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
 
     cy.get(imgMore).selectFile([
-  'cypress/fixtures/review2.png',
-  'cypress/fixtures/review3.png'
+  'cypress/fixtures/2.jpg',
+  'cypress/fixtures/3.jpg'
   ], { force: true });
   cy.get(nameInput).type("Valid Name");
 
@@ -354,11 +346,11 @@ cy.get('body').click(0, 0, { force: true });
 
     it("TC_08- Price âm", () => {
 
-  cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
-  cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+  cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+  cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
   cy.get(imgMore).selectFile([
-    'cypress/fixtures/review2.png',
-    'cypress/fixtures/review3.png'
+    'cypress/fixtures/2.jpg',
+    'cypress/fixtures/3.jpg'
   ], { force: true });
 
   cy.get(nameInput).type("Valid Name");
@@ -401,7 +393,7 @@ cy.get('body').click(0, 0, { force: true });
 
     it("TC_10- Upload ít hơn 4 ảnh → báo lỗi", () => {
 
-       const file1 = "cypress/fixtures/review1.png";
+       const file1 = "cypress/fixtures/1.jpg";
 
       cy.get(thumbInput).selectFile(file1, { force: true });
        cy.get(galleryEmptyUploads).eq(0).selectFile(file1, { force: true });
@@ -441,15 +433,15 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
   
   it("TC_11 - Bỏ trống mô tả, các trường khác hợp lệ", () => {
 
-      const file = "cypress/fixtures/review1.png";
+      const file = "cypress/fixtures/1.jpg";
 
-       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+       cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
 
     cy.get(imgMore).selectFile([
-  'cypress/fixtures/review2.png',
-  'cypress/fixtures/review3.png'
+  'cypress/fixtures/2.jpg',
+  'cypress/fixtures/3.jpg'
    ], { force: true });
    
       cy.get(nameInput).type("Valid HEA Name");
@@ -482,9 +474,9 @@ cy.get('body').click(0, 0, { force: true });
     it("TC_12 - Nhập chỉ khoảng trắng (Space) vào mô tả (Trường hợp Optional) ", () => {
     
     // Upload ảnh
-    cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
-    cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
-    cy.get(imgMore).selectFile(['cypress/fixtures/review2.png', 'cypress/fixtures/review3.png'], { force: true });
+    cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+    cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg'], { force: true });
 
     // Nhập tên
     cy.get(nameInput).type("Valid HEA Name with Space Desc");
@@ -604,13 +596,13 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
        const file = "cypress/fixtures/review1.png";
 
-       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+       cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-       cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+       cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
 
        cy.get(imgMore).selectFile([
-      'cypress/fixtures/review2.png',
-      'cypress/fixtures/review3.png'
+      'cypress/fixtures/2.jpg',
+      'cypress/fixtures/3.jpg'
       ], { force: true });
 
       cy.get(nameInput).type(shortName);
@@ -656,13 +648,13 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
     });
 it("TC_09- Price bằng 0", () => {
 
-       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+       cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
-       cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
+       cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
 
        cy.get(imgMore).selectFile([
-      'cypress/fixtures/review2.png',
-      'cypress/fixtures/review3.png'
+      'cypress/fixtures/2.jpg',
+      'cypress/fixtures/3.jpg'
       ], { force: true });
       cy.get(nameInput).type("Valid Name");
 

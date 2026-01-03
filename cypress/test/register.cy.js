@@ -14,9 +14,8 @@ describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
   beforeEach(() => {
     cy.viewport(1920, 1080);
     cy.visit("https://strongbody-web.vercel.app/signup");
-    cy.get('button[aria-label="Translate page"]').click();
-// Tìm nút có chứa chữ "United States of America" và click
-cy.contains('button', 'United States of America').click();
+      cy.contains('button', 'English').click();
+
   });
 
   const tickTerms = () => cy.get(acceptTerms).check({ force: true });

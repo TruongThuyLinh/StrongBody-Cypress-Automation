@@ -2,44 +2,36 @@ Cypress.on("uncaught:exception", () => false);
 
 describe("write blog", () => {
  
-const login = () => {
-    cy.visit("https://strongbody-web.vercel.app/login");
-    cy.get("input[name='email']").type("liveb58966@m3player.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
-    cy.get('button[aria-label="Translate page"]').click();
-  cy.contains('button', 'United States of America').click();
-  };
+
     const categoryInput = 'input[placeholder="Select category"]';
  const titleInput = 'input[name="title"]';
     const submitBtn = 'button[type="submit"]';
     const editor = 'div[contenteditable="true"][role="textbox"]';
     const publishBtn = 'button';
-  // ---------------------------
-  // LOGIN ONE TIME
-  // ---------------------------
+ const login = () => {
+      
+    cy.visit("https://strongbody-web.vercel.app/login");
+    cy.wait(3000); 
+   //cy.get('button[aria-label*="Translate page"]').click();
+  cy.contains('button', 'English', { timeout: 10000 })
+    .should('be.visible')
+    .click();  
+    cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("input[name='email']").clear().type("liveb58966@m3player.com");
+    cy.get("input[name='password']").type("1234567l");
+    cy.get("button[type='submit']").click();
+    cy.url().should('not.include', '/login');
+    // kiểm tra xem đã nhân dc cookies Chưa
+    cy.getCookies().should('have.length.greaterThan', 0);
+    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  
+  };
 beforeEach(() => {
-    cy.session("login", login);
-
-
-    // cy.url().then((url) => {
-    //     if (!url.includes("seller/read-me")) {
-    //         cy.log("⚠️ Không vào thẳng được Dashboard -> Phải đi từ Become Seller");
-    //         //cy.visit("https://strongbody-web.vercel.app/become-seller");
-    //         cy.visit("https://strongbody-web.vercel.app/buyer/dashboard");
-    //       cy.wait(1000);
-    //         cy.contains("Switch to Seller", { timeout: 20000 }).click({ force: true });
-    //     }
-    // });
-
-    // cy.get("body", { timeout: 15000 }).should("contain", "Write a blog");
-    // cy.wait(500); 
-
-    // cy.contains("span", "Write a blog")
-    //   .should("be.visible")
-    //   .parent() // Click vào thẻ cha
-    //   .click({ force: true });
+    cy.session("login", login, {
+    validate() {
+   // kiểm tra cooken còn hạn không
+cy.getCookie('__Secure-next-auth.session-token').should('exist');    },
+  });
   cy.visit("https://strongbody-web.vercel.app/seller/write-blog");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/write-blog");
