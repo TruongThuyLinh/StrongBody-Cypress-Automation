@@ -8,33 +8,44 @@ const CategoryDropdown = '#categoryId';
   const agreeInput = 'input[name="agree"]';
   
 const login = () => {
-      
-    cy.visit("https://strongbody-web.vercel.app/login");
-    cy.wait(3000); 
-   cy.contains('button', 'English', { timeout: 10000 })
-    .should('be.visible')
-    .click();  
-    cy.get("input[name='email']", { timeout: 20000 }).should('be.visible');
-  cy.get("input[name='email']").clear().type("liveb58966@m3player.com");
-    cy.get("input[name='password']").type("1234567l");
-    cy.get("button[type='submit']").click();
-    cy.url().should('not.include', '/login');
-    // kiểm tra xem đã nhân dc cookies Chưa
-    cy.getCookies().should('have.length.greaterThan', 0);
-    cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  cy.visit("https://strongbody-web.vercel.app/login");
   
-  };
+  cy.contains('button', 'English', { timeout: 10000 })
+    .should('be.visible')
+    .click();
+
+  // Chúng ta đợi cho đến khi Modal "Select Your Language" biến mất hoàn toàn
+  cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
+  
+  cy.wait(2000); 
+
+  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  
+  cy.get("input[name='email']").focus().clear().type("liveb58966@m3player.com", { delay: 100 });
+
+  cy.get("input[name='password']").focus().clear().type("1234567l");
+  
+  cy.get("button[type='submit']").should('be.enabled').click();
+
+  cy.url().should('not.include', '/login');
+  cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+};
   
 beforeEach(() => {
-    cy.session("login", login, {
+  cy.session("login", login, {
     validate() {
-   // kiểm tra cooken còn hạn không
-cy.getCookie('__Secure-next-auth.session-token').should('exist');    },
+      // Kiểm tra xem có bất kỳ cookie nào chứa 'session-token' không
+      cy.getCookies().then((cookies) => {
+        const hasSession = cookies.some(c => c.name.includes('session-token'));
+        if (!hasSession) {
+          throw new Error("Session không tồn tại hoặc đã hết hạn");
+        }
+      });
+    },
   });
-    cy.visit("https://strongbody-web.vercel.app/create-request");
 
-  });
-
+  cy.visit("https://strongbody-web.vercel.app/create-request");
+});
   // ------------------------unhappy----------------------- 
 
 it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ', () => {
