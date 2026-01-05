@@ -103,14 +103,14 @@ cy.get("div[id^='headlessui-combobox-options']")
       .find('button[id^="headlessui-combobox-button"]')
       .click();
 
-    cy.contains('[role="option"]', 'Vietnam')
+    cy.contains('[role="option"]', 'Albania')
       .should('be.visible')
       .click();
 
   
     cy.get('@countryField')
       .find('input') 
-      .should('have.value', 'Vietnam'); // Với Input phải dùng 'have.value', không dùng 'contain.text'
+      .should('have.value', 'Albania'); // Với Input phải dùng 'have.value', không dùng 'contain.text'
 
       // Do not enter name
       cy.get(createBtn).click();
@@ -143,8 +143,8 @@ it("TC_02-Nhập space vào tên → báo lỗi", () => {
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
-    cy.get('@countryField').find('input').should('have.value', 'Vietnam');
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
+    cy.get('@countryField').find('input').should('have.value', 'Albania');
 
     cy.get(nameInput) 
       .should('be.visible')
@@ -170,7 +170,7 @@ it("TC_03-Nhập tên rồi xóa sạch → Báo lỗi name is required", () => 
     cy.get(descInput).type("Mô tả hợp lệ cho dịch vụ để kiểm tra validation.");
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').click();
+    cy.contains('[role="option"]', 'Albania').click();
 
     cy.get(nameInput)
         .should('be.visible')
@@ -210,7 +210,7 @@ it("TC_04-Bỏ trống Category → Báo lỗi", () => {
       .find('button[id^="headlessui-combobox-button"]')
       .click();
 
-    cy.contains('[role="option"]', 'Vietnam')
+    cy.contains('[role="option"]', 'Albania')
       .should('be.visible')
       .click();
 
@@ -233,7 +233,7 @@ it("TC_05-Nhập toàn khoảng trắng (Space) vào Category → Báo lỗi", (
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
   
     cy.contains('label', 'Category').parent().as('categoryField');
 
@@ -340,7 +340,7 @@ it("TC_08- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", 
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
     
     cy.get(descInput)
       .should('be.visible')
@@ -376,7 +376,7 @@ it("TC_09- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
     
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
     
     cy.get(descInput)
       .should('be.visible')
@@ -401,7 +401,7 @@ it("TC_10- Kiểm tra chặn ký tự khi nhập quá Max Length (Hard Limit)", 
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
 
   const maxLimit = 2000;
     
@@ -431,7 +431,7 @@ it("TC_11- Nhập Tên quá Max Length (121 ký tự) → Báo lỗi", () => {
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
 
 
     cy.get(descInput).should('be.visible').clear().type("Mô tả hợp lệ cho sản phẩm test name.");
@@ -561,7 +561,7 @@ it("TC_14- Tất cả các trường (Name, Desc) nhập đúng bằng Max Lengt
     // Country
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').click();
+    cy.contains('[role="option"]', 'Albania').click();
     
     cy.get(descInput)
       .should('be.visible')

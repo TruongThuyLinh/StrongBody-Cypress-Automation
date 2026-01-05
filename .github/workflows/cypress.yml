@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    # 06:10 sáng VN (GMT+7) = 23:10 UTC đêm hôm trước
+    # 06:10 sáng VN (GMT+7) = 23:10 UTC đêm hôm trước 
     - cron: '0 23 * * *' 
 
   workflow_dispatch:
