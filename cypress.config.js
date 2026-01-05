@@ -2,22 +2,22 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    // Luôn đưa phần tử đang tương tác vào giữa màn hình
-    scrollBehavior: 'center', 
-    
-    // Tăng thời gian chờ để Robot ổn định khung hình trước khi chụp ảnh
-    defaultCommandTimeout: 10000, 
-    // ...
+    // 1. CHỈNH SỬA QUAN TRỌNG: Đặt môi trường mặc định là bản TEST.
+    // Khi Dev gõ lệnh "npx cypress open", Robot sẽ tự động vào bản này.
+    baseUrl: "https://strongbody-web.vercel.app/", 
 
+    scrollBehavior: 'center', 
     chromeWebSecurity: false,
 
-    // --- 1. DÒNG QUAN TRỌNG NHẤT (Chống sập trình duyệt) ---
+    // Chống sập trình duyệt & Tiết kiệm bộ nhớ
     numTestsKeptInMemory: 0, 
 
-    // --- 2. Tăng kích thước màn hình & Thời gian chờ ---
+    // Tăng kích thước màn hình chuẩn Desktop
     viewportWidth: 1280,
     viewportHeight: 720,
-    defaultCommandTimeout: 15000, // Tăng lên 15s để đỡ bị lỗi timeout
+
+    // Tăng thời gian chờ lên 15s để tránh lỗi timeout do mạng chậm
+    defaultCommandTimeout: 15000, 
 
     setupNodeEvents(on, config) {
       // CHẶN POPUP CHO EDGE + CHROMIUM + CHROME
@@ -27,18 +27,19 @@ module.exports = defineConfig({
           browser.name === 'edge' ||
           browser.name === 'msedge'
         ) {
-          launchOptions.args.push('--disable-notifications');//Chặn popup
-          launchOptions.args.push('--disable-popup-blocking');//Chặn thông báo kiểu “Allow notification”
-          launchOptions.args.push('--disable-infobars');//Chặn thanh “Chrome is controlled by automated test software”
-          //=>Giúp test chạy ổn định – không bị cản bởi popup.
+          launchOptions.args.push('--disable-notifications');
+          launchOptions.args.push('--disable-popup-blocking');
+          launchOptions.args.push('--disable-infobars');
         }
         return launchOptions;
       });
     },
     
-// đọc các file trong thư mục cypress/test/ và kết thúc bằngcy.js
-
+    // Đọc các file test trong thư mục cypress/test/
     specPattern: "cypress/test/**/*.cy.js",
-    baseUrl: "https://strongbody.ai"
+    
+    // Video và Screenshots sẽ được lưu tự động nếu cấu hình trong .yml đúng [cite: 1, 23-24]
+    video: true,
+    screenshotOnRunFailure: true,
   },
 });
