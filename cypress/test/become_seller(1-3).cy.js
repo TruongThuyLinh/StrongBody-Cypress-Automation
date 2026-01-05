@@ -10,7 +10,7 @@ const aboutYourselfInput = "textarea[placeholder='Share something about your str
 
 
  const login = () => {
-  cy.visit("https://strongbody-web.vercel.app/login");
+  cy.visit("/login");
   
   cy.contains('button', 'English', { timeout: 10000 })
     .should('be.visible')
@@ -45,7 +45,7 @@ beforeEach(() => {
       });
     },
   });
-    cy.visit("https://strongbody-web.vercel.app/become-seller");
+    cy.visit("/become-seller");
 cy.contains("Create Your Dream Shop")
   .should("be.visible")
   .click({ force: true });

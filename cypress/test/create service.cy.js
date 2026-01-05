@@ -28,7 +28,7 @@ const galleryEmptyUploads = "input[type='file'][accept^='image']";
 const imgSlot1 = "#service-images-upload-0";          // Ảnh review đầu tiên
 const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
   const login = () => {
-  cy.visit("https://strongbody-web.vercel.app/login");
+  cy.visit("/login");
   
   cy.contains('button', 'English', { timeout: 10000 })
     .should('be.visible')
@@ -63,7 +63,7 @@ beforeEach(() => {
       });
     },
   });
-cy.visit("https://strongbody-web.vercel.app/seller/create-service");
+cy.visit("/seller/create-service");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
 

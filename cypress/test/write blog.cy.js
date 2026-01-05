@@ -9,7 +9,7 @@ describe("write blog", () => {
     const editor = 'div[contenteditable="true"][role="textbox"]';
     const publishBtn = 'button';
  const login = () => {
-  cy.visit("https://strongbody-web.vercel.app/login");
+  cy.visit("/login");
   
   cy.contains('button', 'English', { timeout: 10000 })
     .should('be.visible')
@@ -44,7 +44,7 @@ beforeEach(() => {
       });
     },
   });
-  cy.visit("https://strongbody-web.vercel.app/seller/write-blog");
+  cy.visit("/seller/write-blog");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/write-blog");
     

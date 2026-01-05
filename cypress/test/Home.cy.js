@@ -3,7 +3,7 @@ Cypress.on("uncaught:exception", () => false);
 describe("Home", () => {
 
     const login = () => {
-  cy.visit("https://strongbody.ai/login");
+  cy.visit("/login");
   
   cy.contains('button', 'English', { timeout: 10000 })
     .should('be.visible')
@@ -38,7 +38,7 @@ beforeEach(() => {
       });
     },
   });
-    cy.visit("https://strongbody.ai/home");
+    cy.visit("/home");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
 cy.url({ timeout: 20000 }).should("include", "home");   
   });  

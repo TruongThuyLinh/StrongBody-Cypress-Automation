@@ -18,7 +18,7 @@ describe("Seller Profile", () => {
   };
   
     const login = () => {
-  cy.visit("https://strongbody-web.vercel.app/login");
+  cy.visit("/login");
   
   cy.contains('button', 'English', { timeout: 10000 })
     .should('be.visible')
@@ -53,7 +53,7 @@ beforeEach(() => {
       });
     },
   });
-    cy.visit("https://strongbody-web.vercel.app/seller/profile");  
+    cy.visit("/seller/profile");  
     
   });
 

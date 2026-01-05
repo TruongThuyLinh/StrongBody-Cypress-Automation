@@ -13,7 +13,7 @@ describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
 
   beforeEach(() => {
     cy.viewport(1920, 1080);
-    cy.visit("https://strongbody-web.vercel.app/signup");
+    cy.visit("/signup");
       cy.contains('button', 'English').click();
 
   });
