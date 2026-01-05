@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
   schedule:
-    # 06:10 sáng VN (GMT+7) = 23:10 UTC đêm hôm trước 
-    - cron: '0 23 * * *' 
+    # 06:10 sáng VN (GMT+7) = 23:10 UTC đêm hôm trước
+    - cron: '10 23 * * *' 
 
   workflow_dispatch:
     inputs:
@@ -18,14 +18,13 @@ on:
           - test
           - live
       spec:
-        description: 'Đường dẫn file test (Để trống nếu muốn chạy theo mặc định)'
+        description: 'Đường dẫn file test (Ví dụ: cypress/test/login.cy.js)'
         required: false
         default: ''
 
 jobs:
   # NHIỆM VỤ 1: CHẠY TRÊN BẢN TEST (vercel.app)
   test-environment:
-    # Chạy tự động hàng ngày HOẶC khi Dev chủ động chọn "test"
     if: github.event_name == 'schedule' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'test')
     runs-on: ubuntu-latest
     steps:
@@ -37,8 +36,8 @@ jobs:
         with:
           browser: chrome
           config: baseUrl=https://strongbody-web.vercel.app/
-          # Nếu chạy thủ công và có nhập file, sẽ chạy file đó. Nếu không sẽ chạy các file dưới đây.
-          spec: ${{ github.event.inputs.spec || 'cypress/e2e/login.cy.js,cypress/e2e/become_seller.cy.js,cypress/e2e/add_product.cy.js,cypress/e2e/write_blog.cy.js' }}
+          # ĐÃ SỬA: Chuyển e2e thành test để khớp với thư mục máy của bạn
+          spec: ${{ github.event.inputs.spec || 'cypress/test/login.cy.js,cypress/test/become_seller.cy.js,cypress/test/add_product.cy.js,cypress/test/write_blog.cy.js' }}
 
       - name: Lưu ảnh lỗi bản TEST
         uses: actions/upload-artifact@v4
@@ -50,7 +49,6 @@ jobs:
 
   # NHIỆM VỤ 2: CHẠY TRÊN BẢN LIVE (strongbody.ai)
   live-environment:
-    # Chạy tự động hàng ngày HOẶC khi Dev chủ động chọn "live"
     if: github.event_name == 'schedule' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'live')
     runs-on: ubuntu-latest
     steps:
@@ -62,8 +60,8 @@ jobs:
         with:
           browser: chrome
           config: baseUrl=https://strongbody.ai/
-          # Chỉ chạy kịch bản Login trên bản Live
-          spec: ${{ github.event.inputs.spec || 'cypress/e2e/login.cy.js' }}
+          # ĐÃ SỬA: Chuyển e2e thành test để khớp với thư mục máy của bạn
+          spec: ${{ github.event.inputs.spec || 'cypress/test/login.cy.js' }}
 
       - name: Lưu ảnh lỗi bản LIVE
         uses: actions/upload-artifact@v4
