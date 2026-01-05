@@ -262,7 +262,7 @@ it("TC_06 - Chọn Category rồi bỏ chọn → Báo lỗi Category is require
    
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').click();
+    cy.contains('[role="option"]', 'Albania').click();
 
   
     cy.contains("label", "Category").parent().as('categoryField');
@@ -308,7 +308,7 @@ it("TC_07- Bỏ trống Mô tả (Description) → Báo lỗi", () => {
     
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Vietnam').should('be.visible').click();
+    cy.contains('[role="option"]', 'Albania').should('be.visible').click();
     cy.get(descInput)
       .should('be.visible')
       .clear(); 

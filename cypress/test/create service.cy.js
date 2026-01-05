@@ -11,7 +11,8 @@ const nameInput = "input#title";
   const categoryLabel = "label:contains('Category')";
   const categoryInput = "label:contains('Category') + div input[role='combobox']";
 
-  const descInput = 'textarea, div[data-field="description"] textarea';
+  //const descInput = 'textarea, div[data-field="description"] textarea';
+  const descInput = 'div.ContentEditable__root[data-lexical-editor="true"]';
  
 
   const priceInput = "input#price, input[name='price'], input[placeholder='Enter price']";
@@ -120,7 +121,7 @@ cy.get("div[id^='headlessui-combobox-options']")
 cy.get('body').click(0, 0, { force: true });
 
 
-      cy.get('textarea, div[data-field="description"] textarea') // Selector dự đoán cho textarea
+      cy.get(descInput) // Selector dự đoán cho textarea
       .should('be.visible')
       .click()
       .type("Mô tả cố tình để  trống name.");
@@ -150,7 +151,7 @@ it("TC_04: Nhập chỉ khoảng trắng (Space) vào Name → báo lỗi", () =
     cy.get("div[id^='headlessui-combobox-options']").contains("Sustainable Habits & Lifestyle Design").click({ force: true });
 cy.get('body').click(0, 0, { force: true });
     // Nhập Description
-    cy.get('textarea, div[data-field="description"] textarea')
+    cy.get(descInput)
       .should('be.visible')
       .click()
       .type("Mô tả đầy đủ, chỉ có tên là sai.");
@@ -472,7 +473,6 @@ cy.get('body').click(0, 0, { force: true });
 
       cy.get(priceInput).type("100");
 
-  
 
       cy.get(createBtn).click();
         cy.contains(/Description is required/i, { timeout: 6000 })
@@ -507,7 +507,7 @@ cy.get('body').click(0, 0, { force: true });
     cy.get(priceInput).type("100");
 
     
-    cy.get('textarea, div[data-field="description"] textarea') 
+    cy.get(descInput) 
       .should('be.visible')
       .click()
       .type("     "); // Nhập 5 dấu cách
@@ -553,14 +553,9 @@ cy.get('body').click(0, 0, { force: true });
       const maxName = "a".repeat(200);
       const maxDesc = "b".repeat(1000);
 
-       cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
-
-       cy.get(imgSlot1).selectFile('cypress/fixtures/review1.png', { force: true });
-
-       cy.get(imgMore).selectFile([
-      'cypress/fixtures/review2.png',
-      'cypress/fixtures/review3.png'
-      ], { force: true });
+        cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+    cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg'], { force: true });
 
       cy.get(nameInput).type(maxName);
 
@@ -605,7 +600,6 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
       const shortName = "a".repeat(150);
       const shortDesc = "b".repeat(500);
 
-       const file = "cypress/fixtures/review1.png";
 
        cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
@@ -632,7 +626,7 @@ cy.get("div[id^='headlessui-combobox-options']")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
 
-      cy.get('textarea, div[data-field="description"] textarea') // Selector dự đoán cho textarea
+      cy.get(descInput) // Selector dự đoán cho textarea
       .should('be.visible')
       .click()
       .type("ncncixhdfsxhuhfvuhxshcfvhchxuc.")
@@ -657,7 +651,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
       cy.url().should("include", "seller/my-service");
     });
-it("TC_09- Price bằng 0", () => {
+it("TC_16- Price bằng 0-> thành công", () => {
 
        cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
 
@@ -668,20 +662,18 @@ it("TC_09- Price bằng 0", () => {
       'cypress/fixtures/3.jpg'
       ], { force: true });
       cy.get(nameInput).type("Valid Name");
-
       
-   cy.contains("label", "Category")
-    .parent()
-    .find("button[id^='headlessui-combobox-button']")
-    .first()
-    .click({ force: true });
+    // Mở dropdown Category
+cy.contains("label", "Category")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .first()
+  .click({ force: true });
 
-  cy.get("div[id^='headlessui-combobox-options']")
-    .contains("Vegetarian or Vegan Diet Guidance")
-    .click({ force: true });
-cy.get('body').click(0, 0, { force: true });
-
-      cy.get(descInput).click().type("Valid description");
+// Chọn option
+cy.get("div[id^='headlessui-combobox-options']")
+  .contains("Sustainable Habits & Lifestyle Design")
+  .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
       // 1. Mở dropdown Hea Type
 cy.contains("label", "Hea Type")

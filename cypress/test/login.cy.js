@@ -171,10 +171,10 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
 it("TC_17 - Password chỉ toàn khoảng trắng → không hợp lệ", () => {
 
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-  cy.get(passInput).type("     ");  // 5 dấu cách
+  cy.get(passInput).type("          ");  //  dấu cách
 
    cy.get(signInBtn).click();
-        cy.contains("Wrong password").should("be.visible");
+        cy.contains("Password must not contain whitespace").should("be.visible");
 });
 
     it("TC_18- Nhập mật khẩu rồi xoá → hiện lỗi & nút Sign In disable", () => {
@@ -202,7 +202,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → không hợp lệ", () => 
 
    it("TC_20-Password sai", () => {
         cy.get(emailInput).type("honganhtran.1805@gmail.com");
-        cy.get(passInput).type("saiMatKhau");
+        cy.get(passInput).type("saiMatKhau1");
         cy.get(signInBtn).click();
         cy.contains("Wrong password").should("be.visible");
     });
@@ -223,7 +223,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → không hợp lệ", () => 
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("   1234567l   ");
   cy.get(signInBtn).click();
-  cy.contains(/wrong password/i).should("be.visible");
+  cy.contains(/Password must not contain whitespace/i).should("be.visible");
   // Không được chuyển trang
   cy.url().should("include", "/login");
 });
