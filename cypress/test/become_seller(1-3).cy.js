@@ -124,7 +124,7 @@ it("TC_06- Shop name trùng (duplicate shop name)->Báo lỗi", () => {
   cy.get("input[type='file'][accept='image/*']")
     .selectFile("cypress/fixtures/review1.png", { force: true });
  // Nhập tên shop đã tồn tại
-  cy.get(shopNameInput).type("Lena");
+  cy.get(shopNameInput).type("Loreaa");
 cy.wait(2000);
   // Click nút OK
   cy.contains("button", /^OK$/)

@@ -2,47 +2,80 @@ name: StrongBody Daily Test
 
 on:
   push:
-    branches: [main] # Chạy mỗi khi có code mới
+    branches: [main]
   schedule:
-    # 6h sáng VN (GMT+7) tương đương 23h đêm UTC ngày hôm trước
+    # 06:10 sáng VN (GMT+7) = 23:10 UTC đêm hôm trước
     - cron: '0 23 * * *' 
 
-# --- THÊM PHẦN NÀY ĐỂ CHẠY RIÊNG TỪNG FILE ---
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'CHỌN MÔI TRƯỜNG (Chỉ áp dụng khi chạy thủ công)'
+        required: true
+        default: 'test'
+        type: choice
+        options:
+          - test
+          - live
       spec:
-        description: 'Đường dẫn file test muốn chạy (Ví dụ: cypress/test/login.cy.js)'
+        description: 'Đường dẫn file test (Để trống nếu muốn chạy theo mặc định)'
         required: false
-        default: '' # Nếu để trống sẽ chạy tất cả
+        default: ''
 
 jobs:
-  cypress-run:
+  # NHIỆM VỤ 1: CHẠY TRÊN BẢN TEST (vercel.app)
+  test-environment:
+    # Chạy tự động hàng ngày HOẶC khi Dev chủ động chọn "test"
+    if: github.event_name == 'schedule' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'test')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout mã nguồn
         uses: actions/checkout@v4
 
-      - name: Chạy Cypress Test
+      - name: Chạy Cypress trên bản TEST
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          # Nếu bạn có lệnh khởi động server thì thêm vào đây, ví dụ:
-          # start: npm start 
-          # wait-on: 'http://localhost:3000'
+          config: baseUrl=https://strongbody-web.vercel.app/
+          # Nếu chạy thủ công và có nhập file, sẽ chạy file đó. Nếu không sẽ chạy các file dưới đây.
+          spec: ${{ github.event.inputs.spec || 'cypress/e2e/login.cy.js,cypress/e2e/become_seller.cy.js,cypress/e2e/add_product.cy.js,cypress/e2e/write_blog.cy.js' }}
 
-      # --- PHẦN QUAN TRỌNG: LƯU LẠI ẢNH VÀ VIDEO KHI LỖI ---
-      
-      - name: Tải lên ảnh chụp màn hình (Chỉ khi lỗi)
+      - name: Lưu ảnh lỗi bản TEST
         uses: actions/upload-artifact@v4
-        if: failure() # Chỉ chạy bước này nếu có test bị fail
+        if: failure()
         with:
-          name: cypress-screenshots
+          name: screenshots-test-env
           path: cypress/screenshots
-          retention-days: 7 # Lưu trữ trong 7 ngày
+          retention-days: 7
 
-      - name: Tải lên video quá trình chạy (Luôn luôn lưu)
+  # NHIỆM VỤ 2: CHẠY TRÊN BẢN LIVE (strongbody.ai)
+  live-environment:
+    # Chạy tự động hàng ngày HOẶC khi Dev chủ động chọn "live"
+    if: github.event_name == 'schedule' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'live')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout mã nguồn
+        uses: actions/checkout@v4
+
+      - name: Chạy Cypress trên bản LIVE
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          config: baseUrl=https://strongbody.ai/
+          # Chỉ chạy kịch bản Login trên bản Live
+          spec: ${{ github.event.inputs.spec || 'cypress/e2e/login.cy.js' }}
+
+      - name: Lưu ảnh lỗi bản LIVE
         uses: actions/upload-artifact@v4
-        if: always() # Luôn lưu video để đối chiếu dù thành công hay thất bại
+        if: failure()
+        with:
+          name: screenshots-live-env
+          path: cypress/screenshots
+          retention-days: 7
+
+      - name: Tải lên video (Luôn lưu)
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: cypress-videos
           path: cypress/videos
