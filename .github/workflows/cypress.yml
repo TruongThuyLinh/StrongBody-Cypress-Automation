@@ -5,12 +5,12 @@ on:
     branches: [main]
   schedule:
     # 06:10 sáng VN (GMT+7) = 23:10 UTC đêm hôm trước
-    - cron: '10 23 * * *' 
+    - cron: '0 23 * * *' 
 
   workflow_dispatch:
     inputs:
       environment:
-        description: 'CHỌN MÔI TRƯỜNG (Chỉ áp dụng khi chạy thủ công)'
+        description: 'CHỌN MÔI TRƯỜNG (Mặc định là test)'
         required: true
         default: 'test'
         type: choice
@@ -18,60 +18,45 @@ on:
           - test
           - live
       spec:
-        description: 'Đường dẫn file test (Ví dụ: cypress/test/login.cy.js)'
+        description: 'Đường dẫn file test (Để trống sẽ chạy TOÀN BỘ)'
         required: false
         default: ''
 
 jobs:
-  # NHIỆM VỤ 1: CHẠY TRÊN BẢN TEST (vercel.app)
-  test-environment:
-    if: github.event_name == 'schedule' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'test')
+  cypress-run:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout mã nguồn
         uses: actions/checkout@v4
 
-      - name: Chạy Cypress trên bản TEST
+      - name: Thiết lập URL môi trường
+        id: set-url
+        run: |
+          if [ "${{ github.event.inputs.environment }}" == "live" ]; then
+            echo "BASE_URL=https://strongbody.ai/" >> $GITHUB_ENV
+            echo "Môi trường: LIVE"
+          else
+            echo "BASE_URL=https://strongbody-web.vercel.app/" >> $GITHUB_ENV
+            echo "Môi trường: TEST (Mặc định)"
+          fi
+
+      - name: Chạy Cypress
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          config: baseUrl=https://strongbody-web.vercel.app/
-          # ĐÃ SỬA: Chuyển e2e thành test để khớp với thư mục máy của bạn
-          spec: ${{ github.event.inputs.spec || 'cypress/test/login.cy.js,cypress/test/become_seller.cy.js,cypress/test/add_product.cy.js,cypress/test/write_blog.cy.js' }}
+          config: baseUrl=${{ env.BASE_URL }}
+          # Chạy toàn bộ file trong cypress/test/ nếu không chỉ định file cụ thể
+          spec: ${{ github.event.inputs.spec || 'cypress/test/**/*.cy.js' }}
 
-      - name: Lưu ảnh lỗi bản TEST
+      - name: Lưu ảnh lỗi (Nếu có)
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: screenshots-test-env
+          name: cypress-screenshots
           path: cypress/screenshots
           retention-days: 7
 
-  # NHIỆM VỤ 2: CHẠY TRÊN BẢN LIVE (strongbody.ai)
-  live-environment:
-    if: github.event_name == 'schedule' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'live')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout mã nguồn
-        uses: actions/checkout@v4
-
-      - name: Chạy Cypress trên bản LIVE
-        uses: cypress-io/github-action@v6
-        with:
-          browser: chrome
-          config: baseUrl=https://strongbody.ai/
-          # ĐÃ SỬA: Chuyển e2e thành test để khớp với thư mục máy của bạn
-          spec: ${{ github.event.inputs.spec || 'cypress/test/login.cy.js' }}
-
-      - name: Lưu ảnh lỗi bản LIVE
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: screenshots-live-env
-          path: cypress/screenshots
-          retention-days: 7
-
-      - name: Tải lên video (Luôn lưu)
+      - name: Lưu video (Luôn lưu)
         uses: actions/upload-artifact@v4
         if: always()
         with:
