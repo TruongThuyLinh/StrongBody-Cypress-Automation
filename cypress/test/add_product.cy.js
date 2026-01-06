@@ -8,22 +8,16 @@ describe("ADD PRODUCT", () => {
 
 const nameInput = "input#name"; 
 
-  
   const descInput = 'textarea, div[data-field="description"] textarea';
  
 
-const galleryEmptyUploads = "input[type='file'][accept^='image']";
-
+const selectedCountry = 'Vietnam';  // Tên quốc gia bạn muốn chọn
   const createBtn = "button:contains('Create Your Product')";
   const cancelBtn = "button:contains('Cancel')";
 const imgSlot1 = "#product-images-upload-0";          // Ảnh review đầu tiên
 const imgSlot2 = "#product-images-upload-1"; 
 const imgSlot3 = "#product-images-upload-2";         // Upload nhiều ảnh
-const countryInput='input[placeholder="Select country"]';
-
- 
-    const categoryInput = 'input[placeholder="Select category"]';
- const titleInput = 'input[name="title"]';
+const countryInput = '#country_id'; 
     const submitBtn = 'button[type="submit"]';
     const editor = 'div[contenteditable="true"][role="textbox"]';
     const publishBtn = 'button';
@@ -79,40 +73,33 @@ cy.url({ timeout: 20000 }).should("include", "seller/create-product");
     cy.get(imgSlot2).selectFile('cypress/fixtures/2.jpg', { force: true });
     cy.get(imgSlot3).selectFile('cypress/fixtures/3.jpg', { force: true });
 
-cy.contains("label", "Category")
-  .parent()
-  .find("button[id^='headlessui-combobox-button']")
-  .first()
-  .click({ force: true });
-
-// Chọn option
-cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Health & Wellness")
-  .click({ force: true });
+cy.get(categoryInput)
+    .should('be.visible')
+    .click({ force: true });
+  cy.get(categoryInput).should('have.attr', 'aria-expanded', 'true');
+  cy.contains('[role="option"]', /Other Health & Wellness Products/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+  cy.get(categoryInput).should('have.value', 'Other Health & Wellness Products');
 
       cy.get(descInput) // Selector dự đoán cho textarea
       .should('be.visible')
       .click()
       .type("test để trống name các trường các hợp lệ.");
 
-    cy.contains('label', /Country/i)
-      .parent() // Lên 1 cấp để lấy thẻ div bao quanh cả Input và Button
-      .as('countryField'); 
-    
-    cy.get('@countryField')
-      .find('button[id^="headlessui-combobox-button"]')
-      .click();
-
-    cy.contains('[role="option"]', 'Albania')
-      .should('be.visible')
-      .click();
+    cy.get(countryInput)
+    .should('be.visible')
+    .click({ force: true });
 
   
-    cy.get('@countryField')
-      .find('input') 
-      .should('have.value', 'Albania'); // Với Input phải dùng 'have.value', không dùng 'contain.text'
+  cy.get(countryInput).should('have.attr', 'aria-expanded', 'true');
 
-      // Do not enter name
+  cy.contains('[role="option"]', new RegExp(selectedCountry, "i"), { timeout: 10000 })
+    .should('exist')
+    .scrollIntoView()
+    .click({ force: true });
+  
+  cy.get(countryInput).should('have.value', selectedCountry);
       cy.get(createBtn).click();
 
       cy.contains(/Product name is required/i).should("be.visible");
