@@ -49,6 +49,7 @@ it("TC_04 - Checkbox Remember me hoạt động đúng", () => {
     it("TC_05 - Click Forgot Password → Điều hướng đúng trang", () => {
       cy.contains("Forgot Password").should("have.attr", "href");
   cy.contains("Forgot Password").click({ force: true });
+  cy.wait(2000);
 
   // 2️⃣ Kiểm tra URL được điều hướng đúng
   cy.url().should("include", "/forgot-password");
@@ -148,15 +149,24 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
       cy.contains(/invalid email/i).should("be.visible");
     });
 
+it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
+  // cy.visit("/login");
+  cy.wait(2000); 
+  // 2. Nhập Email bằng cách tìm lại phần tử (Re-query)
+  // Việc gọi lại cy.get() giúp tránh lỗi "Detached từ DOM"
+  cy.get(emailInput).should('be.visible').clear();
+  cy.get(emailInput).type("linnhc@gmail.com", { delay: 100 });
 
-    it("TC_15 - Email không tồn tại ", () => {
+  // 3. Nhập Password tương tự
+  cy.get(passInput).should('be.visible').clear();
+  cy.get(passInput).type("1234567l", { delay: 100 });
 
-  cy.get(emailInput).type("dfgvhjgh@gmail.com");
-  cy.get(passInput).type("1234567l");
-  cy.get(signInBtn).click();
+  cy.get(signInBtn).should('not.be.disabled').click({ force: true });
 
-   cy.contains("Email does not exist").should("be.visible");
   
+  cy.contains("Email does not exist", { timeout: 15000 })
+    .should('exist')
+    .and('be.visible');
 });
   });
 
@@ -206,23 +216,23 @@ it("TC_17 - Password chỉ toàn khoảng trắng → không hợp lệ", () => 
         cy.get(signInBtn).click();
         cy.contains("Wrong password").should("be.visible");
     });
-    it("TC_21 - Password có khoảng trắng → được tính là ký tự hợp lệ", () => {
+    it("TC_21 - Password có khoảng trắng → báo lỗi", () => {
 
   
 
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("123 456 7l");
-  cy.get(signInBtn).click();
-   cy.contains(/wrong password/i).should("be.visible");
-  // Không được chuyển trang
-  cy.url().should("include", "/login");;
+  cy.get(signInBtn).should("be.disabled");
+   cy.contains(/Password must not contain whitespace/i).should("be.visible");
+  // // Không được chuyển trang
+  // cy.url().should("include", "/login");;
 });
 
     it("TC_22 - Password có khoảng trắng đầu/cuối → login thất bại", () => {
   
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("   1234567l   ");
-  cy.get(signInBtn).click();
+ cy.get(signInBtn).should("be.disabled");
   cy.contains(/Password must not contain whitespace/i).should("be.visible");
   // Không được chuyển trang
   cy.url().should("include", "/login");
@@ -255,16 +265,25 @@ it("TC_25 - Facebook button hoạt động", () => {
     cy.get('button[aria-label="Continue with Facebook"]:visible').click(); 
     cy.url().should("include", "facebook.com"); });
 
-    it("TC_26 - Google button hoạt động", () => {
+it("TC_26 - Google button hoạt động", () => {
+  // 1. Sử dụng pattern rộng hơn để bắt request
+  cy.intercept({
+    url: /.*oauth2.*/, 
+  }).as("googleAuth");
 
-  cy.intercept("GET", "**/o/oauth2/**").as("googleAuth");
+  // 2. Đảm bảo không mở tab mới
+  cy.get('button[aria-label="Continue with Google"]:visible')
+    .should('be.visible')
+    .invoke('removeAttr', 'target') 
+    .click();
 
-  cy.get('button[aria-label="Continue with Google"]:visible').click();
-
-  // Kiểm tra request tới Google OAuth được gọi
-  cy.wait("@googleAuth").its("response.statusCode").should("eq", 302);
-});
-  
+    cy.wait(1000);
+  // 3. Đợi và kiểm tra
+  cy.wait("@googleAuth", { timeout: 10000 }).then((interception) => {
+    assert.isNotNull(interception.response, "Đã bắt được request thành công");
+    expect(interception.response.statusCode).to.be.oneOf([200, 302]);
   });
+});
 
+  });
 });

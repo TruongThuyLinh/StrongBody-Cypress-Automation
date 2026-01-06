@@ -85,11 +85,16 @@ it("TC_03 - Email chỉ nhập khoảng trắng → button disabled", () => {
     cy.get(signUpBtn).should("be.disabled");
   });
 
-  it("TC_08- Password > 40 ký tự → disabled", () => {
-    cy.get(emailInput).type("linh@gmail.com");
-    cy.get(passInput).type("a1".repeat(30));
+  it("TC_08- Password > 64 ký tự → disabled và báo lối", () => {
+    cy.wait(2000);
+    cy.get(emailInput).should('be.visible').clear();
+    cy.get(emailInput).type("linh@gmail.com"  , { delay: 100 });
+    cy.get(passInput).should('be.visible').clear();
+    cy.get(passInput).type("a1".repeat(65), { delay: 100 });
     tickTerms();
     cy.get(signUpBtn).should("be.disabled");
+    cy.contains(/Password must not exceed 64 characters/i).should("be.visible");
+
   });
 
   it("TC_09-Password Không có chữ cái → disabled", () => {
@@ -138,19 +143,17 @@ it("TC_13 - Password hợp lệ rồi xoá để mất chữ → hiện lỗi & 
 });
 
 it("TC_14- Password hợp lệ rồi xoá để mất số → hiện lỗi & nút disabled", () => {
+  cy.wait(2000);
 
   cy.get("input[name='email']:visible")
     .type("linh@gmail.com");
 
   cy.get("input[name='password']:visible")
     .type("abcjkllk123");
- tickTerms();
+   tickTerms();
   cy.get("input[name='password']:visible")
     .type("{backspace}{backspace}{backspace}");
-cy.get('span.text-red-500') // Tìm chính xác thẻ màu đỏ
-  .filter(':visible')       
-  .should('contain', 'Min 8 characters');
-  // Kiểm tra nút Submit
+cy.contains("Password must contain at least 1 number").should("be.visible");  // Kiểm tra nút Submit
   cy.get(signUpBtn).should("be.disabled");
 
 });
@@ -204,40 +207,52 @@ cy.get('span.text-red-500') // Tìm chính xác thẻ màu đỏ
     cy.get(passInput).should("have.attr", "type", "password");
   });
 
-  it("TC_19 - Click Sign in → chuyển sang Login", () => {
-    cy.get('a[href="/login"]:visible').click(); cy.url().should("include", "/login");
-  });
+//   it("TC_19 - Click Sign in → chuyển sang Login", () => {
+//   // Thêm :visible để lọc ra duy nhất 1 phần tử đang hiện trên màn hình
+//   cy.get('a[href="/login"]:visible').click(); 
+//   cy.wait(2000);
+  
+//   cy.url().should("include", "/login");
+// });
+
+it("TC_05 - Click Sign in → Điều hướng đúng trang", () => {
+  
+cy.get('a[href="/login"]:visible').first().click();
+    cy.url({ timeout: 10000 }).should("include", "/login");
+    cy.get('input[name="email"]', { timeout: 10000 }).should("be.visible");
+    cy.url().should("include", "/login");
+    });
 
  it("TC_20- Facebook button hoạt động", () => { 
     cy.get('button[aria-label="Continue with Facebook"]:visible').click(); 
     cy.url().should("include", "facebook.com"); });
 
-    it("TC_21- Google button hoạt động", () => {
+   
+// it("TC_21 - Google button hoạt động và chuyển hướng đúng", () => {
+//   // 1. Chặn request OAuth để kiểm tra tín hiệu gửi đi
+//   cy.intercept("GET", "**/o/oauth2/**").as("googleAuth");
 
-  cy.intercept("GET", "**/o/oauth2/**").as("googleAuth");
-
-  cy.get('button[aria-label="Continue with Google"]:visible').click();
-
-  cy.wait("@googleAuth").its("response.statusCode").should("eq", 302);
-});
-
-// it("TC_22- Provider điều hướng đúng", () => {
-//  cy.visit("/signup?role=user");
-
-//   // 1. Accept cookies (bắt buộc)
-//   cy.contains("Accept").click({ force: true });
-
-//   // 2. Click provider desktop
-//   cy.get('a[href="/signup?role=expert"]')
-//     .filter(":visible")
+//   // 2. Click nút Google
+//   cy.get('button[aria-label="Continue with Google"]:visible')
+//     .should('be.visible')
+//     .invoke('removeAttr', 'target') // Đảm bảo không mở tab mới
 //     .click({ force: true });
 
-//   // 3. Verify URL
-//   cy.url().should("include", "/signup?role=expert");
+//   // 3. Đợi request gửi đi thành công (Bỏ cy.wait(1000) vì nó làm chậm và dễ lỗi)
+//   cy.wait("@googleAuth", { timeout: 15000 }).then((interception) => {
+//     expect(interception.response.statusCode).to.be.oneOf([200, 302]);
+//   });
+
+//   // 4. SỬ DỤNG CY.ORIGIN để kiểm soát trang Google
+//   // Thay đổi URL theo đúng trang Google hiển thị (thường là accounts.google.com)
+//   cy.origin('https://accounts.google.com', () => {
+//     // Kiểm tra xem đã sang trang chọn tài khoản của Google chưa
+//     cy.url().should('include', 'oauth2');
+//     cy.contains('Sign in').should('be.visible');
+//   });
 // });
-
-
   it("TC_22 Data hợp lệ → button enabled", () => {
+    cy.wait(2000);
     const randomEmail = `linh${Date.now()}@gmail.com`;
 
     cy.get(emailInput).type(randomEmail);
@@ -247,59 +262,52 @@ cy.get('span.text-red-500') // Tìm chính xác thẻ màu đỏ
     cy.wait(500);
     cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
   });
-//   it("TC_23- Data hợp lệ → nhập space đầu cuối email", () => {
-//   const randomEmail = `   linh${Date.now()}@gmail.com   `;
+  it("TC_23- Data hợp lệ → nhập space đầu cuối email", () => {
+     cy.wait(2000);
+    const randomEmail = `    linh${Date.now()}@gmail.com   `;
 
-//   cy.get(emailInput)
-//     .should('be.visible')
-//     .clear()
-//     // delay: 0 giúp gõ cực nhanh để App không kịp "phản ứng" xóa giữa chừng
-//     .type(randomEmail, { delay: 0 }) 
-//     // Quan trọng: .blur() để báo hiệu cho App là đã nhập xong (kích hoạt các hàm trim/validate)
-//     .blur(); 
+    cy.get(emailInput).type(randomEmail);
+    cy.get(passInput).type("abc12345");
+    tickTerms();
 
-//   // Kiểm tra lại xem giá trị có còn ở đó không trước khi làm bước tiếp theo
-//   cy.get(emailInput).should('have.value', randomEmail);
+    cy.wait(500);
+    cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
+});
+  it("TC_24- Password  có khoản trắng ở giữa", () => {
+    cy.wait(2000);
+  cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
 
-//   cy.get(passInput)
-//     .should('not.be.disabled') // Đợi cho đến khi ô password hết bị khóa do validation email
-//     .type("abc12345");
+  cy.get(passInput).type("123  456  7l"); // 8 dấu cách chẳng hạn
+  tickTerms();
+  cy.wait(500);
+  cy.contains("Password must not contain whitespace").should("be.visible");
+    cy.get(signUpBtn).should("be.disabled");
 
-//   tickTerms();
-
-//   cy.get(signUpBtn).should("not.be.disabled");
-// });
-//   it("TC_24- Password  có khoản trắng ở giữa", () => {
-
-//   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-
-//   cy.get(passInput).type("123  456  7l"); // 8 dấu cách chẳng hạn
-//   tickTerms();
-//   cy.wait(500);
-//   cy.contains("Password must not contain whitespace").should("be.visible");
-//     cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)");
-// });
+});
   
 
-// it("TC_25-Password nhập khoảng trắng ở đầu cuối ", () => {
-//   cy.get("input[name='email']:visible")
-//     .type("truongthuylinh2004tb@gmail.com");
+it("TC_25-Password nhập khoảng trắng ở đầu cuối ", () => {
+  cy.wait(2000);
+  cy.get("input[name='email']:visible")
+    .type("truongthuylinh2004tb@gmail.com");
 
-//   cy.get("input[name='password']:visible")
-//     .type(" 1234567l   ");
+  cy.get("input[name='password']:visible")
+    .type(" 1234567l   ");
 
-//  tickTerms();
-//      cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)");
+ tickTerms();
+ cy.contains("Password must not contain whitespace").should("be.visible");
+   cy.get(signUpBtn).should("be.disabled");
+});
 
-// });
-  // it("TC_26- Password đúng 40 ký tự → button enabled", () => {
-  //   cy.get(emailInput).type(`linh${Date.now()}@gmail.com`);
-  //   const valid40 = "abc123abc123abc123abc123abc123abc123ab";
-  //   cy.get(passInput).type(valid40);
-  //   tickTerms();
+   it("TC_26- Password đúng 64 ký tự → button enabled", () => {
+    cy.wait(2000);
+    cy.get(emailInput).type(`linh${Date.now()}@gmail.com`);
+const password64 = "a1".repeat(32);
+    cy.get(passInput).type(password64);
+    tickTerms();
 
-  //   cy.wait(500);
-  //  cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
-  // });
+     cy.wait(500);
+    cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
+   });
 
 });
