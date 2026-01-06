@@ -47,7 +47,7 @@ beforeEach(() => {
     },
   });
     cy.visit("/become-seller");
-cy.contains("Create Your Dream Shop")
+cy.contains("Start Selling for Free (1 Month)")
   .should("be.visible")
   .click({ force: true });
     cy.url().should("include", "become-seller-steps");

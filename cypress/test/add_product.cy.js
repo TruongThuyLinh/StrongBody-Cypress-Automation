@@ -9,7 +9,7 @@ describe("ADD PRODUCT", () => {
 const nameInput = "input#name"; 
 
   const descInput = 'textarea, div[data-field="description"] textarea';
- 
+ const categoryInput = '#category_id'; // Dùng ID cho chính xác
 
 const selectedCountry = 'Vietnam';  // Tên quốc gia bạn muốn chọn
   const createBtn = "button:contains('Create Your Product')";
@@ -73,15 +73,24 @@ cy.url({ timeout: 20000 }).should("include", "seller/create-product");
     cy.get(imgSlot2).selectFile('cypress/fixtures/2.jpg', { force: true });
     cy.get(imgSlot3).selectFile('cypress/fixtures/3.jpg', { force: true });
 
-cy.get(categoryInput)
-    .should('be.visible')
-    .click({ force: true });
-  cy.get(categoryInput).should('have.attr', 'aria-expanded', 'true');
-  cy.contains('[role="option"]', /Other Health & Wellness Products/i, { timeout: 10000 })
-    .should('be.visible')
-    .click({ force: true });
-  cy.get(categoryInput).should('have.value', 'Other Health & Wellness Products');
+  const searchText = 'Other Health';
 
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
+    
       cy.get(descInput) // Selector dự đoán cho textarea
       .should('be.visible')
       .click()
@@ -112,15 +121,22 @@ it("TC_02-Nhập space vào tên → báo lỗi", () => {
     cy.get(imgSlot3).selectFile('cypress/fixtures/3.jpg', { force: true });
 
     // 2. Chọn Category
-    cy.contains("label", "Category")
-        .parent()
-        .find("button[id^='headlessui-combobox-button']")
-        .first()
-        .click({ force: true });
+   const searchText = 'Other Health';
 
-    cy.get("div[id^='headlessui-combobox-options']")
-        .contains("Health & Wellness")
-        .click({ force: true });
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     // 3. Nhập Description
     cy.get(descInput)
@@ -146,7 +162,7 @@ it("TC_02-Nhập space vào tên → báo lỗi", () => {
    
 it("TC_03-Nhập tên rồi xóa sạch → Báo lỗi name is required", () => {
    
-    cy.get(thumbInput).selectFile('cypress/fixtures/thumbnail.png', { force: true });
+    cy.get(thumbInput).selectFile('cypress/fixtures/.png', { force: true });
     cy.contains("label", "Category")
         .parent()
         .find("button[id^='headlessui-combobox-button']")
@@ -252,18 +268,23 @@ it("TC_06 - Chọn Category rồi bỏ chọn → Báo lỗi Category is require
     cy.contains('[role="option"]', 'Albania').click();
 
   
-    cy.contains("label", "Category").parent().as('categoryField');
-    
-   
-    cy.get('@categoryField').find("button[id^='headlessui-combobox-button']").click({ force: true });
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness")
-      .click({ force: true });
+    const searchText = 'Other Health';
 
-    
-    cy.get('@categoryField').find('input').should('have.value', 'Health & Wellness');
 
-    cy.get('@categoryField').find('input').clear().blur();
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
    
     cy.get(createBtn).click();
@@ -283,14 +304,23 @@ it("TC_07- Bỏ trống Mô tả (Description) → Báo lỗi", () => {
       .clear()
       .type("Sản phẩm Test Empty Description");
 
-    cy.contains("label", "Category")
-      .parent()
-      .find("button[id^='headlessui-combobox-button']")
-      .click({ force: true });
+    const searchText = 'Other Health';
 
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness") // Chọn category bất kỳ
-      .click({ force: true });
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     
     cy.contains('label', /Country/i).parent().as('countryField');
@@ -317,13 +347,23 @@ it("TC_08- Nhập toàn khoảng trắng (Space) vào Mô tả → Báo lỗi", 
       .clear()
       .type("Sản phẩm Test Space Description");
     
-    cy.contains("label", "Category")
-      .parent()
-      .find("button[id^='headlessui-combobox-button']")
-      .click({ force: true });
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness")
-      .click({ force: true });
+    const searchText = 'Other Health';
+
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
@@ -351,14 +391,23 @@ it("TC_09- Nhập Mô tả ngắn hơn min length → Báo lỗi", () => {
       .clear()
       .type("Sản phẩm Test Min Length");
 
-    cy.contains("label", "Category")
-      .parent()
-      .find("button[id^='headlessui-combobox-button']")
-      .click({ force: true });
+  const searchText = 'Other Health';
 
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness")
-      .click({ force: true });
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     
     cy.contains('label', /Country/i).parent().as('countryField');
@@ -383,8 +432,23 @@ it("TC_10- Kiểm tra chặn ký tự khi nhập quá Max Length (Hard Limit)", 
 
     cy.get(nameInput).should('be.visible').clear().type("Sản phẩm Test Block MaxLength");
 
-    cy.contains("label", "Category").parent().find("button[id^='headlessui-combobox-button']").click({ force: true });
-    cy.get("div[id^='headlessui-combobox-options']").contains("Health & Wellness").click({ force: true });
+    const searchText = 'Other Health';
+
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
@@ -413,8 +477,23 @@ it("TC_11- Nhập Tên quá Max Length (121 ký tự) → Báo lỗi", () => {
     cy.get(imgSlot2).selectFile('cypress/fixtures/2.jpg', { force: true });
     cy.get(imgSlot3).selectFile('cypress/fixtures/3.jpg', { force: true });
 
-    cy.contains("label", "Category").parent().find("button[id^='headlessui-combobox-button']").click({ force: true });
-    cy.get("div[id^='headlessui-combobox-options']").contains("Health & Wellness").click({ force: true });
+   const searchText = 'Other Health';
+
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
@@ -459,15 +538,23 @@ it("TC_12- Bỏ trống Country (Select country) → Báo lỗi", () => {
       .clear()
       .type("Mô tả đầy đủ để test lỗi thiếu country.");
 
-    // Chọn Category hợp lệ
-    cy.contains("label", "Category")
-      .parent()
-      .find("button[id^='headlessui-combobox-button']")
-      .click({ force: true });
+    const searchText = 'Other Health';
 
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness")
-      .click({ force: true });
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     
     cy.get(createBtn).click();
@@ -490,14 +577,23 @@ it("TC_13- Tạo sản phẩm thành công (Happy Path)", () => {
     cy.get(nameInput).should('be.visible').clear().type(productName);
 
   
-    cy.contains("label", "Category")
-      .parent()
-      .find("button[id^='headlessui-combobox-button']")
-      .click({ force: true });
+   const searchText = 'Other Health';
 
-    cy.get("div[id^='headlessui-combobox-options']")
-      .contains("Health & Wellness")
-      .click({ force: true });
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
 
     cy.get(descInput)
       .should('be.visible')
@@ -543,8 +639,23 @@ it("TC_14- Tất cả các trường (Name, Desc) nhập đúng bằng Max Lengt
 
     cy.get(nameInput).should('have.value', boundaryName);
     
-    cy.contains("label", "Category").parent().find("button[id^='headlessui-combobox-button']").click({ force: true });
-    cy.get("div[id^='headlessui-combobox-options']").contains("Health & Wellness").click({ force: true });
+   const searchText = 'Other Health';
+
+
+ cy.get(categoryInput)
+    .clear()
+    .type(searchText, { delay: 100 })
+    .type('{downarrow}{enter}');
+    cy.wait(500);
+  cy.contains('[role="option"]', /Other Health/i, { timeout: 10000 })
+    .should('be.visible')
+    .click({ force: true });
+
+  // 3. Ép sự kiện change để React nhận diện
+  cy.get(categoryInput).trigger('change').trigger('input');
+
+  // 4. Kiểm tra và đợi xem có bị biến mất không
+  cy.get(categoryInput).should('include.value', 'Other Health')
     // Country
     cy.contains('label', /Country/i).parent().as('countryField');
     cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();

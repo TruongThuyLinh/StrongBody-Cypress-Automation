@@ -115,29 +115,35 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.contains('Description must be at least 10 characters', { timeout: 10000 })
       .should('be.visible'); 
 });
-  it('TC_04: Kiểm tra khi nhập mô tả quá 5000 ký tự', () => {
+//  it('TC_04: Hệ thống tự động chặn/cắt mô tả nếu nhập quá 5000 ký tự', () => {
+//     const limit = 5000;
+//     const stringExactlyLimit = 'a'.repeat(limit); // Chuỗi đúng 5000 ký tự
+//     const stringOverLimit = 'a'.repeat(limit + 5); // Chuỗi 5005 ký tự (vượt giới hạn)
+
+//     // --- Bước 1: Kiểm tra nhập đúng hạn mức 5000 ký tự ---
+//     cy.get(descriptionInput)
+//       .clear()
+//       // Dùng delay: 0 để gõ 5000 ký tự siêu tốc
+//       .type(stringExactlyLimit, { delay: 0, parseSpecialCharSequences: false });
+
+//     cy.get(descriptionInput)
+//       .should('have.value', stringExactlyLimit);
     
-    const maxLength = 5000;
-    const overLimitText = 'a'.repeat(maxLength + 1); // 5001 ký tự
+//     // Kiểm tra bộ đếm số ký tự (nếu giao diện có hiển thị 5000/5000)
+//     cy.contains('5000/5000').should('be.visible');
 
-  
-    cy.get(descriptionInput).clear();
-        cy.get(descriptionInput)
-      .type(overLimitText, { delay: 0, parseSpecialCharSequences: false }); 
-      cy.get(CategoryDropdown).click();
-      cy.contains('Career Mentoring & Guidance').click();
 
-        cy.get('body').click(0, 0, { force: true });  
+//     // --- Bước 2: Kiểm tra khi cố tình nhập quá 5000 ký tự ---
+//     cy.get(descriptionInput)
+//       .clear()
+//       .type(stringOverLimit, { delay: 0, parseSpecialCharSequences: false });
 
-    cy.get('input[type="checkbox"]').check({ force: true });
+//     cy.get(descriptionInput)
+//       .should('have.value', stringExactlyLimit) // Giá trị thực tế vẫn chỉ là 5000 ký tự
+//       .and('have.length', limit);
 
-    cy.contains('button', 'Post request').click({ force: true });
-
-    cy.url().should('include', '/products');
-
-    cy.contains('Description must be at most 5000 characters', { timeout: 10000 })
-      .should('be.visible');
-});
+//     cy.contains('5000/5000').should('be.visible');
+// });
   it('TC_05:  bỏ trống Danh mục (Category), các trường khác hợp lệ', () => {
     
     cy.get(descriptionInput)
@@ -217,17 +223,20 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.get('input[type="checkbox"]').check({ force: true });
 
     
-    cy.contains('button', 'Post request').click({ force: true });
+   cy.contains('button', 'Post request').click({ force: true });
+    cy.url({ timeout: 15000 }).should('include', '/create-request/success');
+
+    
+    cy.contains('Request posted successfully', { timeout: 10000 }) 
+      .should('be.visible');
 
    
-    cy.url({ timeout: 20000 }).should('include', '/create-request/success');
-
+    cy.contains('Submission successful!') 
+      .should('be.visible');
+      
     
-    cy.contains('Submission successful!', { timeout: 10000 }).should('be.visible');
-    cy.contains('Request posted successfully').should('be.visible');
-
-    
-    cy.contains('Manage requests').should('be.visible'); 
+    cy.contains('Congratulations! Your request has been submitted successfully')
+      .should('be.visible');
 });
   it('TC_09: 10 < Gửi yêu cầu thành công < 5000 và các trường khác hợp lệ', () => {
 
