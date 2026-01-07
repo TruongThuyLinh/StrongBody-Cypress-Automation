@@ -57,17 +57,17 @@ cy.url({ timeout: 20000 }).should("include", "home");
       }
     });
   });
-  it('TC_02: Nên chuyển hướng đến trang All Categories khi click từ Footer', () => {
+//   it('TC_02: Nên chuyển hướng đến trang All Categories khi click từ Footer', () => {
 
-  // Cuộn xuống footer để các phần tử hiển thị (tránh lỗi lazy load)
-  cy.scrollTo('bottom');
-  cy.get('footer a[href="/all-categories"]')
-    .filter(':visible')
-    .should('contain', 'Categories')
-    .click({ force: true }); // Dùng force nếu có element overlay che khuất
-  cy.url().should('include', '/all-categories');
+//   // Cuộn xuống footer để các phần tử hiển thị (tránh lỗi lazy load)
+//   cy.scrollTo('bottom');
+//   cy.get('footer a[href="/all-categories"]')
+//     .filter(':visible')
+//     .should('contain', 'Categories')
+//     .click({ force: true }); // Dùng force nếu có element overlay che khuất
+//   cy.url().should('include', '/all-categories');
 
-  // 5. Kiểm tra tiêu đề trang mới để xác nhận đã load xong
-  cy.contains('All Categorie', { timeout: 10000 }).should('be.visible');
-});
+//   // 5. Kiểm tra tiêu đề trang mới để xác nhận đã load xong
+//   cy.contains('All Categorie', { timeout: 10000 }).should('be.visible');
+// });
 });

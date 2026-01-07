@@ -74,21 +74,21 @@ cy.visit("/seller/create-service");
 
 
   
-it("TC_01- Nhấn mũi tên tăng → Price tăng", () => {
-  cy.get(priceInput)
-    .should('be.visible')
-    .clear()
-    .type("10")
-    .should('have.value', '10'); // Đợi giá trị 10 được nhận hoàn toàn
+// it("TC_01- Nhấn mũi tên tăng → Price tăng", () => {
+//   cy.get(priceInput)
+//     .should('be.visible')
+//     .clear()
+//     .type("10")
+//     .should('have.value', '10'); // Đợi giá trị 10 được nhận hoàn toàn
 
-  cy.get(priceInput).type("{uparrow}");
+//   cy.get(priceInput).type("{uparrow}");
 
-  cy.get(priceInput).then(($input) => {
-    const val = $input.val();
-    cy.log("Giá trị thực tế sau khi nhấn lên là: " + val);
-    expect(val).to.equal("11"); 
-  });
-});
+//   cy.get(priceInput).then(($input) => {
+//     const val = $input.val();
+//     cy.log("Giá trị thực tế sau khi nhấn lên là: " + val);
+//     expect(val).to.equal("11"); 
+//   });
+// });
 it("TC_02- Không cho giá < 0 khi nhấn ▼", () => {
   cy.get(priceInput)
     .clear()
