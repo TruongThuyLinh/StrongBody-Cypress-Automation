@@ -47,13 +47,13 @@ it("TC_04 - Checkbox Remember me hoạt động đúng", () => {
 
 
     it("TC_05 - Click Forgot Password → Điều hướng đúng trang", () => {
-      cy.contains("Forgot Password").should("have.attr", "href");
-  cy.contains("Forgot Password").click({ force: true });
-  cy.wait(2000);
+  // Tìm thẻ <a> có href chính xác là /forgot-password
+  cy.get('a[href="/forgot-password"]')
+    .should("be.visible")
+    .click();
 
-  // 2️⃣ Kiểm tra URL được điều hướng đúng
   cy.url().should("include", "/forgot-password");
-    });
+});
 
     it("TC_06 - Nút Sign In disable khi chưa nhập đủ dữ liệu", () => {
       cy.get(signInBtn).should("be.disabled");
@@ -178,13 +178,13 @@ it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
 
     });
  
-it("TC_17 - Password chỉ toàn khoảng trắng → không hợp lệ", () => {
-
+it("TC_17 - Password chỉ toàn khoảng trắng → Nút Sign in phải bị disabled", () => {
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-  cy.get(passInput).type("          ");  //  dấu cách
+  cy.get(passInput).type("          "); // Nhập toàn khoảng trắng
 
-   cy.get(signInBtn).click();
-        cy.contains("Password must not contain whitespace").should("be.visible");
+  cy.get(signInBtn).should('be.disabled');
+
+  cy.contains("Password must not contain whitespace").should("be.visible");
 });
 
     it("TC_18- Nhập mật khẩu rồi xoá → hiện lỗi & nút Sign In disable", () => {
