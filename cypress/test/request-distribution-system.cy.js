@@ -1,6 +1,6 @@
 Cypress.on("uncaught:exception", () => false);
 
-describe("Home", () => {
+describe("Request Distribution System", () => {
 
     const login = () => {
   cy.visit("/login");

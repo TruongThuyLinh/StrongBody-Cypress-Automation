@@ -1,6 +1,6 @@
 Cypress.on("uncaught:exception", () => false);
 
-describe("Home", () => {
+describe("Trans Your Voice", () => {
 
     const login = () => {
   cy.visit("/login");

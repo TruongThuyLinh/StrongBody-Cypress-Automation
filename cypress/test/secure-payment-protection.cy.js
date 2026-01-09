@@ -1,6 +1,6 @@
 Cypress.on("uncaught:exception", () => false);
 
-describe("Home", () => {
+describe("Secure Payment Protection", () => {
 
     const login = () => {
   cy.visit("/login");

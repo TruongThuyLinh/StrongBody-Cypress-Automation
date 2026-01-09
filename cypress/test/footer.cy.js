@@ -2,7 +2,7 @@
 
 Cypress.on("uncaught:exception", () => false);
 
-describe("Home", () => {
+describe("Footer", () => {
 
     const login = () => {
   cy.visit("/login");
@@ -18,7 +18,7 @@ describe("Home", () => {
 
   cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("bibise1388@crsay.com", { delay: 100 });
+  cy.get("input[name='email']").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
   

@@ -1,6 +1,6 @@
 Cypress.on("uncaught:exception", () => false);
 
-describe("Home", () => {
+describe("Platform Operation", () => {
 
     const login = () => {
   cy.visit("/login");
@@ -54,19 +54,15 @@ const SELECTORS = {
     cy.get(SELECTORS.getBuild_careBtn)
         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
         .should('be.visible')
-        // Kiểm tra đúng nội dung chữ trên nút
+     
         .and('contain', 'Start Your Journey Now')
-        // Kiểm tra thuộc tính href dẫn về trang chọn companions
         .and('have.attr', 'href', '/choose-your-companions');
 
-    // 2. Thực hiện Click
-    // Sử dụng { force: true } nếu nút bị che khuất bởi các hiệu ứng animation
+  
     cy.get(SELECTORS.getBuild_careBtn).click({ force: true });
 
-    // 3. Kiểm tra URL mục tiêu sau khi click
     cy.url({ timeout: 20000 }).should("include", "/choose-your-companions"); 
     
-    // 4. Kiểm tra tiêu đề đặc trưng trên trang mới
     cy.contains('Select Your Care Team', { timeout: 10000 }).should('be.visible');
 });
 });

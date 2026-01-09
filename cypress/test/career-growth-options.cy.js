@@ -1,6 +1,6 @@
 Cypress.on("uncaught:exception", () => false);
 
-describe("Home", () => {
+describe("Career Growth Options", () => {
 
     const login = () => {
   cy.visit("/login");
