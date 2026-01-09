@@ -82,16 +82,49 @@ cy.url({ timeout: 20000 }).should("include", "home");
   cy.url().should('include', '/become-seller');
  // cy.contains('Become a Seller', { timeout: 10000 }).should('be.visible');
 });
-it('TC_07: Click vào dịch vụ Orthodontics và kiểm tra chuyển hướng', () => {
-
-  cy.get('a[aria-label="Orthodontics & Smile Aesthetics Clinic"]')
-    .should('exist')
-    .should('have.attr', 'href', '/service/orthodontics-smile-aesthetics-clinic/sb14882')
-    .click({ force: true });
-
-  cy.url().should('include', '/service/orthodontics-smile-aesthetics-clinic/sb14882');
-
-  cy.contains( 'Orthodontics', { timeout: 10000 }).should('be.visible');
+it("TC_07  - Duyệt và kiểm tra tất cả các thẻ dịch vụ trong mục Suggest For You", () => {
+  // 1. Lấy tổng số lượng thẻ dịch vụ có trong grid
+  cy.get('div.grid a[href*="/service/"]').then(($links) => {
+    const itemCount = $links.length;
+    cy.log(`Tổng số dịch vụ tìm thấy: ${itemCount}`);
+    for (let i = 0; i < itemCount; i++) {
+      // 2. TRUY VẤN LẠI phần tử ở mỗi vòng lặp để tránh lỗi "stale element"
+      cy.get('div.grid a[href*="/service/"]')
+        .eq(i)
+        .scrollIntoView({ duration: 300, offset: { top: -100, left: 0 } })
+        .should("be.visible")
+        .click({ force: true });
+        cy.wait(4000); 
+      // 3. Kiểm tra URL đã chuyển hướng đúng định dạng /service/...
+      cy.url().should("include", "/service/");
+    
+      cy.get('body').should('not.be.empty'); 
+      cy.go("back");
+      cy.get('div.grid', { timeout: 15000 }).should('be.visible');
+      cy.wait(1000); 
+    }
+  });
 });
+const SELECTORS = {
+    nextPageBtn: 'button[aria-label="Next page"]',
+    // Giả sử bạn có một danh sách sản phẩm hoặc số trang để kiểm tra sau khi click
+    productItem: '.product-card', 
+    pageActiveNumber: '.active-page-class' 
+};
+// it("TC_03 - Kiểm tra nút Next Page chuyển sang trang tiếp theo thành công", () => {
+//     cy.get(SELECTORS.nextPageBtn)
+//         .scrollIntoView()
+//         .should('be.visible')
+//         .and('not.be.disabled'); 
 
+  
+//     cy.get(SELECTORS.nextPageBtn).click();
+
+   
+//     cy.url().should('include', 'page=');
+
+//    // cy.get(SELECTORS.productItem, { timeout: 10000 }).should('be.visible');
+
+   
+// });
 });

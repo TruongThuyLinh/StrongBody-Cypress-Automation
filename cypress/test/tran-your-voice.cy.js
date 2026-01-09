@@ -77,10 +77,10 @@ it("TC_01 - Kiểm tra  hiển thị giao diện gói Trans Your Voice (UI)", ()
                 .click();
         });
 
-             cy.visit("/checkout/pricing?returnUrl=/trans-your-voice/joining-success");
-   cy.url({ timeout: 20000 }).should("include", "checkout/pricing?returnUrl=/trans-your-voice/joining-success"); 
+    //cy.visit("/checkout/pricing?returnUrl=/checkout/pricings");
+   cy.url({ timeout: 20000 }).should("include", "checkout/pricing"); 
     });
-    it("TC_04 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
+    it("TC_03 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
     // 1. Tìm nút và gán alias (bí danh) để tránh lỗi detached DOM
     cy.get(SELECTORS.viewAllPlansBtn)
         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })

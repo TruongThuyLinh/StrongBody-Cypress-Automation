@@ -47,14 +47,14 @@ beforeEach(() => {
     },
   });
     cy.visit("/become-seller");
+    cy.wait(2000);
 cy.contains("Start Selling for Free (1 Month)")
   .should("be.visible")
-  .click({ force: true });
+  .click();
     cy.url().should("include", "become-seller-steps");
    
     cy.get(shopNameInput).should("be.visible");
   });
-
 
   //************************************************************************************************/              
                                    // STEP 4
@@ -62,7 +62,7 @@ cy.contains("Start Selling for Free (1 Month)")
 // ------------------------------------------------------
   // UNHAPPY CASE
   // ------------------------------------------------------
-  it("TC_20-Bỏ trống Introduce about yourself->Báo lỗi", () => {
+  it("TC_23-Bỏ trống Introduce about yourself->Báo lỗi", () => {
     
 
   // Step 1: Shop Name
@@ -91,33 +91,13 @@ cy.contains("Family Physician").should("be.visible");
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-//  // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-  
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
-  // step 4
-  // Không nhập gì
+ 
   cy.get(aboutYourselfInput).should("be.visible");
 
   cy.contains("button", /^OK$/).should("be.disabled");
 
 });  
-it("TC_21-Chỉ nhập space Introduce about yourself->Báo lỗi", () => {
+it("TC_24-Chỉ nhập space Introduce about yourself->Báo lỗi", () => {
 
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
@@ -145,33 +125,16 @@ cy.contains("Family Physician").should("be.visible");
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
 
-//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
-  // step 4
-  // Chỉ nhập space
-  cy.get(aboutYourselfInput).type("   ").should("have.value", "   ");
-      
+  cy.get(aboutYourselfInput)
+    .should("be.visible")
+    .type("   ", { delay: 100 });
+      cy.contains("Introduction must be at least 100 characters").should("be.visible");
      cy.contains("button", /^OK$/).should("be.disabled");
 
 }); 
 
-it("TC_22 - Introduce about yourself nhỏ hơn minlengh-> báo lỗi ", () => {
+it("TC_25 - Introduce about yourself nhỏ hơn minlengh-> báo lỗi ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -223,14 +186,12 @@ cy.contains("Family Physician").should("be.visible");
     .type(text99)
     .blur(); // kích hoạt validate
 
-  // ❌ Expect validation error
-  //cy.contains("100 - 2000 characters").should("be.visible");
+  
   cy.contains("Introduction must be at least 100 characters").should("be.visible");
 
-  // ❌ Button OK vẫn phải disabled
   cy.contains("button", /^OK$/).should("be.disabled");
 });
-it("TC_23 - Nhập Introduce about yourself rồi xóa -> Nút OK phải bị disabled", () => {
+it("TC_26 - Nhập Introduce about yourself rồi xóa -> Nút OK phải bị disabled", () => {
   cy.get(shopNameInput).type("Linh Store");
   cy.contains("button", /^OK$/).click();
   cy.url({ timeout: 10000 }).should("include", "step=profession");
@@ -252,7 +213,7 @@ cy.contains("Family Physician").should("be.visible");
   // Tùy vào message hệ thống của bạn, ví dụ:
   cy.contains(/required|at least 100 characters/i).should("be.visible");
 });
-it("TC_24- Introduce about yourself quá maxlengh ", () => {
+it("TC_27- Introduce about yourself quá maxlengh ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -279,24 +240,6 @@ cy.contains("Family Physician").should("be.visible");
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 const overMax = "a".repeat(2100);   // cố tình vượt 2000 ký tự
 
   cy.get(aboutYourselfInput)
@@ -321,7 +264,7 @@ const overMax = "a".repeat(2100);   // cố tình vượt 2000 ký tự
  });
 });
 
-it("TC_25-nhập số điện thoại vào Introduce about yourself->báo lỗi ", () => {
+it("TC_28-nhập số điện thoại vào Introduce about yourself->báo lỗi ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -348,25 +291,6 @@ cy.contains("Family Physician").should("be.visible");
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-//    // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -375,7 +299,7 @@ cy.get(aboutYourselfInput)
   cy.contains("button", /^OK$/).should("be.disabled");
 });
 
-it("TC_26-nhập email vào Introduce about yourself ", () => {
+it("TC_29-nhập email vào Introduce about yourself ", () => {
 // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -402,28 +326,6 @@ cy.contains("Family Physician").should("be.visible");
   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
-
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-// // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-
-//   // Validate selected value
-//   cy.get("input[placeholder='Select a category to sell your service']")
-//     .should("have.value", "MedSupport");
-
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 cy.get(aboutYourselfInput)
   .clear()
   .type("If you need more information, you can contact me through the appropriate communication channels. I am always ready to support you and provide everything you are looking for.Contact me at truongthuylinh2004tb@gmail.com for more info.");
@@ -436,7 +338,7 @@ cy.get(aboutYourselfInput)
 // ------------------------------------------------------
   // UNHAPPY CASE
   // ------------------------------------------------------
-  it("TC_27- minlengh<Introduce about yourself hợp lệ <maxlengh ", () => {
+  it("TC_30- minlengh<Introduce about yourself hợp lệ <maxlengh ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -462,25 +364,6 @@ cy.contains("Family Physician").should("be.visible");
   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
-
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-// // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -511,7 +394,7 @@ cy.url().should("include", "become-seller-steps?step=certification");
  // ------------------------------------------------------
   // UNHAPPY CASE
   // ------------------------------------------------------
-it("TC_28: Step 5 dũ liệu hợp lệ", () => {
+it("TC_31: Step 5 dũ liệu hợp lệ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -537,25 +420,6 @@ cy.contains("Family Physician").should("be.visible");
   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
-
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -580,7 +444,7 @@ cy.get(aboutYourselfInput)
  // ------------------------------------------------------
   // UNHAPPY CASE 
   // ------------------------------------------------------
-  it("TC_29: để trống country", () => {
+  it("TC_32: để trống country", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -606,25 +470,6 @@ cy.contains("Family Physician").should("be.visible");
   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
-
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -649,137 +494,148 @@ cy.get(aboutYourselfInput)
 
 
  });
- it("TC_30: Nhập Country rồi xóa (Type & Clear)", () => {
-    // --- STEP 1: SHOP NAME ---
-    cy.get(shopNameInput).type("Linh Store");
-    cy.contains("button", /^OK$/).should("not.be.disabled").click();
-
-    cy.url({ timeout: 10000 }).should("include", "step=profession");
-    //cy.contains("Formally Trained & Certified Expert").click();
-    
-   cy.get(specialtiesInputSelector).click();
-  cy.contains("div", "Family Physician").click(); 
-// Thêm force: true vào lệnh click
-cy.get('body').click(0, 0, { force: true });  
-cy.contains("Family Physician").should("be.visible");
-
-    // Nhập năm kinh nghiệm
-    cy.get(yearsInput).type("3");
-    cy.contains("button", /^OK$/).should("not.be.disabled").click();
-
-//      // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-//     // Click OK Step 3
+//  it("TC_33: Nhập Country rồi xóa (Type & Clear)", () => {
+//     // --- STEP 1: SHOP NAME ---
+//     cy.get(shopNameInput).type("Linh Store");
 //     cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
-    // --- STEP 4: ABOUT YOURSELF ---
-    cy.get(aboutYourselfInput)
-      .clear()
-      .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
+//     cy.url({ timeout: 10000 }).should("include", "step=profession");
+//     //cy.contains("Formally Trained & Certified Expert").click();
     
-    cy.contains("button", /^OK$/).should("not.be.disabled").click();
-    cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//    cy.get(specialtiesInputSelector).click();
+//   cy.contains("div", "Family Physician").click(); 
+// // Thêm force: true vào lệnh click
+// cy.get('body').click(0, 0, { force: true });  
+// cy.contains("Family Physician").should("be.visible");
 
-    cy.get(countryInput).should("be.visible");
-    cy.get(fullAddressInput).clear().type('123 Le Loi, Hoan Kiem, Hanoi');
+//     // Nhập năm kinh nghiệm
+//     cy.get(yearsInput).type("3");
+//     cy.contains("button", /^OK$/).should("not.be.disabled").click();
+
+//     // --- STEP 4: ABOUT YOURSELF ---
+//     cy.get(aboutYourselfInput)
+//       .clear()
+//       .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
     
-    cy.get(countryInput).type("Vietnam");
+//     cy.contains("button", /^OK$/).should("not.be.disabled").click();
+//     cy.contains("button", /^OK$/).should("not.be.disabled").click();
+
+//     cy.get(countryInput).should("be.visible");
+//     cy.get(fullAddressInput).clear().type('123 Le Loi, Hoan Kiem, Hanoi');
+    
+//     cy.get(countryInput).type("Vietnam");
    
-    cy.contains("button", /^OK$/).should("not.be.disabled");
+//     cy.contains("button", /^OK$/).should("not.be.disabled");
 
-    cy.get(countryInput).clear();
+//     cy.get(countryInput).clear();
     
-    cy.get(countryInput).blur(); 
+//     cy.get(countryInput).blur(); 
+//     cy.contains("Country is required")
+//     .should("be.visible");
 
-    cy.contains("button", /^OK$/).should("be.disabled");
-
-    // (Tùy chọn) Kiểm tra thông báo lỗi đỏ nếu có
-    // cy.contains("Country is required").should("be.visible");
-});
-it("TC_31: Nhập Country sai rồi click ra ngoài (Invalid Input & Click Body)", () => {
-    // --- PHẦN 1: SETUP (Chạy qua Step 1 -> Step 4) ---
-    // (Mình giữ nguyên phần này để bạn copy chạy được ngay)
+//     cy.contains("button", /^OK$/).should("be.disabled");
+// });
+it("TC_34: Nhập Country sai rồi click ra ngoài (Invalid Input & Click Body)", () => {
     
-    // Step 1: Shop Name
     cy.get(shopNameInput).type("Linh Store");
     cy.contains("button", /^OK$/).click();
 
-    // Step 2: Profession
     cy.contains("Formally Trained & Certified Expert").click();
     cy.get(specialtiesInputSelector).click();
   cy.contains("div", "Family Physician").click(); 
-// Thêm force: true vào lệnh click
+
 cy.get('body').click(0, 0, { force: true });  
 cy.contains("Family Physician").should("be.visible");
     cy.get(yearsInput).type("3");
     cy.contains("button", /^OK$/).click();
+    
 
-   
-//      // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//   // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-// cy.contains("button", /^OK$/).click();
-    // Step 4: About Yourself
     cy.get(aboutYourselfInput).clear() 
     .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
     cy.contains("button", /^OK$/).click();
      cy.contains("button", /^OK$/).click();
-
-    // --- PHẦN 2: STEP 5 - TEST LOCATION (LOGIC CHÍNH) ---
     
     cy.get(countryInput).should("be.visible");
 
-    // 1. Nhập Full Address HỢP LỆ trước 
-    // (Để cô lập lỗi: Nếu nút OK disable thì chắc chắn là do Country sai)
     cy.get(fullAddressInput).clear().type('123 Le Loi, Hoan Kiem, Hanoi');
-
-    // 2. NHẬP COUNTRY SAI (Invalid Input)
     const invalidCountry = "Quoc Gia Ao Ma 123";
     cy.get(countryInput).type(invalidCountry);
 
-    // 3. CLICK RA NGOÀI (Click Body)
-    // Hành động này giúp đóng dropdown (nếu có) và trigger validation
     cy.get('body').click(0, 0, { force: true });
 
-    // --- PHẦN 3: VERIFY ---
-
-    // 1. Kiểm tra nút OK phải bị DISABLE
-    // Hệ thống không được chấp nhận quốc gia rác
     cy.contains("button", /^OK$/).should("be.disabled");
+    cy.contains("Country is required")
+    .should("be.visible");
 
-    // 2. (Tùy chọn) Kiểm tra hành vi của ô Input
-    // Thường các form xịn sẽ tự xóa text rác đi nếu không khớp data
-    // cy.get(countryInput).should('have.value', ''); 
-    
-    // Hoặc hiển thị thông báo lỗi
-    // cy.contains("No options").should("be.visible");
+
 });
- it("TC_32: Chỉ nhập space country", () => {
+// it("TC_35: Tìm kiếm Country và chọn kết quả hợp lệ -> Nút OK được bật", () => {
+   
+//     cy.get(shopNameInput).clear().type("Linh Store");
+//     cy.contains("button", /^OK$/).click();
+//     cy.contains("Formally Trained & Certified Expert").click();
+//     cy.get(specialtiesInputSelector).click().type("Fami");
+//     cy.contains("div", "Family Physician").should("be.visible").click(); 
+//     cy.get('body').click(0, 0, { force: true }); // Đóng dropdown specialties
+//     cy.get(yearsInput).clear().type("3");
+//     cy.contains("button", /^OK$/).click();
+
+//     cy.get(aboutYourselfInput).clear() 
+//         .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
+//     cy.contains("button", /^OK$/).click();
+//      cy.contains("button", /^OK$/).click();
+//     cy.wait(500); 
+//     cy.get(fullAddressInput).should("be.visible").clear().type('123 Le Loi, Hanoi');
+//     cy.get(countryInput)
+//         .should("be.visible")
+//         .clear()
+//         .type("Viet");
+//     cy.contains("div", "Vietnam", { timeout: 10000 })
+//         .should("be.visible")
+//         .click();
+//     cy.get('body').click(0, 0, { force: true });
+
+
+//     cy.get(countryInput).should('not.have.value', ''); 
+
+//     cy.contains("button", /^OK$/)
+//         .should("be.visible")
+//         .and("not.be.disabled"); //
+// });
+it("TC_36: Nhập space trước 'Viet' và chọn 'Vietnam'  -> Nút OK được bật", () => {
+   
+    cy.get(shopNameInput).clear().type("Linh Store");
+    cy.contains("button", /^OK$/).click();
+    cy.contains("Formally Trained & Certified Expert").click();
+    cy.get(specialtiesInputSelector).click().type("Fami");
+    cy.contains("div", "Family Physician").should("be.visible").click(); 
+    cy.get('body').click(0, 0, { force: true }); // Đóng dropdown specialties
+    cy.get(yearsInput).clear().type("3");
+    cy.contains("button", /^OK$/).click();
+
+    cy.get(aboutYourselfInput).clear() 
+        .type("Should you require any further information or clarification regarding this matter, please do not hesitate to reach out to me via the designated communication channels.");
+    cy.contains("button", /^OK$/).click();
+     cy.contains("button", /^OK$/).click();
+    cy.wait(500); 
+    cy.get(fullAddressInput).should("be.visible").clear().type('123 Le Loi, Hanoi');
+    cy.get(countryInput)
+        .should("be.visible")
+        .clear()
+        .type("    Viet");
+    cy.contains("div", "Vietnam", { timeout: 10000 })
+        .should("be.visible")
+        .click();
+    cy.get('body').click(0, 0, { force: true });
+
+
+    cy.get(countryInput).should('not.have.value', ''); 
+
+    cy.contains("button", /^OK$/)
+        .should("be.visible")
+        .and("not.be.disabled"); //
+});
+ it("TC_37: Chỉ nhập space country", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -805,25 +661,6 @@ cy.contains("Family Physician").should("be.visible");
   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
-
-//   // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-// // Chờ menu option mount và visible
-// cy.contains("MedSupport", { timeout: 5000 })
-//   .should('be.visible')  // đảm bảo menu hiển thị
-//   .click({ force: true });
-  
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()
@@ -844,25 +681,20 @@ cy.get(aboutYourselfInput)
     cy.get(countryInput).type('   ');
 
 cy.get('body').click(0, 0, { force: true });  
-    // Kiểm tra value thực tế (chưa trim) chứa spaces
-    cy.get(countryInput).invoke('val').then(val => {
-      expect(val).to.match(/^\s+$/);
-    });
-
-
- // Điền full address hợp lệ
+   
     cy.get(fullAddressInput).clear().type('123 Le Loi, Hoan Kiem, Hanoi 100000');
-    //  cy.contains("Country is required")
-    // .should("be.visible");
-
-    cy.contains("button", /^OK$/).should("be.disabled");
+    
+  cy.contains("button", /^OK$/).should("be.disabled");
+    cy.contains("Country is required")
+    .should("be.visible");
+    
 
 
  });
  // ------------------------------------------------------
   // HAPPY CASE Name Shop
   // ------------------------------------------------------
-it("TC_33:Dữ liệu hợp lê-> step 7", () => {
+it("TC_38:Dữ liệu hợp lê-> step 7", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -889,26 +721,6 @@ cy.contains("Family Physician").should("be.visible");
 
   cy.url().then(url => cy.log("After Step2 URL:", url));
 
-  // --- Step 3: Category ---
-//   cy.url({ timeout: 10000 }).should("include", "step=category");
-
-//  // 1. Định vị từ Input -> Lên Cha -> Tìm Button
-// cy.get("input[placeholder='Select a category to sell your service']")
-//   .parent()           // Leo lên thẻ chứa (Wrapper)
-//   .find("button")     // Tìm thẻ <button> bạn vừa gửi (thay vì tìm svg)
-//   .should('exist')
-//   .and('not.be.disabled') // QUAN TRỌNG: Chờ cho nút này Enable (sẵn sàng)
-//   .click({ force: true }); // Click mạnh
-
-//   // Select category đúng theo ảnh
-// cy.contains("MedSupport", { timeout: 5000 }).should("be.visible").click({ force: true });
-
-//   // Validate selected value
-//   cy.get("input[placeholder='Select a category to sell your service']")
-//     .should("have.value", "MedSupport");
-
-//   // OK should be enabled
-//   cy.contains("button", /^OK$/).should("not.be.disabled").click();
 
 cy.get(aboutYourselfInput)
   .clear()

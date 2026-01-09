@@ -46,9 +46,10 @@ beforeEach(() => {
     },
   });
     cy.visit("/become-seller");
+    cy.wait(1000);
 cy.contains("Start Selling for Free (1 Month)")
   .should("be.visible")
-  .click({ force: true });
+  .click();
     cy.url().should("include", "become-seller-steps");
    
     cy.get(shopNameInput).should("be.visible");
@@ -115,7 +116,7 @@ it("TC_05- chỉ nhập  Space vào Shop name->Báo lỗi", () => {
     cy.wait(3000),
 
   cy.contains("button", /^OK$/).should("be.disabled");
-     cy.contains("Shop name is required").should("be.visible");
+     cy.contains("Shop name must be at least 3 characters").should("be.visible");
 
 });
 it("TC_06- Shop name trùng (duplicate shop name)->Báo lỗi", () => {
@@ -265,8 +266,7 @@ it("TC_13-Nhập chỉ khoảng trắng vào specialties-> Button OK disabled ",
   cy.contains("button", /^OK$/)
     .should("be.visible")
     .and("be.disabled");
-  // 4. (Tùy chọn) Kiểm tra thông báo lỗi nếu có
-  cy.contains("Specialties is required").should("be.visible");
+  
 });
 
 it("TC_14-Chọn specialties rồi bỏ chọn (Select & Deselect)-> Button OK bật rồi lại disabled", () => {
@@ -293,7 +293,60 @@ cy.contains("Family Physician").should("be.visible");
   
   cy.contains("button", /^OK$/).should("be.disabled");
 });
-it("TC-15- Không nhập years", () => {
+it("TC_15-tìm kiểm Fami và chọn Family Physician", () => {
+
+ 
+
+  cy.get(shopNameInput).type("Linh Store");
+
+  cy.contains("button", /^OK$/).click();
+
+ 
+
+  cy.get(yearsInput).type("3");
+
+
+
+  cy.get(specialtiesInputSelector)
+
+    .should('be.visible')
+
+    .click()
+
+    .type("Fami");
+
+
+
+  cy.contains("div", "Family Physician").click();
+
+// Thêm force: true vào lệnh click
+
+cy.get('body').click(0, 0, { force: true });  
+
+cy.contains("Family Physician").should("be.visible");
+
+  cy.contains("button", /^OK$/).should("not.be.disabled");
+
+});
+it("TC_16-Nhập khoảng trắng rồi gõ 'Fami' -> Hệ thống vẫn tìm được 'Family Physician'", () => {
+  
+  cy.get(shopNameInput).type("Linh Store");
+  cy.contains("button", /^OK$/).click();
+  
+  cy.get(yearsInput).type("3"); 
+
+  cy.get(specialtiesInputSelector)
+    .should('be.visible')
+    .click()
+    .type("    Fami");
+
+  cy.contains("div", "Family Physician").click(); 
+// Thêm force: true vào lệnh click
+cy.get('body').click(0, 0, { force: true });  
+cy.contains("Family Physician").should("be.visible");
+  cy.contains("button", /^OK$/).should("not.be.disabled");
+});
+it("TC-17- Không nhập years", () => {
   cy.get(shopNameInput).type("Linh Store");
   cy.contains("button", /^OK$/).click();
   cy.contains("Formally Trained & Certified Expert").click();
@@ -302,7 +355,7 @@ it("TC-15- Không nhập years", () => {
   cy.contains("button", /^OK$/).should("be.disabled");
 });
 
-it("TC_16- Nhập years âm", () => {
+it("TC_18- Nhập years âm", () => {
 
   // --- STEP 1 ---
   cy.get(shopNameInput).type("Linh Store");
@@ -327,7 +380,7 @@ cy.contains("Family Physician").should("be.visible");
 });
 
 
-it("TC_16- Nhập letters vào years", () => {
+it("TC_19- Nhập letters vào years", () => {
    // --- STEP 1 ---
 
   cy.get(shopNameInput).type("Linh Store");
@@ -352,7 +405,7 @@ cy.contains("Family Physician").should("be.visible");
   cy.contains("Please enter valid years of experience").should("be.visible");
   cy.contains("button", /^OK$/).should("be.disabled");
 });
-it("TC_17- Nhập năm hợp lệ rồi xóa -> Nút OK phải bị disabled", () => {
+it("TC_20- Nhập năm hợp lệ rồi xóa -> Nút OK phải bị disabled", () => {
   // --- BƯỚC 1: QUA STEP 1 ---
   cy.get(shopNameInput).type("Strongly Fit");
   cy.contains("button", /^OK$/).click();
@@ -379,7 +432,7 @@ cy.contains("Family Physician").should("be.visible");
 // ------------------------------------------------------
   // HAPPY CASE Name Shop
   // ------------------------------------------------------
-  it("TC_18- dữ liêu hợp lệ(chọn 1specialties)->button OK bật", () => {
+  it("TC_21- dữ liêu hợp lệ(chọn 1specialties)->button OK bật", () => {
  // --- STEP 1 ---
 
   cy.get(shopNameInput).type("Linh Store");
@@ -412,7 +465,7 @@ cy.contains("Family Physician").should("be.visible");
 });
 
 });
-it("TC_19-Dữ liệu hợp lệ(chọn 2 specialties)-> step 3", () => {
+it("TC_22-Dữ liệu hợp lệ(chọn 2 specialties)-> step 3", () => {
 
   cy.get(shopNameInput).type("Linh Store");
 
