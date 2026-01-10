@@ -14,7 +14,7 @@ describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
   beforeEach(() => {
     cy.viewport(1920, 1080);
     cy.visit("/signup");
-      cy.contains('button', 'English').click();
+     // cy.contains('button', 'English').click();
 
   });
 

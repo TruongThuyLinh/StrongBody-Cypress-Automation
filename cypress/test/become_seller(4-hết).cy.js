@@ -13,12 +13,12 @@ const fullAddressInput='input[placeholder="Full Address"]';
  const login = () => {
   cy.visit("/login");
   
-  cy.contains('button', 'English', { timeout: 10000 })
-    .should('be.visible')
-    .click();
+  // cy.contains('button', 'English', { timeout: 10000 })
+  //   .should('be.visible')
+  //   .click();
 
-  // Chúng ta đợi cho đến khi Modal "Select Your Language" biến mất hoàn toàn
-  cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
+  // // Chúng ta đợi cho đến khi Modal "Select Your Language" biến mất hoàn toàn
+  // cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
   
   cy.wait(2000); 
 

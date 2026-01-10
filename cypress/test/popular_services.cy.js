@@ -5,11 +5,11 @@ describe("Popular Services", () => {
     const login = () => {
   cy.visit("/login");
   
-  cy.contains('button', 'English', { timeout: 10000 })
-    .should('be.visible')
-    .click();
+  // cy.contains('button', 'English', { timeout: 10000 })
+  //   .should('be.visible')
+  //   .click();
 
-  cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
+  // cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
   
   cy.wait(2000); 
 

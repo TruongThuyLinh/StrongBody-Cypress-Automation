@@ -34,7 +34,7 @@ describe("StrongBody - Home & Categories Optimization", () => {
     
     const login = () => {
         cy.visit("/login");
-        cy.contains('button', 'English', { timeout: 10000 }).should('be.visible').click();
+       // cy.contains('button', 'English', { timeout: 10000 }).should('be.visible').click();
         cy.wait(1000); 
 
         cy.get(SELECTORS.loginEmail).should('be.visible').type('truongthuylinh2004tb@gmail.com');

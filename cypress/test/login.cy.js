@@ -12,7 +12,7 @@ describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
 
   beforeEach(() => {
     cy.visit("/login");
-       cy.contains('button', 'English').click();
+      //  cy.contains('button', 'English').click();
 
   });
 
