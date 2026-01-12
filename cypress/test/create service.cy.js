@@ -4,28 +4,21 @@ describe("CREATE HEA SERVICE — FULL TESTING", () => {
 
 
   const thumbInput = "input#cover-upload";//id
-  const moreImageInput = "input#service-images-upload-more";  //id
+ 
 
 const nameInput = "input#title"; 
 
-  const categoryLabel = "label:contains('Category')";
-  const categoryInput = "label:contains('Category') + div input[role='combobox']";
-
+ 
   //const descInput = 'textarea, div[data-field="description"] textarea';
   const descInput = 'div.ContentEditable__root[data-lexical-editor="true"]';
  
 
   const priceInput = "input#price, input[name='price'], input[placeholder='Enter price']";
 
-  const typeLabel = "label:contains('Hea Type')";
-  const heaTypeInput = "label:contains('Hea Type') + div input[role='combobox']";
-
-  const typeSelect = "select[name='type']";
 
 const galleryEmptyUploads = "input[type='file'][accept^='image']";
 
   const createBtn = "button:contains('Create Hea')";
-  const cancelBtn = "button:contains('Cancel')";
 const imgSlot1 = "#service-images-upload-0";          // Ảnh review đầu tiên
 const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
   const login = () => {
@@ -74,21 +67,21 @@ cy.visit("/seller/create-service");
 
 
   
-// it("TC_01- Nhấn mũi tên tăng → Price tăng", () => {
-//   cy.get(priceInput)
-//     .should('be.visible')
-//     .clear()
-//     .type("10")
-//     .should('have.value', '10'); // Đợi giá trị 10 được nhận hoàn toàn
+it("TC_01- Nhấn mũi tên tăng → Price tăng", () => {
+  cy.get(priceInput)
+    .should('be.visible')
+    .clear()
+    .type("10")
+    .should('have.value', '10'); // Đợi giá trị 10 được nhận hoàn toàn
 
-//   cy.get(priceInput).type("{uparrow}");
+  cy.get(priceInput).type("{uparrow}");
 
-//   cy.get(priceInput).then(($input) => {
-//     const val = $input.val();
-//     cy.log("Giá trị thực tế sau khi nhấn lên là: " + val);
-//     expect(val).to.equal("11"); 
-//   });
-// });
+  cy.get(priceInput).then(($input) => {
+    const val = $input.val();
+    cy.log("Giá trị thực tế sau khi nhấn lên là: " + val);
+    expect(val).to.equal("10.01"); 
+  });
+});
 it("TC_02- Không cho giá < 0 khi nhấn ▼", () => {
   cy.get(priceInput)
     .clear()
@@ -383,7 +376,10 @@ cy.get('body').click(0, 0, { force: true });
 
 cy.get('body').click(0, 0, { force: true });
   // Description
-  cy.get(descInput).click().type("Valid description");
+  cy.get(descInput) // Selector dự đoán cho textarea
+      .should('be.visible')
+      .click()
+      .type("[Service Name] isn’t just about [Main Task] – it’s about creating an experience that inspires. Our team brings passion and creativity to every project we touch.")
 
   // Hea Type
   cy.contains("label", "Hea Type")
@@ -406,8 +402,89 @@ cy.get('body').click(0, 0, { force: true });
     .should("be.visible");
 });
 
+it("TC_9- Price bằng 0-> báo lỗi", () => {
+
+       cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+
+       cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+
+       cy.get(imgMore).selectFile([
+      'cypress/fixtures/2.jpg',
+      'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'
+      ], { force: true });
+      cy.get(nameInput).type("Valid Name");
+      
+    // Mở dropdown Category
+cy.contains("label", "Category")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .first()
+  .click({ force: true });
+cy.get("div[id^='headlessui-combobox-options']")
+  .contains("Sustainable Habits & Lifestyle Design")
+  .click({ force: true });
+cy.get('body').click(0, 0, { force: true });
+cy.get(descInput)
+      .should('be.visible')
+      .click()
+      .type("[Service Name] isn’t just about [Main Task] – it’s about creating an experience that inspires. Our team brings passion and creativity to every project we touch.")
+      
+cy.contains("label", "Hea Type")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .click({ force: true });
+
+// 2. Chờ dropdown render
+cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
+  .should("be.visible")
+  .contains("Online", { timeout: 8000 })
+  .click({ force: true });
+      cy.get(priceInput).type("0");
+      cy.get(createBtn).click();
+cy.contains(/Price must be greater than 0/i).should("be.visible");
+     
+    });
 
     it("TC_10-không up ảnh dịch vụ → báo lỗi", () => {
+
+       const file1 = "cypress/fixtures/1.jpg";
+
+      cy.get(thumbInput).selectFile(file1, { force: true });
+       cy.get(galleryEmptyUploads).eq(0).selectFile(file1, { force: true });
+       cy.get(nameInput).type("Valid Name");
+
+  // Mở dropdown Category
+cy.contains("label", "Category")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .first()
+  .click({ force: true });
+
+// Chọn option
+cy.get("div[id^='headlessui-combobox-options']")
+  .contains("Sustainable Habits & Lifestyle Design")
+  .click({ force: true });
+cy.get('body').click(0, 0, { force: true });
+      cy.get(descInput).click().type("Valid description");
+
+      // 1. Mở dropdown Hea Type
+cy.contains("label", "Hea Type")
+  .parent()
+  .find("button[id^='headlessui-combobox-button']")
+  .click({ force: true });
+
+// 2. Chờ dropdown render
+cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
+  .should("be.visible")
+  .contains("Online", { timeout: 8000 })
+  .click({ force: true });
+      cy.get(priceInput).type("0");
+      cy.get(createBtn).click();
+
+       cy.contains(/upload|image|at least|4/i, { timeout: 6000 })
+    .should("be.visible");
+    });
+    it("TC_11-upload ảnh không đúng định dạng → báo lỗi", () => {
 
        const file1 = "cypress/fixtures/1.jpg";
 
@@ -657,50 +734,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
       cy.url().should("include", "seller/my-service");
     });
-it("TC_16- Price bằng 0-> thành công", () => {
 
-       cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
-
-       cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
-
-       cy.get(imgMore).selectFile([
-      'cypress/fixtures/2.jpg',
-      'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'
-      ], { force: true });
-      cy.get(nameInput).type("Valid Name");
-      
-    // Mở dropdown Category
-cy.contains("label", "Category")
-  .parent()
-  .find("button[id^='headlessui-combobox-button']")
-  .first()
-  .click({ force: true });
-
-// Chọn option
-cy.get("div[id^='headlessui-combobox-options']")
-  .contains("Sustainable Habits & Lifestyle Design")
-  .click({ force: true });
-cy.get('body').click(0, 0, { force: true });
-      // 1. Mở dropdown Hea Type
-cy.contains("label", "Hea Type")
-  .parent()
-  .find("button[id^='headlessui-combobox-button']")
-  .click({ force: true });
-
-// 2. Chờ dropdown render
-cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
-  .should("be.visible")
-  .contains("Online", { timeout: 8000 })
-  .click({ force: true });
-      cy.get(priceInput).type("0");
-      cy.get(createBtn).click();
-
-      cy.contains("required").should("not.exist");
-      cy.contains("max").should("not.exist");
-      cy.contains("invalid").should("not.exist");
-
-      cy.url().should("include", "seller/my-service");
-    });
    
   });
 

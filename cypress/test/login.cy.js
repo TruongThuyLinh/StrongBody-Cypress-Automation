@@ -51,14 +51,11 @@ it("TC_04 - Checkbox Remember me hoạt động đúng", () => {
   cy.get('a[href="/forgot-password"]')
     .should("be.visible")
     .click();
-
+cy.wait(1000);
   cy.url().should("include", "/forgot-password");
 });
 
-    it("TC_06 - Nút Sign In disable khi chưa nhập đủ dữ liệu", () => {
-      cy.get(signInBtn).should("be.disabled");
-    });
-    it("TC_07- Click icon eye để hiện mật khẩu", () => {
+    it("TC_06- Click icon eye để hiện mật khẩu", () => {
     cy.get(passInput).type("abc12345");
     cy.get(passInput).should("have.attr", "type", "password");
 
@@ -66,7 +63,7 @@ it("TC_04 - Checkbox Remember me hoạt động đúng", () => {
     cy.get(passInput).should("have.attr", "type", "text");
   });
 
-  it("TC_08 - Click icon eye-off để ẩn mật khẩu", () => {
+  it("TC_07- Click icon eye-off để ẩn mật khẩu", () => {
     cy.get(passInput).type("abc12345");
 
     cy.get("svg.lucide-eye:visible").click();
@@ -75,33 +72,28 @@ it("TC_04 - Checkbox Remember me hoạt động đúng", () => {
     cy.get("svg.lucide-eye-off:visible").click();
     cy.get(passInput).should("have.attr", "type", "password");
   
-  it("TC_09 - Chỉ một icon hiển thị tại một thời điểm (eye hoặc eye-off)", () => {
-
-  
-
+  it("TC_08- Chỉ một icon hiển thị tại một thời điểm (eye hoặc eye-off)", () => {
   cy.get("svg.lucide-eye-off").should("be.visible");
   cy.get("svg.lucide-eye").should("not.exist");
-
   // 2. Click → eye xuất hiện và eye-off biến mất
   cy.get(toggleBtn).click();
   cy.get("svg.lucide-eye").should("be.visible");
   cy.get("svg.lucide-eye-off").should("not.exist");
-
   // 3. Click lần nữa → eye-off xuất hiện lại và eye biến mất
   cy.get(toggleBtn).click();
   cy.get("svg.lucide-eye-off").should("be.visible");
   cy.get("svg.lucide-eye").should("not.exist");
 });
-
 });
 
   });
 
   describe(" EMAIL VALIDATION", () => {
-it("TC_10 - Email trống ", () => {
+it("TC_9- Email trống ", () => {
 
   cy.get(passInput).type("1234567l");
-  cy.get(signInBtn) .should("be.disabled");
+  cy.get(signInBtn).click();
+  cy.contains(/email is required/i).should("be.visible");
 
 
 });
@@ -113,11 +105,11 @@ it("TC_11 - Email toàn khoảng trắng → coi như rỗng", () => {
     .invoke("val")
     .should("equal", "");
 
-  cy.get(signInBtn).should("be.disabled");
+  cy.get(signInBtn).click();
+  cy.contains(/email is required/i).should("be.visible");
 });
 
-
-it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () => {
+it("TC_12- Nhập Email rồi xoá → hiện lỗi ", () => {
 
   cy.get(passInput).type("1234567l");
 
@@ -128,15 +120,12 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
 
   cy.contains(/email is required/i).should("be.visible");
 
-  cy.get(signInBtn).should("be.disabled");
-
 });
 
     it("TC_13- Email sai định dạng (thiếu @)", () => {
       cy.get(emailInput).type("abcgmail.com");
       cy.get(passInput).type("1234567l");
-
-  cy.get(signInBtn).should("be.disabled");
+      cy.get(signInBtn).click();
 
       cy.contains(/invalid email/i).should("be.visible");
     });
@@ -144,26 +133,23 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi & nút Sign In disable", () 
     it("TC_14 - Email thiếu .com", () => {
       cy.get(emailInput).type("abc@gmail");
       cy.get(passInput).type("1234567l");
-  cy.get(signInBtn).should("be.disabled");
+  cy.get(signInBtn).click();
 
       cy.contains(/invalid email/i).should("be.visible");
     });
 
 it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
-  // cy.visit("/login");
+ 
   cy.wait(2000); 
-  // 2. Nhập Email bằng cách tìm lại phần tử (Re-query)
-  // Việc gọi lại cy.get() giúp tránh lỗi "Detached từ DOM"
+
   cy.get(emailInput).should('be.visible').clear();
   cy.get(emailInput).type("linnhc@gmail.com", { delay: 100 });
 
-  // 3. Nhập Password tương tự
   cy.get(passInput).should('be.visible').clear();
   cy.get(passInput).type("1234567l", { delay: 100 });
 
   cy.get(signInBtn).should('not.be.disabled').click({ force: true });
 
-  
   cy.contains("Email does not exist", { timeout: 15000 })
     .should('exist')
     .and('be.visible');
@@ -172,22 +158,24 @@ it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
 
   describe("PASSWORD VALIDATION", () => {
 
-    it("TC_16 - Password trống", () => {
+    it("TC_16 - Password trống->báo lỗi", () => {
       cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-  cy.get(signInBtn).should("be.disabled");
+      cy.get(signInBtn).click();
+
+      cy.contains(/password is required/i).should("be.visible");
 
     });
  
-it("TC_17 - Password chỉ toàn khoảng trắng → Nút Sign in phải bị disabled", () => {
+it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("          "); // Nhập toàn khoảng trắng
 
-  cy.get(signInBtn).should('be.disabled');
+  cy.get(signInBtn).click();
 
   cy.contains("Password must not contain whitespace").should("be.visible");
 });
 
-    it("TC_18- Nhập mật khẩu rồi xoá → hiện lỗi & nút Sign In disable", () => {
+    it("TC_18- Nhập mật khẩu rồi xoá → hiện lỗi ", () => {
 
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
 
@@ -196,8 +184,6 @@ it("TC_17 - Password chỉ toàn khoảng trắng → Nút Sign in phải bị d
     .clear();
 
   cy.contains(/password is required/i).should("be.visible");
-
-  cy.get(signInBtn).should("be.disabled");
 
 });
 
@@ -218,11 +204,9 @@ it("TC_17 - Password chỉ toàn khoảng trắng → Nút Sign in phải bị d
     });
     it("TC_21 - Password có khoảng trắng → báo lỗi", () => {
 
-  
-
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("123 456 7l");
-  cy.get(signInBtn).should("be.disabled");
+  cy.get(signInBtn).click();
    cy.contains(/Password must not contain whitespace/i).should("be.visible");
   // // Không được chuyển trang
   // cy.url().should("include", "/login");;
@@ -232,12 +216,11 @@ it("TC_17 - Password chỉ toàn khoảng trắng → Nút Sign in phải bị d
   
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("   1234567l   ");
- cy.get(signInBtn).should("be.disabled");
+ cy.get(signInBtn).click();
   cy.contains(/Password must not contain whitespace/i).should("be.visible");
   // Không được chuyển trang
   cy.url().should("include", "/login");
 });
-
 
   });
  
