@@ -281,9 +281,9 @@ cy.get('a[href="/login"]:visible').first().click();
     cy.get(emailInput).type(randomEmail);
     cy.get(passInput).type("abc12345");
     tickTerms();
-
     cy.wait(500);
     cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
+    cy.get('button:visible').contains('Free Sign up').click();
   });
   it("TC_23- Data hợp lệ → nhập space đầu cuối email", () => {
      cy.wait(2000);

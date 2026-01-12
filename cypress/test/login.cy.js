@@ -47,7 +47,6 @@ it("TC_04 - Checkbox Remember me hoạt động đúng", () => {
 
 
     it("TC_05 - Click Forgot Password → Điều hướng đúng trang", () => {
-  // Tìm thẻ <a> có href chính xác là /forgot-password
   cy.get('a[href="/forgot-password"]')
     .should("be.visible")
     .click();
@@ -231,6 +230,14 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
       cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
       cy.url().should("not.include", "/login");
+    });
+    it("TC_24 -login tài khoản peeding", () => {
+      cy.get(emailInput).type("basami1492@eubonus.com");
+      cy.get(passInput).type("abc12345");
+      cy.get(signInBtn).click();
+      cy.contains("Enter Verification Code", { timeout: 10000 }).should("be.visible");
+      cy.contains("basami1492@eubonus.com").should("be.visible");
+      
     });
     it("TC_24 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 
