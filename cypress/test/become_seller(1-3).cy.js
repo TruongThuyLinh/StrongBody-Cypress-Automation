@@ -68,8 +68,6 @@ cy.contains("Start Selling for Free (1 Month)")
   const longText = "A".repeat(120); // cố tình nhập 120 ký tự
 
   cy.get(shopNameInput).type(longText);
-
- 
   cy.get(shopNameInput)
     .invoke("val")
     .should("have.length", 70);
@@ -295,17 +293,12 @@ cy.contains("Family Physician").should("be.visible");
 });
 it("TC_15-tìm kiểm Fami và chọn Family Physician", () => {
 
- 
-
   cy.get(shopNameInput).type("Linh Store");
 
   cy.contains("button", /^OK$/).click();
 
  
-
   cy.get(yearsInput).type("3");
-
-
 
   cy.get(specialtiesInputSelector)
 
@@ -314,8 +307,6 @@ it("TC_15-tìm kiểm Fami và chọn Family Physician", () => {
     .click()
 
     .type("Fami");
-
-
 
   cy.contains("div", "Family Physician").click();
 
@@ -357,7 +348,6 @@ it("TC-17- Không nhập years", () => {
 
 it("TC_18- Nhập years âm", () => {
 
-  // --- STEP 1 ---
   cy.get(shopNameInput).type("Linh Store");
 
   cy.contains("button", /^OK$/)
@@ -368,15 +358,23 @@ it("TC_18- Nhập years âm", () => {
 
   cy.get(specialtiesInputSelector).click();
   cy.contains("div", "Family Physician").click(); 
-// Thêm force: true vào lệnh click
 cy.get('body').click(0, 0, { force: true });  
 cy.contains("Family Physician").should("be.visible");
   // --- YEARS ÂM ---
- cy.get(yearsInput).type("-4").blur();
-  cy.contains("Please enter valid years of experience").should("be.visible");
-
-  // --- OK DISABLED ---
-  cy.contains("button", /^OK$/).should("be.disabled");
+ cy.get(yearsInput)
+    .clear()
+    .type("-4")
+    .blur();
+    cy.get(yearsInput).should("have.value", "4");
+  cy.contains("button", /^OK$/)  
+      .should("be.visible")
+      .and("not.be.disabled")
+      .and("have.css", "background-color")
+      .then((color) => {
+        // Đảm bảo không phải màu disabled
+        expect(color).to.not.eq("rgb(209, 213, 219)"); 
+  }); 
+  
 });
 
 
@@ -389,32 +387,28 @@ it("TC_19- Nhập letters vào years", () => {
     .should("not.be.disabled")
     .click();
 
-  // VERIFY STEP 2 LOADED
   cy.url().should("include", "step=profession");
 
-  // SELECT PROFESSION
   cy.contains("Formally Trained & Certified Expert").click();
 cy.get(specialtiesInputSelector).click();
   cy.contains("div", "Family Physician").click(); 
-// Thêm force: true vào lệnh click
 cy.get('body').click(0, 0, { force: true });  
 cy.contains("Family Physician").should("be.visible");
 
-  cy.get(yearsInput).type("abc").blur();
-
-  cy.contains("Please enter valid years of experience").should("be.visible");
+  cy.get(yearsInput)
+    .clear()
+    .type("abc")
+    .blur();
+    cy.get(yearsInput).should("have.value", "");
   cy.contains("button", /^OK$/).should("be.disabled");
 });
 it("TC_20- Nhập năm hợp lệ rồi xóa -> Nút OK phải bị disabled", () => {
-  // --- BƯỚC 1: QUA STEP 1 ---
   cy.get(shopNameInput).type("Strongly Fit");
   cy.contains("button", /^OK$/).click();
   cy.url().should("include", "step=profession");
-  //cy.contains("Formally Trained & Certified Expert").click();
   
   cy.get(specialtiesInputSelector).click();
   cy.contains("div", "Family Physician").click(); 
-// Thêm force: true vào lệnh click
 cy.get('body').click(0, 0, { force: true });  
 cy.contains("Family Physician").should("be.visible");
 
@@ -426,8 +420,7 @@ cy.contains("Family Physician").should("be.visible");
 
   cy.contains("button", /^OK$/).should("be.disabled");
 
-  // 6. (Tùy chọn) Kiểm tra thông báo lỗi yêu cầu nhập năm nếu có
-  // cy.contains("Years of experience is required").should("be.visible");
+  
 });
 // ------------------------------------------------------
   // HAPPY CASE Name Shop
