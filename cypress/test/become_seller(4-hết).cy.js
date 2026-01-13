@@ -22,9 +22,9 @@ const fullAddressInput='input[placeholder="Full Address"]';
   
   cy.wait(2000); 
 
-  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("#email", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("thuylinh1020tb@gmail.com");
+  cy.get("#email").focus().clear().type("thuylinh1020tb@gmail.com");
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
   
@@ -48,7 +48,7 @@ beforeEach(() => {
   });
     cy.visit("/become-seller");
     cy.wait(2000);
-cy.contains("Start Selling for Free (1 Month)")
+cy.contains("Start Selling Now — From $15/month")
   .should("be.visible")
   .click();
     cy.url().should("include", "become-seller-steps");
@@ -213,7 +213,7 @@ cy.contains("Family Physician").should("be.visible");
   // Tùy vào message hệ thống của bạn, ví dụ:
   cy.contains(/required|at least 100 characters/i).should("be.visible");
 });
-it("TC_27- Introduce about yourself quá maxlengh ", () => {
+it("TC_27- Introduce không cho nhập quá maxlengh và dưới 20 từ-> tự cắt giới hạn 2000 ký tự và thông báo lỗi ", () => {
   // Step 1: Shop Name
   cy.get(shopNameInput).type("Linh Store");
 
@@ -253,15 +253,16 @@ const overMax = "a".repeat(2100);   // cố tình vượt 2000 ký tự
       expect(text.length).to.eq(2000);
     });
 
- //Kiểm tra nút OK bật 
- cy.contains("button", /^OK$/) 
- //dùng regex match chính xác text "OK" 
- .should("be.visible")  .and("not.be.disabled")
-  .and("have.css", "background-color") 
-   .then((color) => { 
-  //Đảm bảo không phải màu disabled 
- expect(color).to.not.eq("rgb(209, 213, 219)"); 
- });
+//  //Kiểm tra nút OK bật 
+//  cy.contains("button", /^OK$/) 
+//  .should("be.visible")  .and("not.be.disabled")
+//   .and("have.css", "background-color") 
+//    .then((color) => { 
+//   //Đảm bảo không phải màu disabled 
+//  expect(color).to.not.eq("rgb(209, 213, 219)"); 
+//  });
+  cy.contains(/Introduction must contain at least 20 words/i).should("be.visible");
+
 });
 
 it("TC_28-nhập số điện thoại vào Introduce about yourself->báo lỗi ", () => {
@@ -564,7 +565,7 @@ cy.contains("Family Physician").should("be.visible");
     cy.get('body').click(0, 0, { force: true });
 
     cy.contains("button", /^OK$/).should("be.disabled");
-    cy.contains("Country is required")
+    cy.contains("Please select a valid country from the list")
     .should("be.visible");
 
 

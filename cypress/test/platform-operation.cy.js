@@ -13,9 +13,9 @@ describe("Platform Operation", () => {
   
   cy.wait(2000); 
 
-  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("#email", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
+  cy.get("#email").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
   

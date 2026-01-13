@@ -16,9 +16,9 @@ describe("Footer", () => {
   
   cy.wait(2000); 
 
-  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("#email", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
+  cy.get("#email").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
   
@@ -160,23 +160,21 @@ it('TC_11: Chuyển hướng đến trang Trust & Safety khi click Trust & Safet
 
   // Cuộn xuống footer để các phần tử hiển thị (tránh lỗi lazy load)
   cy.scrollTo('bottom');
-  cy.get('footer a[href="/articles/trust-safety"]')
+  cy.get('footer a[href="/trust-and-safety"]')
     .filter(':visible')
     .should('contain', 'Trust & Safety')
     .click({ force: true }); // Dùng force nếu có element overlay che khuất
-  cy.url().should('include', '/articles/trust-safety');
+  cy.url().should('include', '/trust-and-safety');
 
 });
 it('TC_12: Chuyển hướng đến trang Verification Guide khi click Verification Guide trong footer', () => {
-
-  // Cuộn xuống footer để các phần tử hiển thị (tránh lỗi lazy load)
   cy.scrollTo('bottom');
-  cy.get('footer a[href="/articles/verification-guide"]')
-    .filter(':visible')
-    .should('contain', 'Verification Guide')
-    .click({ force: true }); // Dùng force nếu có element overlay che khuất
-  cy.url().should('include', '/articles/verification-guide');
-
+  cy.get('footer a[href="/verification-guidelines"]')
+  .first() // Lấy phần tử đầu tiên trong danh sách 2 cái tìm được
+  .click({ force: true });
+  cy.url().should('include', '/verification-guidelines');
+  
+  
 });
 it('TC_13: Chuyển hướng đến trang Payment Protection khi click Payment Protection trong footer', () => {
 

@@ -34,10 +34,12 @@ const countryInput = '#country_id';
   
   cy.wait(2000); 
 
-  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("#email", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("liveb58966@m3player.com", { delay: 100 });
-
+  cy.get("#email")
+  .focus()
+  .clear()
+  .type("liveb58966@m3player.com", { delay: 50 }); // Giảm delay một chút để test chạy nhanh hơn
   cy.get("input[name='password']").focus().clear().type("1234567l");
   
   cy.get("button[type='submit']").should('be.enabled').click();

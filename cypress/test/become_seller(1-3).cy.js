@@ -21,9 +21,9 @@ const aboutYourselfInput = "textarea[placeholder='Share something about your str
   
   cy.wait(2000); 
 
-  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("#email", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("thuylinh1020tb@gmail.com");
+  cy.get("#email").focus().clear().type("thuylinh1020tb@gmail.com");
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
   
@@ -47,7 +47,7 @@ beforeEach(() => {
   });
     cy.visit("/become-seller");
     cy.wait(1000);
-cy.contains("Start Selling for Free (1 Month)")
+cy.contains("Start Selling Now — From $15/month")
   .should("be.visible")
   .click();
     cy.url().should("include", "become-seller-steps");
@@ -139,8 +139,8 @@ cy.wait(2000);
   cy.url().should("not.include", "step=profession");
 
 });
-it("TC_10-Nhập tên shop với kí tự  lập lại-> button OK bật", () => {
-    const maxString = "a".repeat(7); // Tạo chuỗi 70 ký tự 'a'
+it("TC_10-Nhập tên shop với kí tự  lập lại-> báo lôi", () => {
+    const maxString = "a".repeat(70); // Tạo chuỗi 70 ký tự 'a'
 
     cy.get(shopNameInput).clear().type(maxString);
 
@@ -692,7 +692,7 @@ cy.get('body').click(0, 0, { force: true });
 //     cy.url().should("include", "step=introduce");
 // });
 
-// });
+//;
 
 });
  

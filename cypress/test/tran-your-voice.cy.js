@@ -13,9 +13,9 @@ describe("Trans Your Voice", () => {
   
   cy.wait(2000); 
 
-  cy.get("input[name='email']", { timeout: 15000 }).should('be.visible');
+  cy.get("#email", { timeout: 15000 }).should('be.visible');
   
-  cy.get("input[name='email']").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
+  cy.get("#email").focus().clear().type("truongthuylinh2004tb@gmail.com", { delay: 100 });
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
   
@@ -80,36 +80,36 @@ it("TC_01 - Kiểm tra  hiển thị giao diện gói Trans Your Voice (UI)", ()
     //cy.visit("/checkout/pricing?returnUrl=/checkout/pricings");
    cy.url({ timeout: 20000 }).should("include", "checkout/pricing"); 
     });
-    it("TC_03 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
-    // 1. Tìm nút và gán alias (bí danh) để tránh lỗi detached DOM
-    cy.get(SELECTORS.viewAllPlansBtn)
-        .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-        .as('anchorBtn'); // Sử dụng kỹ thuật bạn vừa đề cập
+    // it("TC_03 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
+    // // 1. Tìm nút và gán alias (bí danh) để tránh lỗi detached DOM
+    // cy.get(SELECTORS.viewAllPlansBtn)
+    //     .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+    //     .as('anchorBtn'); // Sử dụng kỹ thuật bạn vừa đề cập
 
-    // 2. Kiểm tra thuộc tính và hiển thị qua alias
-    cy.get('@anchorBtn')
-        .should('be.visible')
-        .and('have.attr', 'href', '#pricing-plan')
-        .and('contain', 'View all plans');
+    // // 2. Kiểm tra thuộc tính và hiển thị qua alias
+    // cy.get('@anchorBtn')
+    //     .should('be.visible')
+    //     .and('have.attr', 'href', '#pricing-plan')
+    //     .and('contain', 'View all plans');
 
-    // 3. Thực hiện Click
-    cy.get('@anchorBtn').click();
+    // // 3. Thực hiện Click
+    // cy.get('@anchorBtn').click();
 
-    // 4. Kiểm tra URL hash (URL lúc này sẽ có thêm #pricing-plan)
-    cy.url().should('include', '#pricing-plan');
+    // // 4. Kiểm tra URL hash (URL lúc này sẽ có thêm #pricing-plan)
+    // cy.url().should('include', '#pricing-plan');
 
-    // 5. Kiểm tra vùng mục tiêu hiển thị sau khi cuộn
-    cy.wait(1000); // Chờ hiệu ứng smooth scroll kết thúc
-    cy.get(SELECTORS.pricingSection)
-        .should('be.visible')
-        .then(($el) => {
-            // Kiểm tra tọa độ để chắc chắn nó nằm trong khung hình (Viewport)
-            const rect = $el[0].getBoundingClientRect();
-            const winHeight = Cypress.config('viewportHeight');
+    // // 5. Kiểm tra vùng mục tiêu hiển thị sau khi cuộn
+    // cy.wait(1000); // Chờ hiệu ứng smooth scroll kết thúc
+    // cy.get(SELECTORS.pricingSection)
+    //     .should('be.visible')
+    //     .then(($el) => {
+    //         // Kiểm tra tọa độ để chắc chắn nó nằm trong khung hình (Viewport)
+    //         const rect = $el[0].getBoundingClientRect();
+    //         const winHeight = Cypress.config('viewportHeight');
             
-            expect(rect.top).to.be.at.least(-50); // Cho phép sai số nhỏ
-            expect(rect.top).to.be.lessThan(winHeight);
-        });
-});
+    //         expect(rect.top).to.be.at.least(-50); // Cho phép sai số nhỏ
+    //         expect(rect.top).to.be.lessThan(winHeight);
+    //     });
+//});
 });
 

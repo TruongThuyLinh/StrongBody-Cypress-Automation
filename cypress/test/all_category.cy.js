@@ -7,7 +7,7 @@ const SELECTORS = {
     sidebarLinks: '.sticky a[href^="#"]',
     categorySections: 'div[id].scroll-mt-\\[30vh\\]',
     subLinks: 'a[href*="/category/"]',
-    loginEmail: "input[name='email']",
+    loginEmail: "#email",
     loginPass: "input[name='password']",
     loginBtn: "button[type='submit']",
     userAvatar: "span.flex.items-center.gap-1",
