@@ -139,7 +139,7 @@ cy.wait(2000);
   cy.url().should("not.include", "step=profession");
 
 });
-it("TC_10-Nhập tên shop với kí tự  lập lại-> báo lôi", () => {
+it("TC_10-Nhập tên shop với kí tự  lặp lại-> báo lôi", () => {
     const maxString = "a".repeat(70); // Tạo chuỗi 70 ký tự 'a'
 
     cy.get(shopNameInput).clear().type(maxString);

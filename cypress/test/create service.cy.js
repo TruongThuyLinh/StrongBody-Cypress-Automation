@@ -8,7 +8,6 @@ describe("CREATE HEA SERVICE — FULL TESTING", () => {
 
 const nameInput = "input#title"; 
 
- 
   //const descInput = 'textarea, div[data-field="description"] textarea';
   const descInput = 'div.ContentEditable__root[data-lexical-editor="true"]';
  
@@ -48,7 +47,6 @@ const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
 beforeEach(() => {
   cy.session("login", login, {
     validate() {
-      // Kiểm tra xem có bất kỳ cookie nào chứa 'session-token' không
       cy.getCookies().then((cookies) => {
         const hasSession = cookies.some(c => c.name.includes('session-token'));
         if (!hasSession) {
@@ -58,7 +56,6 @@ beforeEach(() => {
     },
   });
 cy.visit("/seller/create-service");
-    // 5. Chốt chặn: Đảm bảo vào đúng trang
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
 
     cy.wait(1000);
@@ -72,7 +69,7 @@ it("TC_01- Nhấn mũi tên tăng → Price tăng", () => {
     .should('be.visible')
     .clear()
     .type("10")
-    .should('have.value', '10'); // Đợi giá trị 10 được nhận hoàn toàn
+    .should('have.value', '10'); 
 
   cy.get(priceInput).type("{uparrow}");
 
@@ -90,7 +87,7 @@ it("TC_02- Không cho giá < 0 khi nhấn ▼", () => {
   cy.get(priceInput).type("{downarrow}");
 
   cy.get(priceInput)
-    .should("have.value", "0"); // không giảm dưới 0
+    .should("have.value", "0"); 
 });
 
     it("TC_03- Bỏ trống tên → báo lỗi", () => {
@@ -111,14 +108,11 @@ cy.contains("label", "Category")
   .first()
   .click({ force: true });
 
-// Chọn option
 cy.get("div[id^='headlessui-combobox-options']")
   .contains("Sustainable Habits & Lifestyle Design")
   .click({ force: true });
 cy.get('body').click(0, 0, { force: true });
-
-
-      cy.get(descInput) // Selector dự đoán cho textarea
+      cy.get(descInput) 
       .should('be.visible')
       .click()
       .type("Mô tả cố tình để  trống name.");
@@ -486,10 +480,15 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
     });
     it("TC_11-upload ảnh không đúng định dạng → báo lỗi", () => {
 
-       const file1 = "cypress/fixtures/1.jpg";
+      cy.get(thumbInput).selectFile('cypress/fixtures/fake-avatar.txt', { force: true });
 
-      cy.get(thumbInput).selectFile(file1, { force: true });
-       cy.get(galleryEmptyUploads).eq(0).selectFile(file1, { force: true });
+       cy.get(imgSlot1).selectFile('cypress/fixtures/Homework 22.ppx', { force: true });
+
+       cy.get(imgMore).selectFile([
+      'cypress/fixtures/2.jpg',
+      'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'
+      ], { force: true });
+
        cy.get(nameInput).type("Valid Name");
 
   // Mở dropdown Category
@@ -520,7 +519,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
       cy.get(priceInput).type("0");
       cy.get(createBtn).click();
 
-       cy.contains(/upload|image|at least|4/i, { timeout: 6000 })
+       cy.contains(/invalid file format|only images are allowed/i, { timeout: 6000 })
     .should("be.visible");
     });
   
@@ -560,8 +559,6 @@ cy.get('body').click(0, 0, { force: true });
     .should("be.visible");
       //cy.contains(/Description is required/i).should("exist");
 
-   
-    
     });
     it("TC_12 - Nhập chỉ khoảng trắng (Space) vào mô tả (Trường hợp Optional) ", () => {
     
