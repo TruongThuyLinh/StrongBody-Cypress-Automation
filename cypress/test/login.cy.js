@@ -2,7 +2,7 @@ Cypress.on("uncaught:exception", () => false);
 
 describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
 
-  const emailInput = "input[name='email']";
+const emailInput = "#email";
   const passInput = "input[name='password']";
   const signInBtn = "button[type='submit']";
    const googleBtn    = 'button[aria-label="Continue with Google"]';
@@ -94,7 +94,6 @@ it("TC_9- Email trống ", () => {
   cy.get(signInBtn).click();
   cy.contains(/email is required/i).should("be.visible");
 
-
 });
 it("TC_11 - Email toàn khoảng trắng → coi như rỗng", () => {
   cy.get(emailInput).type("     "); // toàn space
@@ -116,6 +115,7 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi ", () => {
   cy.get(emailInput)
     .type("truongthuylinh2004tb@gmail.com")
     .clear();
+    cy.get(signInBtn).click();
 
   cy.contains(/email is required/i).should("be.visible");
 

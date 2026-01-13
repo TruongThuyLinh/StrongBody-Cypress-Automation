@@ -139,6 +139,18 @@ cy.wait(2000);
   cy.url().should("not.include", "step=profession");
 
 });
+it("TC_10-Nhập tên shop với kí tự  lập lại-> button OK bật", () => {
+    const maxString = "a".repeat(7); // Tạo chuỗi 70 ký tự 'a'
+
+    cy.get(shopNameInput).clear().type(maxString);
+
+    // Kiểm tra giá trị trong input đủ 70 ký tự
+    cy.get(shopNameInput).should("have.value", maxString);
+
+   cy.contains("button", /^OK$/).should("be.disabled");
+     cy.contains("Shop name must not contain excessive repeated characters").should("be.visible");
+
+});
 it("TC_07 - Avatar không được thay đổi (giữ nguyên ảnh cũ) nếu upload file .txt", () => {
   // 1. CHUẨN BỊ FILE GIẢ
   const invalidFile = "cypress/fixtures/Homework 22.pptx";
@@ -194,23 +206,7 @@ it("TC_07 - Avatar không được thay đổi (giữ nguyên ảnh cũ) nếu u
         expect(color).to.not.eq("rgb(209, 213, 219)"); 
       });
   });
-  it("TC_10-shop name=maxlengh(70))-> button OK bật", () => {
-    const maxString = "a".repeat(70); // Tạo chuỗi 70 ký tự 'a'
-
-    cy.get(shopNameInput).clear().type(maxString);
-
-    // Kiểm tra giá trị trong input đủ 70 ký tự
-    cy.get(shopNameInput).should("have.value", maxString);
-
-    // Kiểm tra nút OK không bị disabled
-    cy.contains("button", /^OK$/)
-      .should("be.visible")
-      .and("not.be.disabled");
-
-    // Click và kiểm tra chuyển trang
-    cy.contains("button", /^OK$/).click();
-    cy.url().should("include", "step=profession");
-});
+  
   it("TC_11-minlengh(3)<shop name>maxlengh(70)-> chuyển sang step 2", () => {
 
     // Nhập tên hợp lệ
