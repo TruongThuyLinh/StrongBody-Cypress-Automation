@@ -3,10 +3,10 @@ Cypress.on("uncaught:exception", () => false);
 describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
 
 
-  const emailInput   = "input[name='email']:visible";
-  const passInput    = "input[name='password']:visible";
+const emailInput = "#email";
+const passInput = "input[name='password']:visible";
   const acceptTerms  = 'input[name="acceptTerms"]';
-  const signUpBtn    = 'button[type="submit"]';
+  const signUpBtn = 'button[type="submit"]:visible';
   const googleBtn    = 'button[aria-label="Continue with Google"]';
   const facebookBtn  = 'button[aria-label="Continue with Facebook"]';
   const signInLink   = 'a[href="/login"]';
@@ -15,21 +15,32 @@ describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
     cy.viewport(1920, 1080);
     cy.visit("/signup");
      // cy.contains('button', 'English').click();
+     
 
   });
 
   const tickTerms = () => cy.get(acceptTerms).check({ force: true });
 
   it("TC_01 - Hiển thị đầy đủ UI", () => {
-    
-    cy.get(emailInput).should("be.visible");
-    cy.get(passInput).should("be.visible");
-    cy.get(acceptTerms).should("be.visible");
-    cy.get( signUpBtn) .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
+   cy.get('body').should('be.visible');
 
-    cy.get(googleBtn).should("be.visible");
-    cy.get(facebookBtn).should("be.visible");
-    cy.get(signInLink).should("be.visible");
+  cy.get('#email', { timeout: 20000 }) 
+    .should('exist') // Đảm bảo nó có trong DOM
+    .filter(':visible') // Sau đó mới lọc cái đang hiện
+    .should('be.visible');
+
+  cy.get(passInput).should("be.visible");
+
+  cy.get(acceptTerms).should("be.visible");
+
+  cy.get(signUpBtn).should("be.visible")
+    .and("not.be.disabled")
+    .and("have.css", "background-color", "rgb(0, 162, 240)");
+
+  cy.get(googleBtn).should("be.visible");
+  cy.get(facebookBtn).should("be.visible");
+
+  cy.get(signInLink).should("be.visible");
   });
 
  it("TC_02 - Email trống → báo lỗi", () => {
