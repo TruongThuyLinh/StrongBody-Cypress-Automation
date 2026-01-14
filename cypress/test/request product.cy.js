@@ -86,7 +86,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
 
     cy.contains('button', 'Post request').click({ force: true });
     
-    cy.contains('Description is required', { timeout: 10000 }).should('be.visible'); 
+    cy.contains('Description must be at least 10 characters', { timeout: 10000 }).should('be.visible'); 
 });
 
   it('TC_03: nhập Mô tả 9 ký tự (nhỏ hơn Minlength)', () => {

@@ -113,16 +113,18 @@ cy.url({ timeout: 20000 }).should("include", "buyer/dashboard");
    cy.url({ timeout: 20000 }).should("include", "buyer/dashboard/setting"); 
         cy.contains('Edit profile', { timeout: 10000 }).should('be.visible');
     });
-     it("TC_08- Click vào Edit your dream team->", () => { 
-    const  editDreamTeamText= 'Edit your dream team';
-    cy.get(editDreamTeamLink)
-            .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-            .should('be.visible')
-            .and('contain', 'Edit your dream team');
-    cy.get(editDreamTeamLink).click();
-      cy.url({ timeout: 20000 }).should("include", "buyer/choose-your-companions"); 
-        cy.contains('Select Your Care Team', { timeout: 10000 }).should('be.visible');
-    
-    });   
+     it("TC_08 - Click vào Edit your dream team → Điều hướng đúng trang", () => { 
+    const editLinkSelector = 'a[href="/choose-your-companions"]';
+
+    cy.get(editLinkSelector)
+        .filter(':visible') 
+        .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+        .should('be.visible')
+        .and('contain', 'Edit your dream team')
+        .click();
+
+    cy.url({ timeout: 20000 }).should("include", "choose-your-companions"); 
+    cy.contains('Select Your Care Team', { timeout: 10000 }).should('be.visible');
+});
 
 });

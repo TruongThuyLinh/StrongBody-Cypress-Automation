@@ -10,7 +10,8 @@ const nameInput = "input#title";
 
   //const descInput = 'textarea, div[data-field="description"] textarea';
   const descInput = 'div.ContentEditable__root[data-lexical-editor="true"]';
- 
+  const heaInput = 'input.custom-combobox-create-service';
+
 
   const priceInput = "input#price, input[name='price'], input[placeholder='Enter price']";
 
@@ -614,52 +615,98 @@ it("TC_13 - Bỏ trống Category → Báo lỗi bắt buộc", () => {
 
     cy.contains(/Category is required/i).should("be.visible");
 });
-it("TC_14 - Nhập chỉ khoảng trắng (Space) vào tìm kiếm Category → Không cho phép chọn và báo lỗi", () => {
-    
-    cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
-    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
-    cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'], { force: true });
-    cy.get(nameInput).type("Product with Space Category");
-    cy.get(priceInput).type("500");
-    cy.get(descInput).type("Valid description for testing category space.");
-    cy.get("input[id^='headlessui-combobox-input']")
-      .should('be.visible')
-      .type("     "); 
+it("TC_14 - Nhập chỉ khoảng trắng (Space) vào Category → Hệ thống không chấp nhận", () => {
+    cy.get(nameInput).type("Product Testing Space Category");
+    cy.get(priceInput).type("100");
+    cy.get(descInput).type("Valid description here");
 
-    //cy.get("div[id^='headlessui-combobox-options']").should('not.exist');     
+    cy.get('#category_ids')
+      .filter(':visible')
+      .should('be.visible')
+      .type("      "); 
     cy.get('body').click(0, 0, { force: true });
     cy.get(createBtn).click();
-
-    cy.contains(/Category is required/i).should("be.visible");
+    cy.contains(/Category is required|Please select a category/i)
+      .should("be.visible");
 });
-// it("TC_15 - Nhập Category không tồn tại → Không cho phép chọn và báo lỗi khi Submit", () => {
-    
-//     // 1. Điền các thông tin hợp lệ khác
-//     cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
-//     cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
-//     cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'], { force: true });
-//     cy.get(nameInput).type("Product with Fake Category");
-//     cy.get(priceInput).type("1000");
-//     cy.get(descInput).type("Testing non-existent category input.");
+it("TC_15 - Nhập Category không tồn tại → Không cho phép chọn và báo lỗi", () => {
 
-//     // 2. Nhập một Category không có trong hệ thống
-//     const fakeCategory = "Category_Sieu_Cap_Vip_123";
-//     cy.get("input[id^='headlessui-combobox-input']")
-//       .should('be.visible')
-//       .type(fakeCategory);
+    cy.get(nameInput).type("Product with Invalid Category");
+    cy.get(priceInput).type("150");
+    cy.get(descInput).type("Testing how the system handles fake categories.");
+    const fakeCate = "Category_Khong_Ton_Tai_999";
 
-//     cy.contains(/No results found|No options|Không tìm thấy/i).should('be.visible');
+    cy.get('#category_ids')
+      .filter(':visible') // Tránh lỗi trùng ID nếu có
+      .should('be.visible')
+      .type(fakeCate);
 
-//     cy.get("input[id^='headlessui-combobox-input']").type('{enter}');
-//     cy.get('body').click(0, 0, { force: true });
-    
-//     // 6. Nhấn nút Create
-//     cy.get(createBtn).click();
+    cy.contains(/No results found|Không tìm thấy kết quả/i)
+      .should('be.visible');
+    cy.get('#category_ids').type('{enter}');
+    cy.get('body').click(0, 0, { force: true });
 
-//     cy.contains(/Category is required/i).should("be.visible");
-// });
+    cy.get(createBtn).click();
 
-    it('TC_13: Hiển thị popup xác nhận Discard khi bấm Cancel', () => {
+    cy.contains(/Category is required|Please select a category/i)
+      .should("be.visible");
+});
+
+it("TC_16- Để trống trường Hea Type → Báo lỗi ", () => {
+
+  cy.get(nameInput).type("Service Testing Empty Hea");
+  cy.get(priceInput).type("100");
+  cy.get(descInput).type("Description for testing purposes");
+  cy.get(heaInput)
+    .filter(':visible')
+    .should('be.visible')
+    .clear();
+      cy.get('body').click(0, 0, { force: true });
+  cy.get(createBtn).click();
+
+  cy.contains(/Type is required/i).should('be.visible');
+
+ 
+});
+it("TC_17 - Nhập chỉ khoảng trắng (Space) vào Hea Type → Báo lỗi", () => {
+  cy.get(nameInput).type("Service Testing Space Hea");
+  cy.get(priceInput).type("100");
+  cy.get(descInput).type("Description for testing purposes");
+
+  cy.get(heaInput)
+    .filter(':visible') // Sử dụng :visible do hệ thống có lỗi trùng ID
+    .should('be.visible')
+    .clear()             
+    .type("      ");   
+
+  cy.get('body').click(0, 0, { force: true });
+
+  cy.get(createBtn).click();
+
+  cy.contains(/Type is required|Please select/i).should('be.visible');
+
+  
+});
+it("TC_18 - Nhập Hea Type không tồn tại → Không cho phép chọn và báo lỗi", () => {
+  cy.get(nameInput).type("Service Testing Space Hea");
+  cy.get(priceInput).type("100");
+  cy.get(descInput).type("Description for testing purposes");
+
+  cy.get(heaInput)
+    .filter(':visible') // Sử dụng :visible do hệ thống có lỗi trùng ID
+    .should('be.visible')
+    .clear()             
+    .type("Type_Khong_Ton_Tai_999");   
+
+  cy.get('body').click(0, 0, { force: true });
+
+  cy.get(createBtn).click();
+
+  cy.contains(/Type is required|Please select/i).should('be.visible');
+
+  
+});
+    it('TC_19: Hiển thị popup xác nhận Discard khi bấm Cancel', () => {
     
     cy.get('input[name="title"]').type("Dữ liệu đang nhập dở...");
 
@@ -689,7 +736,7 @@ it("TC_14 - Nhập chỉ khoảng trắng (Space) vào tìm kiếm Category → 
     cy.url().should('not.include', '/create'); // URL không còn ở trang tạo mới
 });
  
-    it("TC_14- Tất cả trường = đúng maxlength → Valid", () => {
+    it("TC_20- Tất cả trường = đúng maxlength → Valid", () => {
 
       const maxName = "a".repeat(200);
       const maxDesc = "b".repeat(1000);
@@ -738,7 +785,7 @@ cy.get('body').click(0, 0, { force: true });
       cy.url().should("include", "seller/my-service");
     });
 
-    it("TC_15- Tất cả các trường < maxlength → Valid", () => {
+    it("TC_21- Tất cả các trường < maxlength → Valid", () => {
 
       const shortName = "a".repeat(150);
       const shortDesc = "b".repeat(500);

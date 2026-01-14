@@ -74,7 +74,7 @@ cy.url({ timeout: 20000 }).should("include", "home");
   cy.contains('Lion Point', { timeout: 10000 }).should('be.visible');
   });
   it('TC_06: Click link Visit Provider Page->chuyển hướng sang become-seller', () => {
-  cy.contains('a', 'Visit Provider Page')
+  cy.contains('a', 'Build Provider Shop')
     .filter(':visible')
     .scrollIntoView()
     .should('be.visible')
