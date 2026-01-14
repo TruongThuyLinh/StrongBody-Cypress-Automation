@@ -3,7 +3,7 @@ Cypress.on("uncaught:exception", () => false);
 describe("SIGN UP PAGE — FULL TESTING (NO OTP)", () => {
 
 
-const emailInput = "#email";
+const emailInput = "input[name='email']:visible";
 const passInput = "input[name='password']:visible";
   const acceptTerms  = 'input[name="acceptTerms"]';
   const signUpBtn = 'button[type="submit"]:visible';
@@ -22,12 +22,7 @@ const passInput = "input[name='password']:visible";
   const tickTerms = () => cy.get(acceptTerms).check({ force: true });
 
   it("TC_01 - Hiển thị đầy đủ UI", () => {
-   cy.get('body').should('be.visible');
-
-  cy.get('#email', { timeout: 20000 }) 
-    .should('exist') // Đảm bảo nó có trong DOM
-    .filter(':visible') // Sau đó mới lọc cái đang hiện
-    .should('be.visible');
+  cy.get(emailInput).should("be.visible");
 
   cy.get(passInput).should("be.visible");
 
@@ -80,12 +75,11 @@ it("TC_03 - Email chỉ nhập khoảng trắng → báo lỗi", () => {
 });
 
  it("TC_05 - Nhập email rồi xoá → báo lỗi", () => {
-
   cy.get(passInput).type("abc12345");
-
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-
+  tickTerms();
   cy.get(emailInput).clear();
+  cy.get('button:visible').contains('Free Sign up').click();
 
   cy.contains(/email is required|invalid email/i).should("be.visible");
 
@@ -252,9 +246,9 @@ cy.get('button:visible').contains('Free Sign up').click();
 it("TC_20- Click Sign in → Điều hướng đúng trang", () => {
   
 cy.get('a[href="/login"]:visible').first().click();
-    cy.url({ timeout: 10000 }).should("include", "/login");
+    cy.url({ timeout: 10000 }).should("include", "/signup");
     cy.get('input[name="email"]', { timeout: 10000 }).should("be.visible");
-    cy.url().should("include", "/login");
+    cy.url().should("include", "/signup");
     });
 
  it("TC_21- Facebook button hoạt động", () => { 

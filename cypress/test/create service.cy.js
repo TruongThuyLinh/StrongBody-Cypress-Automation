@@ -595,6 +595,69 @@ cy.get('body').click(0, 0, { force: true });
 
     cy.contains(/Description is required/i).should("exist");
 });
+it("TC_13 - Bỏ trống Category → Báo lỗi bắt buộc", () => {
+    
+    cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+    cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'], { force: true });
+
+    cy.get(nameInput).type("Product Name Without Category");
+
+    cy.get(priceInput).type("200");
+
+    cy.get(descInput)
+      .should('be.visible')
+      .type("This is a valid description");
+
+    cy.get(createBtn).click();
+
+
+    cy.contains(/Category is required/i).should("be.visible");
+});
+it("TC_14 - Nhập chỉ khoảng trắng (Space) vào tìm kiếm Category → Không cho phép chọn và báo lỗi", () => {
+    
+    cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+    cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+    cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'], { force: true });
+    cy.get(nameInput).type("Product with Space Category");
+    cy.get(priceInput).type("500");
+    cy.get(descInput).type("Valid description for testing category space.");
+    cy.get("input[id^='headlessui-combobox-input']")
+      .should('be.visible')
+      .type("     "); 
+
+    //cy.get("div[id^='headlessui-combobox-options']").should('not.exist');     
+    cy.get('body').click(0, 0, { force: true });
+    cy.get(createBtn).click();
+
+    cy.contains(/Category is required/i).should("be.visible");
+});
+// it("TC_15 - Nhập Category không tồn tại → Không cho phép chọn và báo lỗi khi Submit", () => {
+    
+//     // 1. Điền các thông tin hợp lệ khác
+//     cy.get(thumbInput).selectFile('cypress/fixtures/anh-meo-gian-cute-13.jpg', { force: true });
+//     cy.get(imgSlot1).selectFile('cypress/fixtures/1.jpg', { force: true });
+//     cy.get(imgMore).selectFile(['cypress/fixtures/2.jpg', 'cypress/fixtures/3.jpg','cypress/fixtures/4.jpg'], { force: true });
+//     cy.get(nameInput).type("Product with Fake Category");
+//     cy.get(priceInput).type("1000");
+//     cy.get(descInput).type("Testing non-existent category input.");
+
+//     // 2. Nhập một Category không có trong hệ thống
+//     const fakeCategory = "Category_Sieu_Cap_Vip_123";
+//     cy.get("input[id^='headlessui-combobox-input']")
+//       .should('be.visible')
+//       .type(fakeCategory);
+
+//     cy.contains(/No results found|No options|Không tìm thấy/i).should('be.visible');
+
+//     cy.get("input[id^='headlessui-combobox-input']").type('{enter}');
+//     cy.get('body').click(0, 0, { force: true });
+    
+//     // 6. Nhấn nút Create
+//     cy.get(createBtn).click();
+
+//     cy.contains(/Category is required/i).should("be.visible");
+// });
 
     it('TC_13: Hiển thị popup xác nhận Discard khi bấm Cancel', () => {
     
