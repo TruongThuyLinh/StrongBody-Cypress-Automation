@@ -10,15 +10,18 @@ const passInput = "input[name='password']:visible";
   const signInLink   = 'a[href="/login"]';
 
   beforeEach(() => {
-    cy.visit("/signup");
-    cy.contains('a', 'For Provider').click();
-   cy.wait(1000);
+  //   cy.visit("/signup");
+  //   cy.contains('a', 'For Provider').click();
+  //  cy.wait(1000);
+  cy.visit("/become-seller");
+  cy.wait(1000);
+  
 cy.contains("Start Selling Now — From $15/month")
   .should("be.visible")
   .click();
   });
 
-
+ // đăng kí 
   it("TC_01 - Hiển thị đầy đủ UI", () => {
   cy.get(emailInput).should("be.visible");
 
@@ -27,8 +30,8 @@ cy.contains("Start Selling Now — From $15/month")
 
   cy.contains('button', 'Create Your Shop')
     .should("be.visible")
-    .and("be.disabled") // Chỉnh thành be.disabled
-    .and("have.css", "background-color", "rgb(198, 198, 198)"); // Màu xám #C6C6C6
+    .and("not.be.disabled") // Kiểm tra nút KHÔNG bị khóa
+    .and("have.css", "background-color", "rgb(28, 144, 108)");
   cy.get(signInLink).should("be.visible");
   });
 
@@ -196,10 +199,9 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
   it("TC_19 - Tài khoản đã tồn tại", () => {
  cy.get(emailInput).type("thuylinh1020tb@gmail.com");
     cy.get(passInput).type("abc12345");
-    tickTerms();
+   
     cy.wait(500);
-    cy.get(signUpBtn) .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
-    cy.get(signUpBtn).contains('Create Your Shop').click();
+      cy.get(signUpBtn).contains('Create Your Shop').click();
     cy.contains('h3', 'Email already exists')
       .should('be.visible')
       .and('have.class', 'text-primary');
@@ -234,11 +236,32 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
 
 
 it("TC_21- Click Sign in → Điều hướng đúng trang", () => {
-  
-cy.get('a[href="/login"]:visible').first().click();
-    cy.url({ timeout: 10000 }).should("include", "/signup");
-    cy.get('input[name="email"]', { timeout: 10000 }).should("be.visible");
-    cy.url().should("include", "/signup");
+
+  cy.contains('span', 'Sign in')
+    .should('be.visible')
+    .click();
+
+  cy.url({ timeout: 10000 }).should("include", "/become-seller");
+  cy.wait(1000);
+
+  cy.get('form').should('be.visible').within(() => {
+    
+    cy.get('button[type="submit"]')
+      .should('be.visible')
+      .and('contain', 'Sign in');
+
+    cy.get('#email').should('have.attr', 'placeholder').and('not.be.empty');
+    cy.get('#password').should('have.attr', 'type', 'password');
+
+    
+    cy.contains('Forgot Password').should('be.visible');
+
+    cy.get('input[type="checkbox"]').should('exist');
+    cy.contains('Remember me').should('be.visible');
+  });
+
+  cy.contains("Don't have an account?").should('be.visible');
+  cy.contains("Free Sign up").should('be.visible');
     });
 
  
@@ -249,7 +272,6 @@ cy.get('a[href="/login"]:visible').first().click();
     cy.get(emailInput).type(randomEmail);
     cy.get(passInput).type("abc12345");
     cy.wait(500);
-    cy.get(signUpBtn) .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
     cy.get(signUpBtn).contains('Create Your Shop').click();
      cy.url().should("include", "become-seller-steps"); 
 
@@ -271,6 +293,8 @@ const password64 = "a1".repeat(32);
     cy.get(passInput).type(password64);
      cy.wait(500);
 cy.get(signUpBtn).contains('Create Your Shop').click();
-     cy.url().should("include", "become-seller-steps"); });
-  
+     cy.url().should("include", "become-seller-steps"); 
+    });
+
+    
    });

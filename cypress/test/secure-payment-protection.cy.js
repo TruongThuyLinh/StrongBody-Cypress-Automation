@@ -43,26 +43,31 @@ cy.url({ timeout: 20000 }).should("include", "secure-payment-protect");
   });  
   
 const SELECTORS = {
-    // Selector tìm nút bấm dựa trên class màu đỏ đặc trưng
     getStartedBtn: 'button.bg-\\[\\#DA1F27\\]', 
-    freePlanSection: 'div:contains("Get Started Free")' 
+    welcomeMessage: 'Welcome'
 };
 
 
-    it("TC_01 - Kiểm tra nút Get Started Free điều hướng chính xác", () => {
-        // 2. Cuộn tới nút bấm
-        // Vì nút có class bg-[#DA1F27], ta dùng selector đó
-        cy.get(SELECTORS.getStartedBtn)
-            .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-            .should('be.visible')
-            .and('contain', 'Get Started Free');
+    it("TC_01 - Kiểm tra nút Get Started Free điều hướng chính xác về trang Home", () => {
+    // 1. Tìm nút cụ thể, cuộn tới và kiểm tra
+    // Sử dụng .first() nếu bạn muốn tương tác với nút đầu tiên trên trang
+    cy.get(SELECTORS.getStartedBtn)
+        .filter(':visible') // Chỉ lấy những nút đang hiển thị (phòng trường hợp có nút ẩn)
+        .first() 
+        .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+        .should('be.visible')
+        .and('contain.text', 'Get Started Free');
 
-      
-        cy.get(SELECTORS.getStartedBtn).click();
+   cy.get(SELECTORS.getStartedBtn)
+        .filter(':visible') // <--- CHỐT CHẶN: Chỉ lấy nút đang hiển thị trên màn hình hiện tại
+        .first() 
+        .scrollIntoView({ duration: 500, offset: { top: -100 } })
+        .click();
 
-        cy.url({ timeout: 20000 }).should("include", "/home"); 
-        cy.contains('Welcome').should('be.visible');
-    });
+    // 3. Kiểm tra kết quả
+    cy.url({ timeout: 15000 }).should("include", "/home"); 
+    cy.contains(SELECTORS.welcomeMessage, { timeout: 10000 }).should('be.visible');
+});
 
 });
 
