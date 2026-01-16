@@ -57,6 +57,7 @@ const SELECTORS = {
         .should('be.visible')
         .and('contain', 'Become publisher')
         .and('have.attr', 'href', '/become-publisher');
+        cy.wait(1000);
 
     cy.get(SELECTORS. getecomepublisherBtn).click({ force: true });
 
