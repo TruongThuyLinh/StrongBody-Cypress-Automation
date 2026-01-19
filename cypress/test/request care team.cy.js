@@ -2,8 +2,8 @@ Cypress.on("uncaught:exception", () => false);
 
 describe("Post Request", () => {
 
-  const descriptionInput = 'textarea#description';
-const CategoryDropdown = '#categoryId';
+const descriptionInput = 'textarea[name="description"]';
+const CategoryDropdown = '#category_ids';
   const fileInput = 'input#file-upload';
   const agreeInput = 'input[name="agree"]';
   
@@ -59,7 +59,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.get(fileInput).selectFile('cypress/fixtures/photo1.png', { force: true });
     cy.get(agreeInput).check({ force: true });
     cy.get(agreeInput).should('be.checked');
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
 
     cy.url().should('include', '/create-request');
@@ -78,7 +78,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     cy.get(agreeInput)
       .check()
       .should('be.checked');
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
     cy.url().should('include', '/create-request');
      
      cy.contains('Description is required').should('be.visible'); 
@@ -86,15 +86,15 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
   it('TC_03: nhập Mô tả 9 ký tự (nhỏ hơn Minlength)', () => {
     
     const invalidText = '123456789'; 
-    cy.get('#description').clear();
-    cy.get('#description')
+    cy.get(descriptionInput).clear();
+    cy.get(descriptionInput)
       .type(invalidText)
       .blur(); 
     cy.get(CategoryDropdown).click();
     cy.contains('Career Mentoring & Guidance').click(); 
     cy.get('body').click(0, 0, { force: true });
     cy.get('input[type="checkbox"]').check({ force: true });
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
     cy.url().should('include', '/create-request');
     cy.contains('Description must be at least 10 characters', { timeout: 10000 })
@@ -126,8 +126,7 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
       .and('contain', 'Select your focus area'); // Kiểm tra chữ mặc định khi chưa chọn
     cy.get('input[type="checkbox"]').check({ force: true });
     cy.get('input[type="checkbox"]').should('be.checked');
--
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
         cy.url().should('include', '/create-request');
     
 });
@@ -143,12 +142,12 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
         cy.get('body').click(0, 0, { force: true });  
 
     cy.get('input[type="checkbox"]').check({ force: true });
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
     cy.url().should('include', '/create-request');
 
    // cy.contains('Category is required', { timeout: 10000 }).should('be.visible');
-   cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+   cy.contains('button', 'Post request').click({ force: true });
         cy.url().should('include', '/create-request');
 });
 it('TC_07: bỏ trống checkbox agree', () => {
@@ -165,7 +164,7 @@ it('TC_07: bỏ trống checkbox agree', () => {
       .should('be.checked') // Xác nhận trạng thái mặc định (nếu có)
       .uncheck({ force: true }) // Bỏ chọn
       .should('not.be.checked'); // Xác nhận đã bỏ chọn thành công
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
     cy.url().should('include', '/create-request');
     cy.contains('You must agree to the terms', { timeout: 10000 })
       .should('be.visible');
@@ -183,7 +182,7 @@ it('TC_07: bỏ trống checkbox agree', () => {
      cy.get('body').click(0, 0, { force: true });  
     cy.get('input[type="checkbox"]').check({ force: true });
 
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
     cy.url({ timeout: 20000 }).should('include', '/create-request/success');
 
@@ -209,7 +208,7 @@ it('TC_07: bỏ trống checkbox agree', () => {
 
     cy.get('input[type="checkbox"]').check({ force: true }); // Dùng force: true để vượt qua các lớp phủ
 
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
     
     cy.url({ timeout: 15000 }).should('include', '/create-request/success');
@@ -238,7 +237,7 @@ it('TC_07: bỏ trống checkbox agree', () => {
     cy.get('input#file-upload').selectFile('cypress/fixtures/photo1.png', { force: true });
 
     cy.get('input[type="checkbox"]').check({ force: true });
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
     cy.url({ timeout: 15000 }).should('include', '/create-request/success');
 
@@ -259,7 +258,7 @@ it('TC_11: Nhập space đầu và cuối cho dữ liệu hợp lệ', () => {
 
     cy.get('input[type="checkbox"]').check({ force: true });
 
-    cy.contains('button', 'Find My Team & Get Quotes').click({ force: true });
+    cy.contains('button', 'Post request').click({ force: true });
 
   
     cy.url({ timeout: 15000 }).should('include', '/create-request/success');

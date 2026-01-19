@@ -80,7 +80,7 @@ it("TC_06- Email trống ", () => {
   cy.contains(/email is required/i).should("be.visible");
 
 });
-it("TC_11 - Email toàn khoảng trắng → coi như rỗng", () => {
+it("TC_07- Email toàn khoảng trắng → coi như rỗng", () => {
   cy.get(emailInput).type("     "); // toàn space
   cy.get(passInput).type("1234567l");
 
@@ -92,7 +92,7 @@ it("TC_11 - Email toàn khoảng trắng → coi như rỗng", () => {
   cy.contains(/email is required/i).should("be.visible");
 });
 
-it("TC_12- Nhập Email rồi xoá → hiện lỗi ", () => {
+it("TC_08- Nhập Email rồi xoá → hiện lỗi ", () => {
 
   cy.get(passInput).type("1234567l");
 
@@ -106,7 +106,7 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi ", () => {
 
 });
 
-    it("TC_13- Email sai định dạng (thiếu @)", () => {
+    it("TC_09- Email sai định dạng (thiếu @)", () => {
       cy.get(emailInput).type("abcgmail.com");
       cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
@@ -114,7 +114,7 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi ", () => {
       cy.contains(/invalid email/i).should("be.visible");
     });
 
-    it("TC_14 - Email thiếu .com", () => {
+    it("TC_10 - Email thiếu .com", () => {
       cy.get(emailInput).type("abc@gmail");
       cy.get(passInput).type("1234567l");
   cy.get(signInBtn).click();
@@ -122,7 +122,7 @@ it("TC_12- Nhập Email rồi xoá → hiện lỗi ", () => {
       cy.contains(/invalid email/i).should("be.visible");
     });
 
-it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
+it("TC_11 - Kiểm tra lỗi Email không tồn tại", () => {
  
   cy.wait(2000); 
 
@@ -142,7 +142,7 @@ it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
 
   describe("PASSWORD VALIDATION", () => {
 
-    it("TC_16 - Password trống->báo lỗi", () => {
+    it("TC_12- Password trống->báo lỗi", () => {
       cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
       cy.get(signInBtn).click();
 
@@ -150,7 +150,7 @@ it("TC_15 - Kiểm tra lỗi Email không tồn tại", () => {
 
     });
  
-it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
+it("TC_13 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("          "); // Nhập toàn khoảng trắng
 
@@ -159,7 +159,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   cy.contains("Password must not contain whitespace").should("be.visible");
 });
 
-    it("TC_18- Nhập mật khẩu rồi xoá → hiện lỗi ", () => {
+    it("TC_14- Nhập mật khẩu rồi xoá → hiện lỗi ", () => {
 
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
 
@@ -171,7 +171,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
 
 });
 
-    it("TC_19- Password > 64 ký tự", () => {
+    it("TC_15- Password > 64 ký tự", () => {
       const longPass = "a1".repeat(33); // 50 ký tự
       cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
       cy.get(passInput).type(longPass);
@@ -180,13 +180,13 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
       cy.contains(/password/i).should("exist");
     });
 
-   it("TC_20-Password sai", () => {
+   it("TC_16-Password sai", () => {
         cy.get(emailInput).type("honganhtran.1805@gmail.com");
         cy.get(passInput).type("saiMatKhau1");
         cy.get(signInBtn).click();
         cy.contains("Wrong password").should("be.visible");
     });
-    it("TC_21 - Password có khoảng trắng → báo lỗi", () => {
+    it("TC_17 - Password có khoảng trắng → báo lỗi", () => {
 
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("123 456 7l");
@@ -195,7 +195,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   
 });
 
-    it("TC_22 - Password có khoảng trắng đầu/cuối → login thất bại", () => {
+    it("TC_18 - Password có khoảng trắng đầu/cuối → login thất bại", () => {
   
   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
   cy.get(passInput).type("   1234567l   ");
@@ -208,7 +208,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
  
   describe(" LOGIN SUCCESS", () => {
 
-    it("TC_23 - Đăng nhập thành công", () => {
+    it("TC_19 - Đăng nhập thành công", () => {
       cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
       cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
@@ -222,7 +222,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
     //   cy.contains("basami1492@eubonus.com").should("be.visible");
       
     // });
-    it("TC_24 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
+    it("TC_20 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 
   cy.get(emailInput).type("   truongthuylinh2004tb@gmail.com   ");
 

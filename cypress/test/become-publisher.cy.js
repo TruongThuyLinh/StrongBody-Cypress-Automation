@@ -42,32 +42,23 @@ cy.url({ timeout: 20000 }).should("include", "become-publisher");
   });  
   
 const SELECTORS = {
-becomePublisherBtn: 'button.bg-\\[\\#DA1F27\\]',
-attractSellersSection: 'div[role="button"]'
+    // Sử dụng selector ngắn gọn và chính xác hơn
+    becomePublisherBtn: 'button.bg-\\[\\#DA1F27\\]',
+    attractSellersSection: 'div[role="button"]'
 };
 
 it("TC_01 - Kiểm tra nút Become A Publisher cuộn đến vùng Attract Sellers", () => {
-    // 1. Click nút (Giữ nguyên)
-    cy.get(SELECTORS.becomePublisherBtn).scrollIntoView().should('be.visible');
-    cy.get(SELECTORS.becomePublisherBtn).click({ force: true });
-    
-    cy.wait(2000); 
+    // 1. Tìm nút bằng Text để đảm bảo độ chính xác cao nhất
+    cy.contains('button', /Become A Publisher/i)
+      .scrollIntoView()
+      .should('be.visible')
+      .click({ force: true });
 
-  
-    // cy.contains('h3', /Attract\s+Sellers/i, { timeout: 15000 })
-    //     .should('be.visible')
-    //     .closest('div[role="button"]')
-    //     .as('targetCard');
+    // 2. Chờ section mục tiêu xuất hiện
+    cy.get(SELECTORS.attractSellersSection, { timeout: 10000 })
+      .should('be.visible');
 
-    // // 3. Kiểm tra Card mục tiêu
-    // cy.get('@targetCard')
-    //     .should('have.class', 'ring-4')
-    //     .within(() => {
-    //         // Kiểm tra nội dung phụ bằng Regex cho an toàn luôn
-    //         cy.contains(/Earn\s+US\$\s+5/i).should('be.visible');
-    //     });
-
-    // 4. Kiểm tra tọa độ cuộn
+    // 3. Kiểm tra xem trang có thực sự cuộn xuống không
     cy.window().then((win) => {
         expect(win.scrollY).to.be.greaterThan(0);
     });

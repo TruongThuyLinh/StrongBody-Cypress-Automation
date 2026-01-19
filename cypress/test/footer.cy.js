@@ -118,7 +118,7 @@ it('TC_07: Chuyển hướng đến trang Expert directory khi click Expert dire
   cy.scrollTo('bottom');
   cy.get('footer a[href="/featured-experts"]')
     .filter(':visible')
-    .should('contain', 'Expert directory')
+    .should('contain', 'Find Experts & Freelancers ')
     .click({ force: true }); // Dùng force nếu có element overlay che khuất
   cy.url().should('include', '/featured-experts');
 
