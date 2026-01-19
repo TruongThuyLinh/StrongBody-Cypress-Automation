@@ -1,6 +1,6 @@
  Cypress.on("uncaught:exception", () => false);
 
-describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
+describe("Register Become Publisher", () => {
 
 const emailInput = "#email";
 const passInput = "input[name='password']:visible";
@@ -388,7 +388,7 @@ it("TC_26- Click icon eye để hiện mật khẩu", () => {
     cy.get("svg.lucide-eye-off:visible").click();
     cy.get(passInput).should("have.attr", "type", "password");
   });
-  it("TC_23 Data hợp lệ ", () => {
+  it("TC_28- Data hợp lệ ", () => {
     cy.wait(2000);
     const randomEmail = `linh${Date.now()}@gmail.com`;
 
@@ -412,14 +412,13 @@ it("TC_26- Click icon eye để hiện mật khẩu", () => {
     });
     
   });
-  it("TC_24- Data hợp lệ → nhập space đầu cuối email", () => {
+  it("TC_29- Data hợp lệ → nhập space đầu cuối email", () => {
      cy.wait(2000);
     const randomEmail = `    linh${Date.now()}@gmail.com   `;
 
     cy.get(emailInput).type(randomEmail);
     cy.get(passInput).type("abc12345");
-    cy.get(passInput).type('1234567l');
-
+  
     cy.get(countryInput).type('Vietnam{enter}');
     cy.get(phoneInput).type('0912345678');
 
@@ -435,7 +434,7 @@ it("TC_26- Click icon eye để hiện mật khẩu", () => {
     });
  });
   
-   it("TC_25- Password đúng 64 ký tự → button enabled", () => {
+   it("TC_30- Password đúng 64 ký tự → button enabled", () => {
     cy.wait(2000);
     cy.get(emailInput).type(`linh${Date.now()}@gmail.com`);
     const password64 = "a1".repeat(32);
