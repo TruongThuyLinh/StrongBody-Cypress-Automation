@@ -124,7 +124,7 @@ cy.url({ timeout: 20000 }).should("include", "buyer/dashboard");
         .click();
 
     cy.url({ timeout: 20000 }).should("include", "choose-your-companions"); 
-    cy.contains('Select Your Care Team', { timeout: 10000 }).should('be.visible');
+    cy.contains('Your StrongBody.AI team', { timeout: 10000 }).should('be.visible');
 });
 
 });

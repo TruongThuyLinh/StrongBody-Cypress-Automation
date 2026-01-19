@@ -121,9 +121,9 @@ it('TC_01: để trống Mô tả (Description), các trường khác hợp lệ
     
     cy.get(descriptionInput).clear();
     cy.get(descriptionInput).type('Tôi muốn tìm lớp học boxing tại Hà Nội.', { delay: 30 });
-    cy.get(CategoryDropdown)
+  cy.get(CategoryDropdown)
       .should('be.visible')
-      .and('contain', 'Select your focus area'); // Kiểm tra chữ mặc định khi chưa chọn
+      .and('have.attr', 'placeholder', 'Select categories');
     cy.get('input[type="checkbox"]').check({ force: true });
     cy.get('input[type="checkbox"]').should('be.checked');
     cy.contains('button', 'Post request').click({ force: true });
