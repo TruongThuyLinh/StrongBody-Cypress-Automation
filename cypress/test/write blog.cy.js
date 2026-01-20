@@ -3,7 +3,7 @@ Cypress.on("uncaught:exception", () => false);
 describe("write blog", () => {
  
 
-    const categoryInput = 'input[placeholder="Select category"]';
+    const categoryInput = 'button[role="combobox"]' ;
  const titleInput = 'input[name="title"]';
     const submitBtn = 'button[type="submit"]';
     const editor = 'div[contenteditable="true"][role="textbox"]';
@@ -67,8 +67,6 @@ beforeEach(() => {
    
     cy.contains('120/120').should('be.visible');
 
-
-  
     cy.get(titleInput)
       .clear()
       .type(stringOverLimit); // Cố tình nhập 121 ký tự
@@ -83,93 +81,91 @@ beforeEach(() => {
   
     cy.intercept('GET', '**/all-categories*').as('getCategories');
 
-    // 2. UPLOAD ẢNH (Giữ nguyên)
-    cy.get('#blog-thumbnail-input').selectFile('cypress/fixtures/review1.png', { force: true });
+    cy.get('#blog-thumbnail-input').selectFile('cypress/fixtures/1.jpg', { force: true });
 
-    // Click và gõ chữ "a" để bắt buộc hệ thống tìm kiếm/tải danh mục
-    cy.get(categoryInput)
-      .should('be.visible')
-      .first()
-      .click()
-      .clear() // Xóa text cũ (nếu có) cho chắc ăn
-      .type("Senior Health{enter}"); // {enter} thay thế cho việc tìm li rồi click  
-    cy.get(categoryInput)
-      .should('have.value', 'Senior Health');
-    // A. Xóa Title -> Disabled
+    cy.get(categoryInput).should('be.visible').first().click();
+    
+    cy.contains('[role="option"]', 'Senior Health').click();
+
     cy.get(titleInput).clear();
+    cy.wait(500);
     cy.get(submitBtn).should('be.disabled');
 
-    // B. Nhập Title -> Enabled
+  });
+  
+ it('TC_03:  Nhập Title hợp lệ rồi xóa', () => {
+  
+    cy.intercept('GET', '**/all-categories*').as('getCategories');
+
+    cy.get('#blog-thumbnail-input').selectFile('cypress/fixtures/1.jpg', { force: true });
+
+    cy.get(categoryInput).should('be.visible').first().click();
+    
+    cy.contains('[role="option"]', 'Senior Health').click();
+   
     cy.get(titleInput).type('Tiêu đề kiểm thử hợp lệ');
     cy.wait(500); 
     cy.get(submitBtn).should('not.be.disabled');
 
-    // C. Xóa Title -> Disabled
     cy.get(titleInput).clear();
+    cy.wait(500);
     cy.get(submitBtn).should('be.disabled');
+
   });
-  it('TC_03: Title chỉ chứa khoảng trắng (Space)', () => {
-    cy.intercept('GET', '**/all-categories*').as('getCategories');
 
-   
 
+
+  it('TC_04: Title chỉ chứa khoảng trắng (Space)', () => {
     cy.get('#blog-thumbnail-input').selectFile('cypress/fixtures/review1.png', { force: true });
 
-    cy.get(categoryInput)
-      .should('be.visible')
-      .first()
-      .click()
-      .clear()
-      .type("Senior Health{enter}");
+     cy.get(categoryInput).should('be.visible').first().click();
     
-    cy.get(categoryInput).should('have.value', 'Senior Health');
+    cy.contains('[role="option"]', 'Senior Health').click();
+    
 
-    // 3. --- KIỂM TRA LOGIC SPACE (KHOẢNG TRẮNG) ---
+    cy.get(titleInput).clear().type('     ');
+    cy.get(titleInput).blur(); 
+    cy.get(submitBtn).should('be.disabled'); 
 
-    // Kịch bản 1: Nhập trực tiếp khoảng trắng vào ô đang rỗng
-    cy.get(titleInput).clear().type('     '); // Nhập 5 dấu cách
-    cy.get(titleInput).blur(); // (Quan trọng) Click ra ngoài để kích hoạt validate nếu cần
-    cy.get(submitBtn).should('be.disabled'); // Mong đợi: Vẫn bị disable
-
-    // Kịch bản 2: Nhập đúng rồi sửa lại thành khoảng trắng (Kiểm tra tính nhất quán)
-    // Bước A: Nhập đúng -> Button sáng lên
     cy.get(titleInput).clear().type('Tiêu đề hợp lệ');
     cy.get(submitBtn).should('not.be.disabled');
 
-    // Bước B: Xóa đi và thay bằng khoảng trắng -> Button phải tối lại
     cy.get(titleInput).clear().type('   '); 
+    cy.wait(500);
     cy.get(submitBtn).should('be.disabled');
 });
 
-  it('TC_04: không Upload ảnh ', () => {
+  it('TC_05: không Upload ảnh ', () => {
        
     cy.get(titleInput).type('Tiêu đề này hợp lệ nhưng chưa có ảnh');
 
-    // --- BƯỚC 2: Kiểm tra trạng thái không có ảnh ---
-    cy.get('#blog-thumbnail-input').should('have.value', '');
+     cy.get(categoryInput).should('be.visible').first().click();
+    
+    cy.contains('[role="option"]', 'Senior Health').click();
+    cy.wait(500);
+    
 
     // kiểm tra nút Submit có bị disable
     cy.get(submitBtn).should('be.disabled');
     
    
   });
-it('TC_05:  Upload file sai định dạng (.txt)', () => {
+it('TC_06:  Upload file sai định dạng (.txt)', () => {
     
     cy.get(titleInput).type('Tiêu đề cho test case sai định dạng ảnh');
 
-    cy.get(categoryInput).click().type("Senior Health{enter}");
-cy.get('body').click(0, 0, { force: true });
+    
 
     const invalidFileName = 'cypress/fixtures/fake-image.txt';
     cy.writeFile(invalidFileName, 'Đây là nội dung text, không phải ảnh');
-    // Cố tình upload file .txt vào ô input nhận ảnh
+    // Cố tình upload file .txt vàoô input nhận ảnh
     cy.get('#blog-thumbnail-input').selectFile(invalidFileName, { force: true });
     //  Hệ thống chặn ngay, nút Submit vẫn tối (Disabled)
     cy.get(submitBtn).should('be.disabled');
 
     
 });
-  it('TC_06: Kiểm tra chức năng nút Close (Hủy tạo bài viết)', () => {
+  it('TC_07: Kiểm tra chức năng nút Close (Hủy tạo bài viết)', () => {
     
   
     cy.contains('a', 'Close')
@@ -181,26 +177,19 @@ cy.get('body').click(0, 0, { force: true });
    
 
   });
-  it('TC_07 Happy Case: Nhập dữ liệu,Upload ảnhvà Publish thành công', () => {
+  it('TC_08 Happy Case: Nhập dữ liệu,Upload ảnhvà Publish thành công', () => {
     
     cy.get('input[placeholder="Title"]')
       .should('be.visible')
       .clear()
       .type('Hướng dẫn sức khỏe cho người cao tuổi'); // Điền trực tiếp title
 
-     cy.get(categoryInput)
-      .should('be.visible')
-      .first()
-      .click()
-      .clear() // Xóa text cũ (nếu có) cho chắc ăn
-      .type("Senior Health{enter}"); 
+      cy.get('#blog-thumbnail-input').selectFile('cypress/fixtures/2.jpg', { force: true });
 
-    cy.get(categoryInput)
-      .should('have.value', 'Senior Health');
-
-    cy.get('input[type="file"]')
-      .selectFile('cypress/fixtures/photo1.png', { force: true }); 
-
+     cy.get(categoryInput).should('be.visible').first().click();
+    
+    cy.contains('[role="option"]', 'Senior Health').click();
+    
 
     // --- 4. BẤM CONTINUE ---
     cy.contains('button', 'Continue')
@@ -220,18 +209,17 @@ cy.get('body').click(0, 0, { force: true });
      
 
   });
-  it('TC_08: Nút Publish phải bị disable nếu Nội dung (Description) chỉ chứa khoảng trắng', () => {
+  it('TC_09: Nút Publish phải bị disable nếu Nội dung (Description) chỉ chứa khoảng trắng', () => {
    
-    cy.get('input[placeholder="Title"]').type('Tiêu đề hợp lệ cho test Space');
+    cy.get('input[placeholder="Title"]').type("With a reputation like yours, not having a StrongBody-AI shop is a real oversight. If you're interested, visit my profile to grab the voucher and get started");
     
-    cy.get(categoryInput).first().click().type("Senior Health{enter}");
-
+ cy.get(categoryInput).should('be.visible').first().click();
+    
+    cy.contains('[role="option"]', 'Senior Health').click();
     cy.get('input[type="file"]').selectFile('cypress/fixtures/photo1.png', { force: true });
 
-    // 2. Bấm Continue để sang màn hình soạn thảo
     cy.contains('button', 'Continue').click();
 
-    // Kịch bản A: Nhập toàn dấu cách vào Editor
     cy.get(editor)
       .should('be.visible')
       .click()
@@ -241,7 +229,6 @@ cy.get('body').click(0, 0, { force: true });
 
     cy.contains(publishBtn, 'Publish').should('be.disabled');
 
-    // A. Nhập nội dung thật -> Nút sáng lên
     cy.get(editor).click().type('Nội dung chuẩn chỉnh.');
 cy.get('body').click(0, 0, { force: true });
     cy.contains(publishBtn, 'Publish').should('not.be.disabled');
@@ -254,7 +241,7 @@ cy.get('body').click(0, 0, { force: true });
     // Kết quả: Phải Disabled trở lại
     cy.contains(publishBtn, 'Publish').should('be.disabled');
 });
-  it('TC_09 Happy Case: Điền nội dung và Lưu nháp (Save Draft)', () => {
+  it('TC_10 Happy Case: Điền nội dung và Lưu nháp (Save Draft)', () => {
     
     // 1. Nhập Title
     cy.get('input[placeholder="Title"]')

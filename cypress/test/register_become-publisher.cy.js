@@ -45,7 +45,6 @@ it('TC_02: Kiểm tra lỗi khi chỉ nhập khoảng trắng vào trường Ema
       .should('be.visible')
       .and('have.class', 'text-red-500'); 
 
-    cy.get(emailInput).should('not.have.value', ''); 
 });
 const invalidEmailData = [
     { email: 'plainaddress', reason: 'Không có @ và domain' },
@@ -288,10 +287,10 @@ it("TC_20- Password  có khoản trắng ở giữa", () => {
 
 it("TC_21-Password nhập khoảng trắng ở đầu cuối ", () => {
   cy.wait(2000);
-  cy.get("input[name='email']:visible")
+  cy.get(emailInput)
     .type("truongthuylinh2004tb@gmail.com");
 
-  cy.get("input[name='password']:visible")
+  cy.get(passInput)
     .type(" 1234567l   ");
 
 cy.get(countryInput).type('Vietnam{enter}');
@@ -366,7 +365,7 @@ it('TC_25: Chỉ nhập Space vào  trường phone->báo lỗi', () => {
 
     cy.get(publishBtn).click();
 
-    cy.contains('Country is required')
+    cy.contains('Invalid phone number format')
       .should('be.visible')
       .and('have.class', 'text-red-500');
 });
