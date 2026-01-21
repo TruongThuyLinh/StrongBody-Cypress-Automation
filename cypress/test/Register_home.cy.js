@@ -247,7 +247,7 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
     cy.get(passInput).type("abc12345");
     tickTerms();
     cy.wait(500);
-    cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
+    cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(12, 175, 96)"); // optional
     cy.get('button:visible').contains('Free Sign up').click();
     cy.contains('h3', 'Email already exists')
       .should('be.visible')
@@ -263,7 +263,7 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
     //   .and('have.css', 'background-color', 'rgb(0, 135, 75)');
 });
   // 5️⃣ EYE ICON
-  it("TC_19- Click icon eye để hiện mật khẩu", () => {
+  it("TC_20- Click icon eye để hiện mật khẩu", () => {
     cy.get(passInput).type("abc12345");
     cy.get(passInput).should("have.attr", "type", "password");
 
@@ -272,7 +272,7 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
   });
   
 
-  it("TC_20- Click icon eye-off để ẩn mật khẩu", () => {
+  it("TC_21- Click icon eye-off để ẩn mật khẩu", () => {
     cy.get(passInput).type("abc12345");
 
     cy.get("svg.lucide-eye:visible").click();
@@ -284,15 +284,37 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
 
 
 
-it("TC_21- Click Sign in → Điều hướng đúng trang", () => {
-  
-cy.get('a[href="/login"]:visible').first().click();
-    cy.url({ timeout: 10000 }).should("include", "/signup");
-    cy.get('input[name="email"]', { timeout: 10000 }).should("be.visible");
-    cy.url().should("include", "/signup");
-    });
+it("TC_22- Click Sign in → Điều hướng đúng trang", () => {
+  cy.contains('span', 'Sign in')
+    .should('be.visible')
+    .click();
 
- it("TC_22- Facebook button hoạt động", () => { 
+  cy.url({ timeout: 10000 }).should("include", "/home");
+  cy.wait(1000);
+
+  cy.get('form').should('be.visible').within(() => {
+    
+    cy.get('button[type="submit"]')
+      .should('be.visible')
+      .and('contain', 'Sign in');
+
+    cy.get('#email').should('have.attr', 'placeholder').and('not.be.empty');
+    cy.get('#password').should('have.attr', 'type', 'password');
+
+    
+    cy.contains('Forgot Password').should('be.visible');
+
+    cy.get('input[type="checkbox"]').should('exist');
+    cy.contains('Remember me').should('be.visible');
+  });
+
+  cy.contains("Don't have an account?").should('be.visible');
+  cy.contains("Free Sign up").should('be.visible');
+    });
+  
+  
+
+ it("TC_23- Facebook button hoạt động", () => { 
     cy.get('button[aria-label="Continue with Facebook"]:visible').click(); 
     cy.url().should("include", "facebook.com"); });
 
