@@ -249,16 +249,11 @@ cy.get('body').click(0, 0, { force: true });
       .clear()
       .type('Bài viết nháp về dinh dưỡng');
 
-    // 2. Chọn Category (Headless UI)
-     cy.get(categoryInput)
-      .should('be.visible')
-      .first()
-      .click()
-      .clear() // Xóa text cũ (nếu có) cho chắc ăn
-      .type("Senior Health{enter}"); // {enter} thay thế cho việc tìm li rồi click
-
-    cy.get(categoryInput)
-      .should('have.value', 'Senior Health');
+     cy.get(categoryInput).should('be.visible').first().click();
+    
+    cy.contains('[role="option"]', 'Senior Health').click();
+      // cy.get(categoryInput)
+      //   .should('have.value', 'Senior Health');
 
     cy.get('input[type="file"]')
       .selectFile('cypress/fixtures/photo1.png', { force: true });

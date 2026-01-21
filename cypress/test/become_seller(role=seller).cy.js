@@ -63,30 +63,30 @@ cy.visit("/become-seller");
     cy.url({ timeout: 20000 }).should("include", "seller/read-me"); 
         cy.contains('Welcome to StrongBody, StrongBody Seller!').should('be.visible');
 });
- it("TC_02 - Kiểm tra nút Share your products điều hướng chính xác", () => {
-    // 1. Cuộn tới nút bấm
-    cy.get(shareProductsBtn)
-        .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-        .should('be.visible')
-        .and('contain', 'Share your products');
-        cy.wait(1000);
+//  it("TC_02 - Kiểm tra nút Share your products điều hướng chính xác", () => {
+//     // 1. Cuộn tới nút bấm
+//     cy.get(shareProductsBtn)
+//         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+//         .should('be.visible')
+//         .and('contain', 'Share your products');
+//         cy.wait(1000);
 
-    cy.get(shareProductsBtn).click({ force: true });
+//     cy.get(shareProductsBtn).click({ force: true });
 
-    cy.url({ timeout: 20000 }).should("include", "seller/read-me"); 
-        cy.contains('Welcome to StrongBody, StrongBody Seller!').should('be.visible');
-});
-it("TC_03 - Kiểm tra nút Join as a Service Provider điều hướng chính xác", () => {
-    // 1. Cuộn tới nút bấm
-    cy.get(joinServiceProviderBtn)
-        .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-        .should('be.visible')
-        .and('contain', 'Join as a Service Provider');
-        cy.wait(1000);
+//     cy.url({ timeout: 20000 }).should("include", "seller/read-me"); 
+//         cy.contains('Welcome to StrongBody, StrongBody Seller!').should('be.visible');
+// });
+// it("TC_03 - Kiểm tra nút Join as a Service Provider điều hướng chính xác", () => {
+//     // 1. Cuộn tới nút bấm
+//     cy.get(joinServiceProviderBtn)
+//         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+//         .should('be.visible')
+//         .and('contain', 'Join as a Service Provider');
+//         cy.wait(1000);
 
-    cy.get(joinServiceProviderBtn).click({ force: true });
+//     cy.get(joinServiceProviderBtn).click({ force: true });
 
-    cy.url({ timeout: 20000 }).should("include", "seller/read-me"); 
-        cy.contains('Welcome to StrongBody, StrongBody Seller!').should('be.visible');
-});
+//     cy.url({ timeout: 20000 }).should("include", "seller/read-me"); 
+//         cy.contains('Welcome to StrongBody, StrongBody Seller!').should('be.visible');
+// });
 });

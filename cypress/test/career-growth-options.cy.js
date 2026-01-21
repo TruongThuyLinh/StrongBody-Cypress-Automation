@@ -77,7 +77,7 @@ const SELECTORS = {
     cy.get(SELECTORS. getbecomesellerBtn).click({ force: true });
 
     cy.url({ timeout: 20000 }).should("include", "/become-seller"); 
-     cy.contains('Earn income by providing your services').should('be.visible');
+     cy.contains('Earn income by providing services, products, and courses.').should('be.visible');
 });
 });
 
