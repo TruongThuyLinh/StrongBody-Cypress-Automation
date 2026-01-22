@@ -55,7 +55,8 @@ cy.url({ timeout: 20000 }).should("include", "trans-your-voice");
         cy.get('span').should('contain', 'US$15');
   cy.get('button').contains('Buy Now').click();
   });
-              cy.visit("/checkout/pricing?returnUrl=/trans-your-voice/joining-success");
+      cy.wait(1000);
+     cy.visit("/checkout/pricing?returnUrl=/trans-your-voice/joining-success");
     // 5. Chốt chặn: Đảm bảo vào đúng trang
 cy.url({ timeout: 20000 }).should("include", "checkout/pricing?returnUrl=/trans-your-voice/joining-success"); 
 });

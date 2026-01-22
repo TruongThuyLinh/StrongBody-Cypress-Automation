@@ -32,7 +32,7 @@ const emailInput = "#email";
   
     cy.get('a[href="/forgot-password"]:visible').first().click();
    cy.wait(1000);
-  cy.url().should("include", "/forgot-password");
+  cy.url().should("include", "/forgot-password"); 
 });
 
     it("TC_03- Click icon eye để hiện mật khẩu", () => {
@@ -144,7 +144,7 @@ it("TC_13 - Kiểm tra lỗi Email không tồn tại", () => {
   cy.wait(2000); 
 
   cy.get(emailInput).should('be.visible').clear();
-  cy.get(emailInput).type("linnhc@gmail.com", { delay: 100 });
+  cy.get(emailInput).type("linnhcc@gmail.com", { delay: 100 });
 
   cy.get(passInput).should('be.visible').clear();
   cy.get(passInput).type("1234567l", { delay: 100 });

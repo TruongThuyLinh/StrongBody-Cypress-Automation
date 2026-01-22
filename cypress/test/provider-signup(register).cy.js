@@ -1,6 +1,6 @@
     Cypress.on("uncaught:exception", () => false);
 
-describe("LOGIN PAGE TESTING — OPTIMIZED", () => {
+describe("REGISTER PAGE TESTING — OPTIMIZED", () => {
 
 const emailInput = "#email";
 const passInput = "input[name='password']:visible";
@@ -237,7 +237,7 @@ it("TC_21- Click Sign in → Điều hướng đúng trang", () => {
     .should('be.visible')
     .click();
 
-  cy.url({ timeout: 10000 }).should("include", "/become-seller");
+  cy.url({ timeout: 10000 }).should("include", "/provider-signup");
   cy.wait(1000);
 
   cy.get('form').should('be.visible').within(() => {

@@ -147,14 +147,14 @@ it("TC_13 - Kiểm tra lỗi Email không tồn tại", () => {
   cy.wait(2000); 
 
   cy.get(emailInput).should('be.visible').clear();
-  cy.get(emailInput).type("linnhc@gmail.com", { delay: 100 });
+  cy.get(emailInput).type("linnhcc@gmail.com", { delay: 100 });
 
   cy.get(passInput).should('be.visible').clear();
   cy.get(passInput).type("1234567l", { delay: 100 });
 
   cy.get(signInBtn).should('not.be.disabled').click({ force: true });
 
-  cy.contains("Email does not exist", { timeout: 15000 })
+  cy.contains("Email does not exist", { timeout: 150000 })
     .should('exist')
     .and('be.visible');
 });

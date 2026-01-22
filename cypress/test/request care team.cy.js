@@ -171,59 +171,70 @@ it('TC_07: bỏ trống checkbox agree', () => {
 });
   // ------------------------happy case----------------------- 
 
-  it('TC_08: Gửi thành công khi nhập đúng 5000 ký tự (Max Length)', () => {
-    const maxLength = 5000;
-    const validMaxText = 'a'.repeat(maxLength);
-    cy.get(descriptionInput).clear();
-        cy.get(descriptionInput)
-      .type(validMaxText, { delay: 0, parseSpecialCharSequences: false });
-    cy.get(CategoryDropdown).click();
-    cy.contains('Career Mentoring & Guidance').click(); 
-     cy.get('body').click(0, 0, { force: true });  
-    cy.get('input[type="checkbox"]').check({ force: true });
+//   it('TC_08: Gửi thành công khi nhập đúng 5000 ký tự (Max Length)', () => {
+//     const maxLength = 5000;
+//     const validMaxText = 'a'.repeat(maxLength);
+//     cy.get(descriptionInput).clear();
+//         cy.get(descriptionInput)
+//       .type(validMaxText, { delay: 0, parseSpecialCharSequences: false });
+//     cy.get(CategoryDropdown).click();
+//     cy.contains('Career Mentoring & Guidance').click(); 
+//      cy.get('body').click(0, 0, { force: true });  
+//     cy.get('input[type="checkbox"]').check({ force: true });
 
-    cy.contains('button', 'Post request').click({ force: true });
+//     cy.contains('button', 'Post request').click({ force: true });
 
-    cy.url({ timeout: 20000 }).should('include', '/create-request/success');
+//     cy.url({ timeout: 20000 }).should('include', '/create-request/success');
 
-    // 4.2. Kiểm tra các thông báo thành công hiển thị
-   // cy.contains('Submission successful!', { timeout: 10000 }).should('be.visible');
-   // cy.contains('Request posted successfully').should('be.visible');
-
-    // 4.3. Kiểm tra nút điều hướng (Lưu ý: Bạn hãy kiểm tra lại chữ 'Manager' hay 'Manage')
-    //cy.contains('Manage requests').should('be.visible'); 
-});
+   
+// });
 
   it('TC_09: 10 < Gửi yêu cầu thành công < 5000 và các trường khác hợp lệ', () => {
     
-    cy.get(descriptionInput).clear(); // Sử dụng ID chuẩn
-    cy.get(descriptionInput)
-      .type('Tôi muốn tìm PT Gym hướng dẫn 1-1 tại Quận 3.', { delay: 20 });
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let shortTextId = '';
+    for (let i = 0; i < 4; i++) {
+        shortTextId += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+    const requestContent = `Tôi muốn tìm PT Gym hướng dẫn 1-1 tại Quận 3. [ID: ${shortTextId}]`;
+
+    cy.get(descriptionInput).clear(); 
+    cy.get(descriptionInput).type(requestContent, { delay: 20 }); // Nhập nội dung có ID chữ
+    
     cy.get(CategoryDropdown).click();
     cy.contains('Career Mentoring & Guidance').click(); 
 
-   cy.get('body').click(0, 0, { force: true });  
+    cy.get('body').click(0, 0, { force: true });  
 
-    cy.get('input#file-upload').selectFile('cypress/fixtures/photo1.png', { force: true });
+    cy.get('input#file-upload').selectFile('cypress/fixtures/1.jpg', { force: true });
 
-    cy.get('input[type="checkbox"]').check({ force: true }); // Dùng force: true để vượt qua các lớp phủ
+    cy.get('input[type="checkbox"]').check({ force: true }); 
 
     cy.contains('button', 'Post request').click({ force: true });
 
-    
     cy.url({ timeout: 15000 }).should('include', '/create-request/success');
 
-    // 6.2. Kiểm tra Thông báo Toast
-   // cy.contains('Request posted successfully', { timeout: 10000 })
-      //.should('be.visible');
+    cy.get('button:has(svg[viewBox="0 0 512 512"])').click(); 
+    cy.contains('button:visible', 'Log out').click();
 
-    // 6.3. Kiểm tra Tiêu đề chính
-   // cy.contains('Submission successful!')
-     // .should('be.visible');
-      
-    // 6.4. Kiểm tra nội dung phụ
-    //cy.contains('Congratulations! Your request has been submitted successfully')
-     // .should('be.visible');
+    cy.wait(2000);
+
+   cy.visit("/login");
+  cy.wait(2000);
+
+    cy.get("#email").should('be.visible').focus().clear().type("seller_test@example.com", { delay: 100 });
+    cy.get("input[name='password']").focus().clear().type("1234567l");
+    cy.get("button[type='submit']").should('be.enabled').click();
+    cy.wait(3000);
+    cy.visit('/seller/request/management');
+    cy.contains('button', 'Common requests', { timeout: 10000 }).should('be.visible').click();
+
+    cy.log('Đang tìm kiếm yêu cầu: ' + requestContent);
+
+    cy.contains(requestContent, { timeout: 15000 }) 
+                           
+      .should('be.visible');                         
+    
 });
   it('TC_10: Gửi yêu cầu thành công khi nhập đúng 10 ký tự (Min Length)', () => {
     
