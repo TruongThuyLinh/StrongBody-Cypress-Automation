@@ -60,6 +60,7 @@ const SELECTORS = {
         cy.wait(1000);
 
     cy.get(SELECTORS. getecomepublisherBtn).click({ force: true });
+    cy.wait(1000);
 
     cy.url({ timeout: 20000 }).should("include", "/become-publisher"); 
         cy.contains('Become an Affiliate Partner').should('be.visible');
