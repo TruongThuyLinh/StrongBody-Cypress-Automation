@@ -46,28 +46,30 @@ cy.url({ timeout: 20000 }).should("include", "pricing/tran-your-voice");
     getStartedBtn: 'button.bg-\\[\\#2f8cfa\\]',
     priceValue: 'span.text-\\[34\\.6px\\]',
     viewAllPlansBtn: 'a[href="#pricing-plan"]',
-    pricingSection: '#pricing-plan'
+    pricingSection: '#pricing-plan',
+       checkoutCard: 'div.bg-white'
+
 };
   
-it("TC_01 - Kiểm tra  hiển thị giao diện gói Trans Your Voice (UI)", () => {
-        cy.get(SELECTORS.mostPopularCard)
-            .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-            .should('be.visible');
+// it("TC_01 - Kiểm tra  hiển thị giao diện gói Trans Your Voice (UI)", () => {
+//         cy.get(SELECTORS.mostPopularCard)
+//             .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+//             .should('be.visible');
 
-        cy.get(SELECTORS.mostPopularCard).within(() => {
-            cy.get(SELECTORS.popularBadge).should('contain', 'Most Popular');
+//         cy.get(SELECTORS.mostPopularCard).within(() => {
+//             cy.get(SELECTORS.popularBadge).should('contain', 'Most Popular');
             
-            cy.get('h3').should('contain', 'Trans Your Voice');
-            cy.get(SELECTORS.priceValue).should('contain', '$15');
+//             cy.get('h3').should('contain', 'Trans Your Voice');
+//             cy.get(SELECTORS.priceValue).should('contain', '$15');
 
-            // Kiểm tra danh sách tính năng (li)
-            cy.get('ul li').should('have.length.at.least', 1);
-            cy.contains('li', 'Multi-language support').should('be.visible');
-            cy.contains('li', 'Text translate').should('be.visible');
-        });
-    });
+//             // Kiểm tra danh sách tính năng (li)
+//             cy.get('ul li').should('have.length.at.least', 1);
+//             cy.contains('li', 'Multi-language support').should('be.visible');
+//             cy.contains('li', 'Text translate').should('be.visible');
+//         });
+//     });
 
-    it("TC_02 - Kiểm tra chức năng điều hướng của nút Get Started", () => {
+    it("TC_01 - Kiểm tra chức năng điều hướng của nút Get Started", () => {
         cy.get(SELECTORS.mostPopularCard)
             .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } });
 
@@ -79,37 +81,67 @@ it("TC_01 - Kiểm tra  hiển thị giao diện gói Trans Your Voice (UI)", ()
 
     //cy.visit("/checkout/pricing?returnUrl=/checkout/pricings");
    cy.url({ timeout: 20000 }).should("include", "checkout/pricing"); 
+   cy.get(SELECTORS.checkoutCard).filter(':contains("Trans Your Voice")').first().within(() => {
+        cy.get('h3').should('contain', 'Trans Your Voice');
+       
+        cy.get('span').should('contain', 'US$15'); 
     });
-    // it("TC_03 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
-    // // 1. Tìm nút và gán alias (bí danh) để tránh lỗi detached DOM
-    // cy.get(SELECTORS.viewAllPlansBtn)
-    //     .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-    //     .as('anchorBtn'); // Sử dụng kỹ thuật bạn vừa đề cập
+  
+    });
+    it("TC_02 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
+    // 1. Tìm nút và gán alias (bí danh) để tránh lỗi detached DOM
+    cy.get(SELECTORS.viewAllPlansBtn)
+        .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
+        .as('anchorBtn'); // Sử dụng kỹ thuật bạn vừa đề cập
 
-    // // 2. Kiểm tra thuộc tính và hiển thị qua alias
-    // cy.get('@anchorBtn')
-    //     .should('be.visible')
-    //     .and('have.attr', 'href', '#pricing-plan')
-    //     .and('contain', 'View all plans');
+    // 2. Kiểm tra thuộc tính và hiển thị qua alias
+    cy.get('@anchorBtn')
+        .should('be.visible')
+        .and('have.attr', 'href', '#pricing-plan')
+        .and('contain', 'View all plans');
 
-    // // 3. Thực hiện Click
-    // cy.get('@anchorBtn').click();
+    // 3. Thực hiện Click
+    cy.get('@anchorBtn').click();
 
-    // // 4. Kiểm tra URL hash (URL lúc này sẽ có thêm #pricing-plan)
-    // cy.url().should('include', '#pricing-plan');
+    // 4. Kiểm tra URL hash (URL lúc này sẽ có thêm #pricing-plan)
+    cy.url().should('include', '#pricing-plan');
 
-    // // 5. Kiểm tra vùng mục tiêu hiển thị sau khi cuộn
-    // cy.wait(1000); // Chờ hiệu ứng smooth scroll kết thúc
-    // cy.get(SELECTORS.pricingSection)
-    //     .should('be.visible')
-    //     .then(($el) => {
-    //         // Kiểm tra tọa độ để chắc chắn nó nằm trong khung hình (Viewport)
-    //         const rect = $el[0].getBoundingClientRect();
-    //         const winHeight = Cypress.config('viewportHeight');
+    // 5. Kiểm tra vùng mục tiêu hiển thị sau khi cuộn
+    cy.wait(1000); // Chờ hiệu ứng smooth scroll kết thúc
+    cy.get(SELECTORS.pricingSection)
+        .should('be.visible')
+        .then(($el) => {
+            // Kiểm tra tọa độ để chắc chắn nó nằm trong khung hình (Viewport)
+            const rect = $el[0].getBoundingClientRect();
+            const winHeight = Cypress.config('viewportHeight');
             
-    //         expect(rect.top).to.be.at.least(-50); // Cho phép sai số nhỏ
-    //         expect(rect.top).to.be.lessThan(winHeight);
-    //     });
-//});
+            expect(rect.top).to.be.at.least(-50); // Cho phép sai số nhỏ
+            expect(rect.top).to.be.lessThan(winHeight);
+        });
+        cy.get(SELECTORS.checkoutCard).filter(':contains("Trans Your Voice")').first().within(() => {
+          cy.contains('Trans Your Voice')
+        .should('be.visible')
+        .and('have.css', 'font-weight');
+        
+    // Kiểm tra giá tiền 
+    cy.contains('15').should('be.visible');
+    cy.contains('/month').should('be.visible');
+
+    // Kiểm tra danh sách tính năng (Features list)
+    const expectedFeatures = [
+        "Multi-language support",
+        "Context-aware translation",
+        "Translate voice-to-voice chat with natural voices",
+        "Voice Translate 550,000 chars/month",
+        "Text translate"
+    ];
+
+    expectedFeatures.forEach(feature => {
+        cy.contains(feature).should('be.visible');
+    });
+       
+        });
+        
+});
 });
 

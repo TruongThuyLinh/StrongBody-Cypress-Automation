@@ -45,7 +45,7 @@ cy.url({ timeout: 20000 }).should("include", "trans-your-voice");
   it("TC_01 - Click vào button Buy Now", () => {
     const SELECTORS = {
     voiceChatProCard: 'div.bg-\\[\\#222222\\]', // Card màu đen của Voice Chat Pro
-    // Bạn có thể thêm các selector khác vào đây
+   checkoutCard: 'div.bg-white'
 };
     cy.get(SELECTORS.voiceChatProCard)
         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
@@ -57,7 +57,12 @@ cy.url({ timeout: 20000 }).should("include", "trans-your-voice");
   });
       cy.wait(1000);
      cy.visit("/checkout/pricing?returnUrl=/trans-your-voice/joining-success");
-    // 5. Chốt chặn: Đảm bảo vào đúng trang
-cy.url({ timeout: 20000 }).should("include", "checkout/pricing?returnUrl=/trans-your-voice/joining-success"); 
+   
+  cy.get(SELECTORS.checkoutCard).filter(':contains("Trans Your Voice")').first().within(() => {
+        cy.get('h3').should('contain', 'Trans Your Voice');
+       
+        cy.get('span').should('contain', 'US$15'); 
+    });
+  
 });
 });
