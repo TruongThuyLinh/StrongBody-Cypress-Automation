@@ -231,9 +231,9 @@ it("TC_15- Password chỉ toàn khoảng trắng → báo lỗi", () => {
  
   describe(" LOGIN SUCCESS", () => {
 
-    it("TC_21- Đăng nhập thành công", () => {
-      cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-      cy.get(passInput).type("1234567l");
+    it("TC_21- Đăng nhập thành công( rolle=buyer)", () => {
+      cy.get(emailInput).type("linh1769212523381@gmail.com");
+      cy.get(passInput).type("strongbody1");
       cy.get(signInBtn).click();
        cy.url().should("include", "become-seller-steps"); 
     });
@@ -245,11 +245,18 @@ it("TC_15- Password chỉ toàn khoảng trắng → báo lỗi", () => {
     //   cy.contains("basami1492@eubonus.com").should("be.visible");
       
     // });
-    it("TC_22- Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
+     it("TC_22- Đăng nhập thành công( rolle=seller)", () => {
+      cy.get(emailInput).type("liveb58966@m3player.com");
+      cy.get(passInput).type("1234567l");
+      cy.get(signInBtn).click();
+      cy.wait(2000);
+       cy.url().should("include", "seller/read-me"); 
+    });
+    it("TC_23- Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 
-  cy.get(emailInput).type("   truongthuylinh2004tb@gmail.com   ");
+  cy.get(emailInput).type("   linh1769212523381@gmail.com   ");
 
-  cy.get(passInput).type("1234567l");
+  cy.get(passInput).type("strongbody1");
 
   cy.get(signInBtn).click();
 

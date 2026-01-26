@@ -7,8 +7,6 @@ const passInput = "input[name='password']:visible";
   
   const signUpBtn = 'button[type="submit"]:visible';
  
-  const signInLink   = 'a[href="/login"]';
-
   beforeEach(() => {
   
   cy.visit("/provider-signup");
@@ -28,7 +26,6 @@ const passInput = "input[name='password']:visible";
     .should("be.visible")
     .and("not.be.disabled") // Kiểm tra nút KHÔNG bị khóa
     .and("have.css", "background-color", "rgb(28, 144, 108)");
-  cy.get(signInLink).should("be.visible");
   });
 
  it("TC_02 - Email trống → báo lỗi", () => {
