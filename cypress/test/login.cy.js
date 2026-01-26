@@ -225,7 +225,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
  
   describe(" LOGIN SUCCESS", () => {
 
-    it("TC_23 - Đăng nhập thành công", () => {
+    it("TC_23 - Đăng nhập thành công(user)", () => {
       cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
       cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
@@ -238,6 +238,12 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
     //   cy.contains("Enter Verification Code", { timeout: 10000 }).should("be.visible");
     //   cy.contains("basami1492@eubonus.com").should("be.visible");
       
+    // });
+    // it("TC_24 - Đăng nhập thành công(seller)", () => {
+    //   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
+    //   cy.get(passInput).type("1234567l");
+    //   cy.get(signInBtn).click();
+    //   cy.url().should("not.include", "/login");
     // });
     it("TC_24 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 

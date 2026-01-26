@@ -80,7 +80,7 @@ cy.url({ timeout: 20000 }).should("include", "pricing/tran-your-voice");
         });
 
     //cy.visit("/checkout/pricing?returnUrl=/checkout/pricings");
-   cy.url({ timeout: 20000 }).should("include", "checkout/pricing"); 
+   cy.url({ timeout: 10000 }).should("include", "checkout/pricing"); 
    cy.get(SELECTORS.checkoutCard).filter(':contains("Trans Your Voice")').first().within(() => {
         cy.get('h3').should('contain', 'Trans Your Voice');
        
@@ -94,7 +94,6 @@ cy.url({ timeout: 20000 }).should("include", "pricing/tran-your-voice");
         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
         .as('anchorBtn'); // Sử dụng kỹ thuật bạn vừa đề cập
 
-    // 2. Kiểm tra thuộc tính và hiển thị qua alias
     cy.get('@anchorBtn')
         .should('be.visible')
         .and('have.attr', 'href', '#pricing-plan')
@@ -102,16 +101,14 @@ cy.url({ timeout: 20000 }).should("include", "pricing/tran-your-voice");
 
     // 3. Thực hiện Click
     cy.get('@anchorBtn').click();
+    cy.wait(1000); 
 
-    // 4. Kiểm tra URL hash (URL lúc này sẽ có thêm #pricing-plan)
     cy.url().should('include', '#pricing-plan');
 
-    // 5. Kiểm tra vùng mục tiêu hiển thị sau khi cuộn
-    cy.wait(1000); // Chờ hiệu ứng smooth scroll kết thúc
+    cy.wait(1000); 
     cy.get(SELECTORS.pricingSection)
         .should('be.visible')
         .then(($el) => {
-            // Kiểm tra tọa độ để chắc chắn nó nằm trong khung hình (Viewport)
             const rect = $el[0].getBoundingClientRect();
             const winHeight = Cypress.config('viewportHeight');
             
