@@ -240,6 +240,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
       
     // });
     // it("TC_24 - Đăng nhập thành công(seller)", () => {
+
     //   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
     //   cy.get(passInput).type("1234567l");
     //   cy.get(signInBtn).click();

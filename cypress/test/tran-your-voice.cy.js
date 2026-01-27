@@ -89,17 +89,15 @@ cy.url({ timeout: 20000 }).should("include", "pricing/tran-your-voice");
   
     });
     it("TC_02 - Kiểm tra nút View all plans cuộn đến bảng giá", () => {
-    // 1. Tìm nút và gán alias (bí danh) để tránh lỗi detached DOM
     cy.get(SELECTORS.viewAllPlansBtn)
         .scrollIntoView({ duration: 500, offset: { top: -100, left: 0 } })
-        .as('anchorBtn'); // Sử dụng kỹ thuật bạn vừa đề cập
+        .as('anchorBtn'); 
 
     cy.get('@anchorBtn')
         .should('be.visible')
         .and('have.attr', 'href', '#pricing-plan')
         .and('contain', 'View all plans');
 
-    // 3. Thực hiện Click
     cy.get('@anchorBtn').click();
     cy.wait(1000); 
 

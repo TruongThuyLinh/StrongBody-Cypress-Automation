@@ -12,7 +12,7 @@ const emailInput = "#email";
   //   cy.visit("/signup");
   //   cy.contains('a', 'For Provider').click();
   //  cy.wait(1000);
-  cy.visit("/become-seller");
+  cy.visit("/become-seller ");
   cy.wait(1000);
   
 cy.contains("Start Selling Now — From $15/month")
@@ -232,8 +232,8 @@ it("TC_15- Password chỉ toàn khoảng trắng → báo lỗi", () => {
   describe(" LOGIN SUCCESS", () => {
 
     it("TC_21- Đăng nhập thành công( rolle=buyer)", () => {
-      cy.get(emailInput).type("linh1769212523381@gmail.com");
-      cy.get(passInput).type("strongbody1");
+      cy.get(emailInput).type("thuylinh1020tb@gmail.com");
+      cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
        cy.url().should("include", "become-seller-steps"); 
     });
@@ -246,7 +246,7 @@ it("TC_15- Password chỉ toàn khoảng trắng → báo lỗi", () => {
       
     // });
      it("TC_22- Đăng nhập thành công( rolle=seller)", () => {
-      cy.get(emailInput).type("liveb58966@m3player.com");
+      cy.get(emailInput).type("thuylinh1010@gmail.com");
       cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
       cy.wait(2000);
@@ -254,9 +254,9 @@ it("TC_15- Password chỉ toàn khoảng trắng → báo lỗi", () => {
     });
     it("TC_23- Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 
-  cy.get(emailInput).type("   linh1769212523381@gmail.com   ");
+  cy.get(emailInput).type("   thuylinh1020tb@gmail.com   ");
 
-  cy.get(passInput).type("strongbody1");
+  cy.get(passInput).type("1234567l");
 
   cy.get(signInBtn).click();
 

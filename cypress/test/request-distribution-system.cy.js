@@ -5,12 +5,6 @@ describe("Request Distribution System", () => {
     const login = () => {
   cy.visit("/login");
   
-  // cy.contains('button', 'English', { timeout: 10000 })
-  //   .should('be.visible')
-  //   .click();
-
-  // cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
-  
   cy.wait(2000); 
 
   cy.get("#email", { timeout: 15000 }).should('be.visible');

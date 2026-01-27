@@ -5,12 +5,6 @@ describe("Trans Your Voice", () => {
     const login = () => {
   cy.visit("/login");
   
-  // cy.contains('button', 'English', { timeout: 10000 })
-  //   .should('be.visible')
-  //   .click();
-
-  // cy.get('h2').contains('Select Your Language', { timeout: 10000 }).should('not.exist');
-  
   cy.wait(2000); 
 
   cy.get("#email", { timeout: 15000 }).should('be.visible');
@@ -28,7 +22,6 @@ describe("Trans Your Voice", () => {
 beforeEach(() => {
   cy.session("login", login, {
     validate() {
-      // Kiểm tra xem có bất kỳ cookie nào chứa 'session-token' không
       cy.getCookies().then((cookies) => {
         const hasSession = cookies.some(c => c.name.includes('session-token'));
         if (!hasSession) {
@@ -38,13 +31,12 @@ beforeEach(() => {
     },
   });
     cy.visit("/trans-your-voice");
-    // 5. Chốt chặn: Đảm bảo vào đúng trang
 cy.url({ timeout: 20000 }).should("include", "trans-your-voice");   
   });  
   
   it("TC_01 - Click vào button Buy Now", () => {
     const SELECTORS = {
-    voiceChatProCard: 'div.bg-\\[\\#222222\\]', // Card màu đen của Voice Chat Pro
+    voiceChatProCard: 'div.bg-\\[\\#222222\\]', 
    checkoutCard: 'div.bg-white'
 };
     cy.get(SELECTORS.voiceChatProCard)
