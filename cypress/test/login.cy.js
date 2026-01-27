@@ -226,10 +226,11 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   describe(" LOGIN SUCCESS", () => {
 
     it("TC_23 - Đăng nhập thành công(user)", () => {
-      cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
+      cy.get(emailInput).type("kopodo6217@gamening.com");
       cy.get(passInput).type("1234567l");
       cy.get(signInBtn).click();
-      cy.url().should("not.include", "/login");
+      cy.wait(2000);
+      cy.url().should("include", "/home");
     });
     // it("TC_24 -login tài khoản peeding", () => {
     //   cy.get(emailInput).type("basami1492@eubonus.com");
@@ -239,13 +240,14 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
     //   cy.contains("basami1492@eubonus.com").should("be.visible");
       
     // });
-    // it("TC_24 - Đăng nhập thành công(seller)", () => {
+    it("TC_24 - Đăng nhập thành công(seller)", () => {
 
-    //   cy.get(emailInput).type("truongthuylinh2004tb@gmail.com");
-    //   cy.get(passInput).type("1234567l");
-    //   cy.get(signInBtn).click();
-    //   cy.url().should("not.include", "/login");
-    // });
+      cy.get(emailInput).type("thuylinh1010@gmail.com");
+      cy.get(passInput).type("1234567l");
+      cy.get(signInBtn).click();
+      cy.wait(2000);
+      cy.url().should("include", "/seller/read-me");
+    });
     it("TC_24 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 
   cy.get(emailInput).type("   truongthuylinh2004tb@gmail.com   ");
