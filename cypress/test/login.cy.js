@@ -248,7 +248,7 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
       cy.wait(2000);
       cy.url().should("include", "/seller/read-me");
     });
-    it("TC_24 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
+    it("TC_25 - Email có khoảng trắng đầu/cuối → hệ thống auto trim", () => {
 
   cy.get(emailInput).type("   truongthuylinh2004tb@gmail.com   ");
 
@@ -260,11 +260,11 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   cy.url().should("not.include", "/login");
 
 });
-it("TC_25 - Facebook button hoạt động", () => { 
+it("TC_26 - Facebook button hoạt động", () => { 
     cy.get('button[aria-label="Continue with Facebook"]:visible').click(); 
     cy.url().should("include", "facebook.com"); });
 
-it("TC_26 - Google button hoạt động", () => {
+it("TC_27 - Google button hoạt động", () => {
   // 1. Sử dụng pattern rộng hơn để bắt request
   cy.intercept({
     url: /.*oauth2.*/, 

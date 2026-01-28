@@ -272,7 +272,7 @@ const password64 = "a1".repeat(32);
 cy.get(signUpBtn).contains('Sign up').click();
      cy.url().should("include", "become-seller-steps"); 
     });
-     it("TC_26-Role=seller_>register", () => {
+     it("TC_26-Role=seller->register seller", () => {
     cy.get(emailInput).type("liveb58966@m3player.com");
     cy.get(passInput).type("1234567l");
     cy.get(signUpBtn).contains('Sign up').click();
@@ -286,7 +286,7 @@ cy.get(signUpBtn).contains('Sign up').click();
      cy.url().should("include", "seller/read-me"); 
     
     });
-     it("TC_26-Role=user->register", () => {
+     it("TC_26-Role=user->register seller", () => {
         
 const randomEmail = `linh${Date.now()}@gmail.com`;
     cy.get(emailInput).type(randomEmail);
@@ -295,7 +295,7 @@ const randomEmail = `linh${Date.now()}@gmail.com`;
     cy.wait(1000);   
      cy.contains('Login').click();
      cy.wait(2000);
-    cy.get("#email").type("hirixim249@gamening.com");
+    cy.get("#email").type(randomEmail);
     cy.get("#password").type("1234567l");
     cy.get('button[type="submit"]').contains('Sign in').click();
      cy.wait(1000);
