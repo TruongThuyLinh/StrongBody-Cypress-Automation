@@ -337,7 +337,7 @@ cy.get('a[href="/login"]:visible').first().click();
     cy.wait(500);
     cy.get('button[type="submit"]:visible') .should("not.be.disabled") .and("have.css", "background-color", "rgb(0, 162, 240)"); // optional
     cy.get('button:visible').contains('Free Sign up').click();
-     cy.url().should("include", "choose-your-companions"); 
+     cy.url().should("include", "become-user-steps"); 
 
     
   });
@@ -351,7 +351,7 @@ cy.get('a[href="/login"]:visible').first().click();
 
     cy.wait(500);
 cy.get('button:visible').contains('Free Sign up').click();
-     cy.url().should("include", "choose-your-companions"); });
+     cy.url().should("include", "become-user-steps"); });
   
    it("TC_25- Password đúng 64 ký tự → button enabled", () => {
     cy.wait(2000);
@@ -362,7 +362,7 @@ const password64 = "a1".repeat(32);
 
      cy.wait(500);
 cy.get('button:visible').contains('Free Sign up').click();
-     cy.url().should("include", "choose-your-companions"); });
+     cy.url().should("include", "become-user-steps"); });
   
    });
 

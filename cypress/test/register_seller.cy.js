@@ -234,7 +234,7 @@ it("TC_16-Password nhập khoảng trắng ở đầu cuối ", () => {
 
 it("TC_21- Click Sign in → Điều hướng đúng trang", () => {
 
-  cy.get('a[href="/login"]')
+  cy.get('a[href="/login"]:visible').contains('Sign in')
   .first() 
   .click();
   cy.url({ timeout: 10000 }).should("include", "/login");
@@ -286,22 +286,15 @@ cy.get(signUpBtn).contains('Sign up').click();
      cy.url().should("include", "seller/read-me"); 
     
     });
-     it("TC_26-Role=user->register seller", () => {
-        
-const randomEmail = `linh${Date.now()}@gmail.com`;
-    cy.get(emailInput).type(randomEmail);
-    cy.get(passInput).type("1234567l");
-    cy.get(signUpBtn).contains('Sign up').click();
-    cy.wait(1000);   
-     cy.contains('Login').click();
-     cy.wait(2000);
-    cy.get("#email").type(randomEmail);
+   it("TC_27-Role=user->register seller", () => {
+   cy.get('input[name="email"]:visible').type("thuylinh9@gmail.com");
+    cy.get('input[name="password"]:visible').first().type("1234567l");
+    cy.get('button[type="submit"]:visible').contains('Sign up').click();
+  
+    cy.contains('Login').click();
+    cy.get("#email").should('be.visible').type("thuylinh9@gmail.com");
     cy.get("#password").type("1234567l");
     cy.get('button[type="submit"]').contains('Sign in').click();
-     cy.wait(1000);
-     cy.url().should("include", "become-seller-steps"); 
-    
-    });
-
-
+    cy.url().should("include", "become-seller-steps"); 
+});
    });

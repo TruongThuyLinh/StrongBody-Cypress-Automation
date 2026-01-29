@@ -260,6 +260,8 @@ it("TC_17 - Password chỉ toàn khoảng trắng → báo lỗi", () => {
   cy.url().should("not.include", "/login");
 
 });
+
+
 it("TC_26 - Facebook button hoạt động", () => { 
     cy.get('button[aria-label="Continue with Facebook"]:visible').click(); 
     cy.url().should("include", "facebook.com"); });
