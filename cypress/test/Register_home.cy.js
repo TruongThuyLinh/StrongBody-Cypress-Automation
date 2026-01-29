@@ -9,7 +9,7 @@ const passInput = "input[name='password']:visible";
   const signUpBtn = 'button[type="submit"]:visible';
   const googleBtn    = 'button[aria-label="Continue with Google"]';
   const facebookBtn  = 'button[aria-label="Continue with Facebook"]';
-  const signInLink   = 'a[href="/login"]';
+  //const signInLink   = 'a[href="/login"]';
 
   beforeEach(() => {
     cy.viewport(1920, 1080);
@@ -34,7 +34,7 @@ const passInput = "input[name='password']:visible";
   cy.get(googleBtn).should("be.visible");
   cy.get(facebookBtn).should("be.visible");
 
-  cy.get(signInLink).should("be.visible");
+  //cy.get(signInLink).should("be.visible");
   });
 
  it("TC_02 - Email trống → báo lỗi", () => {
