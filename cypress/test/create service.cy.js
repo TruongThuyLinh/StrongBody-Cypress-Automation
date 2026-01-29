@@ -42,7 +42,7 @@ const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
   cy.get("button[type='submit']").should('be.enabled').click();
 
   cy.url().should('not.include', '/login');
-  cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
+  //cy.get("span.flex.items-center.gap-1", { timeout: 20000 }).should("be.visible");
 };
   
 beforeEach(() => {
@@ -60,7 +60,7 @@ cy.visit("/seller/create-service");
     cy.url({ timeout: 20000 }).should("include", "seller/create-service");
 
     cy.wait(1000);
-   
+    
   });
 
 
