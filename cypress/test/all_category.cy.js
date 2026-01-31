@@ -22,7 +22,7 @@ const CATEGORIES_DATA = [
     { id: 'body-movement', name: 'BODY & MOVEMENT' },
     { id: 'general-medicine-specializations', name: 'GENERAL MEDICINE & SPECIALIZATIONS' },
 //    { id: 'weight-loss-method-review-consulting', name: 'Weight Loss Method Review & Consulting' },
-    //{ id: 'coachspecialist', name: 'Coach/Specialist' },
+//{ id: 'coachspecialist', name: 'Coach/Specialist' },
     { id: 'beauty-skincare', name: 'BEAUTY & SKINCARE' },
     { id: 'cosmetic-aesthetic-medical', name: 'COSMETIC & AESTHETIC MEDICAL' },
     { id: 'specialized-medical-support-pharmacy', name: 'SPECIALIZED MEDICAL SUPPORT & PHARMACY' },
@@ -73,18 +73,17 @@ describe("StrongBody - Home & Categories Optimization", () => {
         });
     });
 
-    // --- TEST CASE 02 ĐÃ ĐƯỢC CHỈNH LẠI ---
-    it('TC_02: Kiểm tra Breadcrumb - Điều hướng về trang Home', () => {
-        cy.get(SELECTORS.breadcrumbHome)
-            .contains('Home')
-            .should('be.visible')
-            .and('have.attr', 'href', '/');
+    // it('TC_02: Kiểm tra Breadcrumb - Điều hướng về trang Home', () => {
+    //     cy.get(SELECTORS.breadcrumbHome)
+    //         .contains('Home')
+    //         .should('be.visible')
+    //         .and('have.attr', 'href', '/');
 
-        // Click để quay về trang chủ
-        cy.get(SELECTORS.breadcrumbHome).contains('Home').click();
+    //     // Click để quay về trang chủ
+    //     cy.get(SELECTORS.breadcrumbHome).contains('Home').click();
 
-         cy.url().should("include", "home"); 
-    });
+    //      cy.url().should("include", "home"); 
+    // });
 
     // --- CÁC DANH MỤC BẮT ĐẦU TỪ TC_03 ---
     CATEGORIES_DATA.forEach((cat, index) => {

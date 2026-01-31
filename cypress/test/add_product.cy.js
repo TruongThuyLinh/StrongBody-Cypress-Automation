@@ -533,9 +533,6 @@ it("TC_14- Tất cả các trường (Name, Desc) nhập đúng bằng Max Lengt
     cy.wait(500);
   
   cy.get('body').click(0, 0, { force: true });
-    cy.contains('label', /Country/i).parent().as('countryField');
-    cy.get('@countryField').find('button[id^="headlessui-combobox-button"]').click();
-    cy.contains('[role="option"]', 'Albania').click();
     
     cy.get(descInput)
       .should('be.visible')

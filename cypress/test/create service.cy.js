@@ -34,7 +34,7 @@ const imgMore = "#service-images-upload-more";        // Upload nhiều ảnh
   cy.wait(2000); 
 
   cy.get("#email", { timeout: 15000 }).should('be.visible');
-  
+ 
   cy.get("#email").focus().clear().type("liveb58966@m3player.com", { delay: 100 });
 
   cy.get("input[name='password']").focus().clear().type("1234567l");
@@ -483,7 +483,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
 
       cy.get(thumbInput).selectFile('cypress/fixtures/fake-avatar.txt', { force: true });
 
-       cy.get(imgSlot1).selectFile('cypress/fixtures/Homework 22.ppx', { force: true });
+       cy.get(imgSlot1).selectFile('cypress/fixtures/Homework 22.pptx', { force: true });
 
        cy.get(imgMore).selectFile([
       'cypress/fixtures/2.jpg',
@@ -520,7 +520,7 @@ cy.get("div[id^='headlessui-combobox-options']", { timeout: 8000 })
       cy.get(priceInput).type("0");
       cy.get(createBtn).click();
 
-       cy.contains(/invalid file format|only images are allowed/i, { timeout: 6000 })
+       cy.contains(/Only PNG, JPG, and JPEG image files are allowed./i, { timeout: 6000 })
     .should("be.visible");
     });
   

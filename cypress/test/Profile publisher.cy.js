@@ -93,7 +93,7 @@ cy.url({ timeout: 20000 }).should("include", "buyer/dashboard");
             .and('contain', 'Received offers');
     cy.get(menu.ReceivedOffers).click();
    cy.url({ timeout: 20000 }).should("include", "buyer/offer"); 
-     cy.contains('Offers for You', { timeout: 10000 }).should('be.visible');
+     cy.contains('Manage your Offers', { timeout: 10000 }).should('be.visible');
     });
      it("TC_06- Click vào Lion point->", () => {
     cy.get(menu.LionPoints)
